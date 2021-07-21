@@ -22,7 +22,7 @@ public class SwabMgr : MonoBehaviour
         // Finish Disinfection
         if (rubCnt == rubPointNum)
         {
-            GameManager.instance.TestFinishDisinfect();
+            // GameManager.instance.TestFinishDisinfect();
         }
     }
 }
