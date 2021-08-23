@@ -47,6 +47,8 @@ public class KHG_Control : MonoBehaviour
     int i;
     void Update()
     {
+        Debug.Log("grabCount:" + grabCount);
+
         prevFlex = m_prevFlex;
         prevFlex_Grab = m_prevFlex_Grab;
         // Update values from inputs
@@ -202,23 +204,30 @@ public class KHG_Control : MonoBehaviour
     //다중 트리거Enter, 같은물체 양손 트리거
     //1번물체 트리거Enter -> 2번물체 트리거Enter -> 1번문체 트리거Exit  일시, grabbedObject = null발동
 
-    int grabCount = 0;
+    public int grabCount = 0;
     void OnTriggerEnter(Collider coll)
     {
         if (coll.tag == "GrabObject")
         {
+            if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+            {
+                //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
+                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                mat.color *= 1.2f;
+            }
 
-            //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-            Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-            mat.color *= 1.3f;
         }
 
         if (!isGrabbed)
         {
             if (coll.tag == "GrabObject")
             {
-                grabbedObject = coll.transform;
-                grabCount++;
+                if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+                {
+                    grabbedObject = coll.transform;
+                    grabCount++;
+
+                }
             }
         }
     }
@@ -227,16 +236,28 @@ public class KHG_Control : MonoBehaviour
     {
         if (coll.tag == "GrabObject")
         {
-            //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-            Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-            mat.color /= 1.3f;
+            if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+            {
+                //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
+                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                mat.color /= 1.2f;
+            }
+
         }
+
         if (!isGrabbed)
         {
-            grabCount--;
-            if (grabCount == 0)
+            if (coll.GetComponent<KHG_Grabble>())
             {
-                grabbedObject = null;
+                if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+                {
+                    grabCount--;
+                    if (grabCount == 0)
+                    {
+                        grabbedObject = null;
+                    }
+                }
+
             }
         }
 

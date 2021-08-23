@@ -5,7 +5,7 @@ using UnityEngine;
 public class KHG_Grabble : MonoBehaviour
 {
 
-    public enum GrabByState { All, Pinch, Grab }
+    public enum GrabByState { All, Pinch, Grab, None }
 
 
 
