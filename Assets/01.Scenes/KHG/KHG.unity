@@ -698,6 +698,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 0
+  isExit: 0
+  destroy: 0
 --- !u!1 &132719446
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,6 +1458,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 0
+  isExit: 0
+  destroy: 0
 --- !u!114 &319731048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1469,6 +1473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 3
+  isExit: 0
+  destroy: 0
 --- !u!114 &319731049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,6 +1488,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 0
+  isExit: 0
+  destroy: 0
 --- !u!1 &336225078
 GameObject:
   m_ObjectHideFlags: 0
@@ -3229,6 +3237,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 1
+  isExit: 0
+  destroy: 0
 --- !u!1 &674892907
 GameObject:
   m_ObjectHideFlags: 0
@@ -4640,6 +4650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabByState: 2
+  isExit: 0
+  destroy: 0
 --- !u!1 &980258260
 GameObject:
   m_ObjectHideFlags: 0
@@ -10120,8 +10132,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2142751369}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.602, y: 0.085, z: 0.094}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: -0.61, y: 0.081, z: 0.046}
+  m_LocalScale: {x: 0.1, y: 0.01, z: 0.1}
   m_Children: []
   m_Father: {fileID: 5827772046369352304}
   m_RootOrder: 0
@@ -10299,6 +10311,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146178919}
+  - component: {fileID: 2146178920}
+  - component: {fileID: 2146178922}
   m_Layer: 0
   m_Name: Needle
   m_TagString: Untagged
@@ -10320,6 +10334,31 @@ Transform:
   m_Father: {fileID: 4492336701186071298}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2146178920
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146178918}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01, y: 0.01, z: 0.01}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2146178922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146178918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17c568ff227d40040b491c288a13d3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &18409412467493027
 Transform:
   m_ObjectHideFlags: 0
@@ -15349,6 +15388,7 @@ MonoBehaviour:
   isStabed: 0
   pos: {x: 0, y: 0, z: 0}
   rot: {x: 0, y: 0, z: 0, w: 1}
+  rot2: {x: 0, y: 0, z: 0, w: 0}
   needle: {fileID: 2146178918}
 --- !u!1 &5159370355247591516
 GameObject:

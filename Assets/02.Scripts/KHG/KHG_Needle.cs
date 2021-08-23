@@ -11,12 +11,14 @@ public class KHG_Needle : MonoBehaviour
 
     public Vector3 pos = Vector3.zero;
     public Quaternion rot = Quaternion.identity;
+    public Quaternion rot2;
 
 
     private Transform stylet;
 
     private Collider zelcoColl;
     private Collider styletColl;
+    private Collider needleColl;
 
     public GameObject needle;
 
@@ -25,7 +27,9 @@ public class KHG_Needle : MonoBehaviour
     {
         stylet = transform.Find("Stylet");
         styletColl = stylet.gameObject.GetComponent<BoxCollider>();
+        needleColl = transform.Find("Needle").GetComponent<BoxCollider>();
         styletColl.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -42,26 +46,31 @@ public class KHG_Needle : MonoBehaviour
 
                 isStabed = true;
                 pos = needle.transform.position;
+                transform.position = pos;
                 rot = transform.rotation;
-
+                this.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
                 stylet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
                 styletColl.enabled = true;
-                stylet.SetParent(null);
+                //stylet.SetParent(null);
                 //zelcoColl.enabled = false; 
 
                 // gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
                 // styletColl.gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
+                Debug.Log("rot:" + rot.eulerAngles);
+                Debug.Log("rot-rot2:" + (rot.eulerAngles - rot2.eulerAngles));
 
             }
 
 
             if (isStabed)
             {
+
+
                 transform.localRotation = rot;
-                if (Vector3.Distance(stylet.position, pos) > 0.5f)
+
+                if (stylet && Vector3.Distance(stylet.position, pos) > 0.5f)
                 {
-                    stylet.gameObject.SetActive(false);
-                    gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+                    stylet.gameObject.GetComponent<KHG_Grabble>().destroy = true;
 
                 }
 
@@ -69,23 +78,32 @@ public class KHG_Needle : MonoBehaviour
         }
     }
 
-
-    void OnTriggerEnter(Collider coll)
+    public void NeedleSnap()
     {
 
-        if (!isSnaped && coll.gameObject.name == "Arm_Snap")
-        {
-            Debug.Log("OnTriggerEnter");
+        pos = transform.position;
+        isSnaped = true;
 
 
-            //gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
-            pos = transform.position;
-            // gameObject.GetComponent<MeshRenderer>().material.color *= 1.2f;
-            // styletColl.gameObject.GetComponent<MeshRenderer>().material.color *= 1.2f;
-
-            isSnaped = true;
-
-        }
     }
+
+    // void OnTriggerEnter(Collider coll)
+    // {
+
+    //     if (!isSnaped && coll.gameObject.name == "Arm_Snap")
+    //     {
+    //         Debug.Log("OnTriggerEnter");
+
+
+    //         //gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+    //         pos = transform.position;
+    //         rot2 = coll.transform.rotation;
+    //         // gameObject.GetComponent<MeshRenderer>().material.color *= 1.2f;
+    //         // styletColl.gameObject.GetComponent<MeshRenderer>().material.color *= 1.2f;
+
+    //         isSnaped = true;
+
+    //     }
+    // }
 
 }

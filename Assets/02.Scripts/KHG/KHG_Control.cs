@@ -47,7 +47,8 @@ public class KHG_Control : MonoBehaviour
     int i;
     void Update()
     {
-        Debug.Log("grabCount:" + grabCount);
+
+        Debug.Log(controller + ":" + Physics.OverlapSphere(this.controllerTr.position, 0.1f).Length);
 
         prevFlex = m_prevFlex;
         prevFlex_Grab = m_prevFlex_Grab;
@@ -78,10 +79,7 @@ public class KHG_Control : MonoBehaviour
 
 
 
-        if (ThumbTouch)
-        {
-            Debug.Log("TrueTrueTrue");
-        }
+
 
 
         //그랩시작
@@ -152,6 +150,8 @@ public class KHG_Control : MonoBehaviour
 
     void GrabBegin()
     {
+        if (Physics.OverlapSphere(this.transform.position, 0.15f).Length == 2) { grabCount = 0; grabbedObject = null; } //버그방지
+
         if (grabbedObject != null)
         {
             var _grabByState = grabbedObject.GetComponent<KHG_Grabble>().grabByState;
@@ -161,6 +161,7 @@ public class KHG_Control : MonoBehaviour
                 currentGrabbedObject = grabbedObject;
                 currentGrabbedObject.SetParent(controllerTr);
                 currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
+                //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
                 isGrabbed = true;
                 // isGrabbed = true;
 
@@ -170,6 +171,7 @@ public class KHG_Control : MonoBehaviour
                 currentGrabbedObject = grabbedObject;
                 currentGrabbedObject.SetParent(controllerTr);
                 currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
+                //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
                 isGrabbed = true;
                 // isGrabbed = true;
 
@@ -187,6 +189,7 @@ public class KHG_Control : MonoBehaviour
             {
                 currentGrabbedObject.SetParent(null);
                 currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+                //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
             }
 
             isGrabbed = false;
@@ -222,10 +225,11 @@ public class KHG_Control : MonoBehaviour
         {
             if (coll.tag == "GrabObject")
             {
-                if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+                // if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
                 {
                     grabbedObject = coll.transform;
                     grabCount++;
+                    coll.GetComponent<KHG_Grabble>().isExit = false;
 
                 }
             }
@@ -249,9 +253,10 @@ public class KHG_Control : MonoBehaviour
         {
             if (coll.GetComponent<KHG_Grabble>())
             {
-                if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
+                // if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
                 {
                     grabCount--;
+                    coll.GetComponent<KHG_Grabble>().isExit = true;
                     if (grabCount == 0)
                     {
                         grabbedObject = null;

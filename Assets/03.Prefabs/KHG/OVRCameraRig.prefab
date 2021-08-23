@@ -114,6 +114,7 @@ MonoBehaviour:
   currentGrabbedObject: {fileID: 0}
   controller: 2
   grabState: 0
+  grabCount: 0
 --- !u!1 &6555301355081500900
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +618,7 @@ MonoBehaviour:
   currentGrabbedObject: {fileID: 0}
   controller: 1
   grabState: 0
+  grabCount: 0
 --- !u!1 &6555734092734012588
 GameObject:
   m_ObjectHideFlags: 0
