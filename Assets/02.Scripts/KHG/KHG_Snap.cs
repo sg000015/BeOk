@@ -20,7 +20,7 @@ public class KHG_Snap : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
-        Debug.Log(coll.name);
+        //Debug.Log(coll.name);
 
         if (_objectType == ObjectType.Needle)
         {
@@ -29,6 +29,13 @@ public class KHG_Snap : MonoBehaviour
 
                 transform.parent.GetComponent<KHG_Needle>().NeedleSnap();
                 isDo = true;
+                Debug.Log("Arm to Snap");
+
+            }
+            else if (!isDo && coll.gameObject.name == "Fail_Snap")
+            {
+
+                Debug.Log("Fail to Snap");
 
             }
         }
@@ -40,7 +47,7 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Tor_Snap")
             {
-                Debug.Log("aaa");
+
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -61,10 +68,10 @@ public class KHG_Snap : MonoBehaviour
 
     IEnumerator SetBloodLineAlpha()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 6; i++)
         {
             mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.1f * i);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 }

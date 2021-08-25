@@ -23,6 +23,9 @@ public class KHG_Needle : MonoBehaviour
     public GameObject needle;
     public GameObject snapPoint;
 
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,7 +52,8 @@ public class KHG_Needle : MonoBehaviour
 
 
                 isStabed = true;
-                pos = needle.transform.position;
+                Debug.Log("needle:" + needle.transform.position);
+                Debug.Log("default:" + transform.position);
                 transform.position = pos;
                 rot = transform.rotation;
                 this.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
@@ -61,6 +65,20 @@ public class KHG_Needle : MonoBehaviour
                 // gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
                 // styletColl.gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
                 Debug.Log("rot:" + rot.eulerAngles);
+
+                //Temp
+                if (rot.eulerAngles.x <= 30 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 30 && rot.eulerAngles.y > -30)
+                {
+                    Debug.Log("Good Needle");
+                }
+                else
+                {
+                    Debug.Log("Bad Needle");
+
+                    Animator anim = GameObject.Find("polySurface2").GetComponent<Animator>(); //손 찾기
+                    anim.SetTrigger("HandShakingTrigger");
+                }
+
 
             }
 
