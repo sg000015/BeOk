@@ -7,20 +7,25 @@ public class BGB_Sap : MonoBehaviour
     public Animator anim;
     public MeshRenderer handMesh;
     float patientSpeed;
+    string sapBag;
+
     float curSpeed;
-    // Start is called before the first frame update
     void Start()
     {
         patientSpeed = 10f;
+        sapBag = "DW";
     }
 
     public void UpdateSpeed(int num)
     {
-     curSpeed += num;
+       curSpeed += num;
+
+        Debug.Log(curSpeed);
        if (curSpeed > patientSpeed)
        {
-           Debug.Log("손떨림");
            anim.SetBool("HandShaking", true);
+        Debug.Log("손떨림");
+           
            return;
        }
        else if ( curSpeed < 0)
@@ -33,10 +38,21 @@ public class BGB_Sap : MonoBehaviour
            anim.SetBool("HandShaking", false);
 
        }
-        
-       byte alpha = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
+    
 
-       handMesh.materials[1].color = new Color32(255,255,255, alpha);
+
+       if(sapBag == "DW")
+       {
+           byte alphaPurple = (byte)Mathf.Round((curSpeed / patientSpeed * 255));
+           if (alphaPurple > 100 ) alphaPurple = 100;
+           
+           handMesh.materials[3].color = new Color32(178, 0, 255, alphaPurple);
+       }
+       else
+       {
+           byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
+           handMesh.materials[1].color = new Color32(255,255,255, alphaHives);
+       }
     }
 
 }
