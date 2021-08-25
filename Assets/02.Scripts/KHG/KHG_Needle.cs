@@ -16,15 +16,19 @@ public class KHG_Needle : MonoBehaviour
 
     private Transform stylet;
 
-    private Collider zelcoColl;
+    private BoxCollider zelcoColl;
     private Collider styletColl;
     private Collider needleColl;
 
     public GameObject needle;
+    public GameObject snapPoint;
 
     // Start is called before the first frame update
     void Start()
     {
+        zelcoColl = GetComponent<BoxCollider>();
+        zelcoColl.size = new Vector3(0.03f, 0.03f, 0.4f);
+        zelcoColl.center = new Vector3(0, 0, -0.2f);
         stylet = transform.Find("Stylet");
         styletColl = stylet.gameObject.GetComponent<BoxCollider>();
         needleColl = transform.Find("Needle").GetComponent<BoxCollider>();
@@ -67,7 +71,23 @@ public class KHG_Needle : MonoBehaviour
 
                 transform.localRotation = rot;
 
-                if (stylet && Vector3.Distance(stylet.position, pos) > 0.5f)
+                float dis = Vector3.Distance(stylet.position, pos);
+                if (dis < 0.1f)
+                {
+                    snapPoint.transform.SetParent(this.transform);
+                    if (snapPoint.transform.localPosition.z > 0)
+                    {
+                        snapPoint.transform.localPosition = Vector3.zero;
+                    }
+                    snapPoint.transform.localPosition = new Vector3(0, 0, snapPoint.transform.localPosition.z);
+
+                    stylet.transform.position = snapPoint.transform.position;
+                    snapPoint.transform.SetParent(stylet);
+
+
+                }
+
+                if (stylet && dis > 0.5f)
                 {
                     stylet.gameObject.GetComponent<KHG_Grabble>().destroy = true;
 
@@ -81,10 +101,13 @@ public class KHG_Needle : MonoBehaviour
     {
 
         pos = transform.position;
+        zelcoColl.size = new Vector3(0.03f, 0.03f, 0.2f);
+        zelcoColl.center = new Vector3(0, 0, -0.12f);
         isSnaped = true;
 
 
     }
+
 
     // void OnTriggerEnter(Collider coll)
     // {

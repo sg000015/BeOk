@@ -149,7 +149,9 @@ public class KHG_Control : MonoBehaviour
 
     void GrabBegin()
     {
-        Debug.Log("Grab Check : " + Physics.OverlapSphere(this.transform.position, 0.15f).Length);
+
+
+        // Debug.Log("Grab Check : " + Physics.OverlapSphere(this.transform.position, 0.13f).Length);
 
         if (Physics.OverlapSphere(this.transform.position, 0.13f).Length == 2) { grabCount = 0; grabbedObject = null; currentGrabbedObject = null; isGrabbed = false; } //버그방지
 
@@ -184,6 +186,12 @@ public class KHG_Control : MonoBehaviour
 
     void GrabEnd()
     {
+
+
+        // Debug.Log("ChildCount" + transform.childCount);
+
+        // if (transform.childCount == 1) { grabCount = 0; }
+
         if (currentGrabbedObject != null)
         {
             if (OtherController.GetComponent<KHG_Control>().currentGrabbedObject != currentGrabbedObject)
@@ -256,7 +264,10 @@ public class KHG_Control : MonoBehaviour
             {
                 // if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
                 {
-                    grabCount--;
+                    if (grabCount > 0)
+                    {
+                        grabCount--;
+                    }
                     coll.GetComponent<KHG_Grabble>().isExit = true;
                     if (grabCount == 0)
                     {
