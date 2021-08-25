@@ -48,7 +48,6 @@ public class KHG_Control : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(controller + ":" + Physics.OverlapSphere(this.controllerTr.position, 0.1f).Length);
 
         prevFlex = m_prevFlex;
         prevFlex_Grab = m_prevFlex_Grab;
@@ -150,7 +149,9 @@ public class KHG_Control : MonoBehaviour
 
     void GrabBegin()
     {
-        if (Physics.OverlapSphere(this.transform.position, 0.15f).Length == 2) { grabCount = 0; grabbedObject = null; } //버그방지
+        Debug.Log("Grab Check : " + Physics.OverlapSphere(this.transform.position, 0.15f).Length);
+
+        if (Physics.OverlapSphere(this.transform.position, 0.13f).Length == 2) { grabCount = 0; grabbedObject = null; currentGrabbedObject = null; isGrabbed = false; } //버그방지
 
         if (grabbedObject != null)
         {

@@ -57,7 +57,6 @@ public class KHG_Needle : MonoBehaviour
                 // gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
                 // styletColl.gameObject.GetComponent<MeshRenderer>().material.color /= 1.2f;
                 Debug.Log("rot:" + rot.eulerAngles);
-                Debug.Log("rot-rot2:" + (rot.eulerAngles - rot2.eulerAngles));
 
             }
 
