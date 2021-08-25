@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class IntravenousInjection_Manager : MonoBehaviour
 {
-    public enum STATE { Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, SapType }
+    public enum STATE { Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, SapType };
+
+    // 함수를 임의로 실행하기 위한 필드
+    [ContextMenuItem("1.소독", "Disinfect")]
+
     public STATE state = STATE.Hemostasis;
     public int[] score = { 0, 0, 0, 0 };
+
 
     // 타이머
 

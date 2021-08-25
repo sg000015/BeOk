@@ -17,6 +17,7 @@ public class AlcoholCottonMgr : MonoBehaviour
 
     public void StartDisinfect()
     {
+        Debug.Log("StartDisinfect");
         StartCoroutine(nameof(ActiveVirus), rubCnt);
     }
 
