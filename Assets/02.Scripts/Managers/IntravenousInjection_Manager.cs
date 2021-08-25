@@ -7,10 +7,13 @@ public class IntravenousInjection_Manager : MonoBehaviour
     public enum STATE { Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, SapType };
 
     // 함수를 임의로 실행하기 위한 필드
-    [ContextMenuItem("1.소독", "Disinfect")]
+    [ContextMenuItem("1. 소독", "Disinfect")]
+    [ContextMenuItem("2. 주사위치", "InjectArea")]
 
     public STATE state = STATE.Hemostasis;
     public int[] score = { 0, 0, 0, 0 };
+
+    public GameObject bloodLine;
 
 
     // 타이머
@@ -19,6 +22,9 @@ public class IntravenousInjection_Manager : MonoBehaviour
     {
         // 타이머 시작
         // 지혈 시작
+
+        //!
+        Disinfect();
     }
 
     void Update()
@@ -41,10 +47,11 @@ public class IntravenousInjection_Manager : MonoBehaviour
     // 2.주사 위치
     public void InjectArea()
     {
-        // 소독 비활성화
-        GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>().enabled = false;
+        // 소독 스크립트 삭제
+        Destroy(GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>());
 
         // BloodLine 활성화
+        bloodLine.SetActive(true);
     }
 
     // 3.주사 각도
