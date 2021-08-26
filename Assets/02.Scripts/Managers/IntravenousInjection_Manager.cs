@@ -47,8 +47,10 @@ public class IntravenousInjection_Manager : MonoBehaviour
     // 2.주사 위치
     public void InjectArea()
     {
-        // 소독 스크립트 삭제
+        // 소독 스크립트 제거
         Destroy(GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>());
+        // 바이러스 제거
+        Destroy(GameObject.Find("VirusGroup"));
 
         // BloodLine 활성화
         bloodLine.SetActive(true);
