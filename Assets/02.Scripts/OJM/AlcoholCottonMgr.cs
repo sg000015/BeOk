@@ -11,7 +11,7 @@ public class AlcoholCottonMgr : MonoBehaviour
     public Animator[] virusList;
 
     public GameObject virusFx;
-    public GameObject DisinfectFx;
+    public GameObject disinfectFx;
 
     private void Start()
     {
@@ -20,7 +20,6 @@ public class AlcoholCottonMgr : MonoBehaviour
 
     public void StartDisinfect()
     {
-        Debug.Log("StartDisinfect");
         StartCoroutine(nameof(ActiveVirus), rubCnt);
     }
 
@@ -35,9 +34,10 @@ public class AlcoholCottonMgr : MonoBehaviour
         // Finish Disinfection
         if (rubCnt == rubPointNum)
         {
-            // GameManager.instance.TestFinishDisinfect();
+            StartCoroutine(nameof(FinishDisinfect));
             return;
         }
+
         StartCoroutine(nameof(ActiveVirus), rubCnt);
     }
 
@@ -54,18 +54,32 @@ public class AlcoholCottonMgr : MonoBehaviour
         virusList[idx].GetComponentInChildren<Collider>().enabled = false;
         virusList[idx].GetComponent<Animator>().SetTrigger("isDie");
         GameObject tempFx = Instantiate(virusFx, virusList[idx].transform.position, Quaternion.identity);
+
+        Destroy(tempFx, 2.0f);
         yield return new WaitForSeconds(.7f);
-        // 파티클 생성
         while (true)
         {
             yield return new WaitForFixedUpdate();
             virusList[idx].transform.localScale -= virusList[idx].transform.localScale * 0.05f;
             if (virusList[idx].transform.localScale.x <= 0)
             {
+                Debug.Log("here");
                 break;
             }
         }
-        // 파티클 제거
-        Destroy(tempFx);
+    }
+
+    IEnumerator FinishDisinfect()
+    {
+        yield return new WaitForSeconds(1.3f);
+        Vector3 pos = GameObject.Find("DisinfectFxPivot").GetComponent<Transform>().position;
+        GameObject tempFx2 = Instantiate(disinfectFx, pos, Quaternion.identity);
+
+        yield return new WaitForSeconds(3);
+        Destroy(tempFx2);
+
+        // TODO
+        // GameManager.instance.TestFinishDisinfect();
+
     }
 }
