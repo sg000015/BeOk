@@ -26,9 +26,18 @@ public class KHG_Needle : MonoBehaviour
 
 
 
+
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+
+    void Init()
+    {
+        // isSnaped = false;
+        // isStabed = false;
+
         zelcoColl = GetComponent<BoxCollider>();
         zelcoColl.size = new Vector3(0.03f, 0.03f, 0.4f);
         zelcoColl.center = new Vector3(0, 0, -0.2f);
@@ -37,7 +46,18 @@ public class KHG_Needle : MonoBehaviour
         needleColl = transform.Find("Needle").GetComponent<BoxCollider>();
         styletColl.enabled = false;
 
+        // this.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+        // stylet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+        // this.transform.position = new Vector3(100f, 0.05f, 0);
+        // this.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+
+
     }
+
+
+
 
     // Update is called once per frame
     void Update()
@@ -77,6 +97,11 @@ public class KHG_Needle : MonoBehaviour
 
                     Animator anim = GameObject.Find("polySurface2").GetComponent<Animator>(); //손 찾기
                     anim.SetTrigger("HandShakingTrigger");
+
+                    //!
+                    GameObject.Find("Lobby_1").GetComponent<KHG_Init>().NewNeedle();
+                    Destroy(this.gameObject);
+
                 }
 
 
