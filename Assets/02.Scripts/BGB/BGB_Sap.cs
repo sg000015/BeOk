@@ -6,6 +6,7 @@ public class BGB_Sap : MonoBehaviour
 {
     public Animator anim;
     public MeshRenderer handMesh;
+    public SkinnedMeshRenderer patientMesh;
     float patientSpeed;
     string sapBag;
 
@@ -23,7 +24,7 @@ public class BGB_Sap : MonoBehaviour
         Debug.Log(curSpeed);
        if (curSpeed > patientSpeed)
        {
-           anim.SetBool("HandShaking", true);
+           anim.SetBool("Trumble", true);
         Debug.Log("손떨림");
            
            return;
@@ -35,7 +36,7 @@ public class BGB_Sap : MonoBehaviour
        }
        else
        {
-           anim.SetBool("HandShaking", false);
+           anim.SetBool("Trumble", false);
 
        }
     
@@ -44,9 +45,10 @@ public class BGB_Sap : MonoBehaviour
        if(sapBag == "DW")
        {
            byte alphaPurple = (byte)Mathf.Round((curSpeed / patientSpeed * 255));
-           if (alphaPurple > 100 ) alphaPurple = 100;
+           if (alphaPurple > 20 ) alphaPurple = 20;
            
            handMesh.materials[3].color = new Color32(178, 0, 255, alphaPurple);
+           patientMesh.materials[1].color = new Color32(255, 255, 255, alphaPurple);
        }
        else
        {
