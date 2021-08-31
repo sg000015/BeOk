@@ -792,6 +792,72 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 6d3102364eb366041bac04a93c4391f5, type: 3}
+--- !u!1 &382087201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 382087204}
+  - component: {fileID: 382087203}
+  - component: {fileID: 382087202}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &382087202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382087201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &382087203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382087201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &382087204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382087201}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &390128564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,7 +1490,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2858590657362610852}
         m_TargetAssemblyTypeName: BGB_Sap, Assembly-CSharp
         m_MethodName: UpdateSpeed
         m_Mode: 3
@@ -2176,6 +2242,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 77fc618cf0bacb64eb6189a9043d1378, type: 2}
   - {fileID: 2100000, guid: 539896643b399394696088b1f03cb616, type: 2}
   - {fileID: 2100000, guid: cb227826c35b2ec4ba82b0a0fb1153d0, type: 2}
+  - {fileID: 2100000, guid: 934e7de511ad7294a9b16cffe38f6a62, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2281,13 +2348,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 883307191}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.23564352, y: 0.32027036, z: -0.08258643, w: 0.91382635}
+  m_LocalPosition: {x: -6.799, y: 2.117, z: -1.069}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 28.919, y: 38.628, z: 0}
 --- !u!1 &897213135
 GameObject:
   m_ObjectHideFlags: 0
@@ -3714,7 +3781,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2858590657362610852}
         m_TargetAssemblyTypeName: BGB_Sap, Assembly-CSharp
         m_MethodName: UpdateSpeed
         m_Mode: 3
@@ -6047,6 +6114,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: afa20118fa376434ab89d4abf714bb30, type: 2}
+  - {fileID: 2100000, guid: 2392db91da53cea48ac6f54e917b6c5b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6674,6 +6742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8791094052554852963}
   handMesh: {fileID: 844078143}
+  patientMesh: {fileID: 1456449872301760828}
 --- !u!1 &2874060847870964330
 GameObject:
   m_ObjectHideFlags: 0
