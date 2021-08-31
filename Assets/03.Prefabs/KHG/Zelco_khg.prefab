@@ -33,7 +33,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1926010018472107003}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1926010017441517327
 MeshFilter:
@@ -280,7 +280,7 @@ Transform:
   - {fileID: 1926010018846563357}
   - {fileID: 1926010017725845438}
   m_Father: {fileID: 1926010018472107003}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1926010018459276559
 MeshFilter:
@@ -407,11 +407,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926010018472106978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 100, y: 0.05, z: 0}
+  m_LocalPosition: {x: 100, y: 0.05, z: 0.5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1926010017876975895}
   - {fileID: 1926010018624974067}
+  - {fileID: 5273438195066993803}
   - {fileID: 1926010018459276552}
   - {fileID: 1926010017441517320}
   m_Father: {fileID: 0}
@@ -531,7 +532,6 @@ MonoBehaviour:
   rot2: {x: 0, y: 0, z: 0, w: 0}
   needle: {fileID: 1926010018624974078}
   snapPoint: {fileID: 1926010017725845439}
-  newNeedle: {fileID: 1926010018472106978}
 --- !u!1 &1926010018624974078
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e23971cd5af894e8f3fe790f9e9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodEfx: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
+  needle2: {fileID: 7417456869420964396}
   _objectType: 1
 --- !u!1 &1926010018846563354
 GameObject:
@@ -674,3 +676,47 @@ SkinnedMeshRenderer:
     m_Center: {x: -6.9849193e-10, y: 2.3283064e-10, z: -0.2713891}
     m_Extent: {x: 0.0069331443, y: 0.0069331434, z: 0.05889073}
   m_DirtyAABB: 0
+--- !u!1 &7417456869420964396
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5273438195066993803}
+  - component: {fileID: 6001894642194857937}
+  m_Layer: 0
+  m_Name: Needle_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5273438195066993803
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417456869420964396}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0.006149292, y: -0.0019399971, z: -0.0053}
+  m_LocalScale: {x: 2.3701293, y: 2.3701293, z: 2.3701293}
+  m_Children: []
+  m_Father: {fileID: 1926010018472107003}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!65 &6001894642194857937
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7417456869420964396}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.0047153006, y: 0.0040996824, z: 0.002590953}
+  m_Center: {x: -0.0026423505, y: 0.00047903333, z: -0.0058288462}

@@ -87,7 +87,7 @@ public class KHG_Needle : MonoBehaviour
                 Debug.Log("rot:" + rot.eulerAngles);
 
                 //Temp
-                if (rot.eulerAngles.x <= 30 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 30 && rot.eulerAngles.y > -30)
+                if (rot.eulerAngles.x <= 45 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 40 && rot.eulerAngles.y > -40)
                 {
                     Debug.Log("Good Needle");
                 }

@@ -16,6 +16,8 @@ public class KHG_Snap : MonoBehaviour
     bool isDo = false;
     Material mat;
 
+    public GameObject bloodEfx;
+    public GameObject needle2;
     public ObjectType _objectType = ObjectType.None;
 
     void OnTriggerEnter(Collider coll)
@@ -36,6 +38,11 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("Fail to Snap");
+
+                Quaternion rot = needle2.transform.rotation;
+
+                GameObject obj = Instantiate(bloodEfx, needle2.transform.position, rot);
+                Destroy(obj, 2.0f);
 
             }
         }

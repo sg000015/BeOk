@@ -14623,6 +14623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e23971cd5af894e8f3fe790f9e9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodEfx: {fileID: 0}
+  needle2: {fileID: 0}
   _objectType: 2
 --- !u!54 &149258806841599107
 Rigidbody:
