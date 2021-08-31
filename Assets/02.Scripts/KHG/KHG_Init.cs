@@ -10,7 +10,7 @@ public class KHG_Init : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        Hand.GetComponent<MeshRenderer>().materials[1].color = new Color(1f, 1f, 1f, 0f);
+        Hand.GetComponent<MeshRenderer>().materials[2].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
         Instantiate(newNeedle);
     }
 

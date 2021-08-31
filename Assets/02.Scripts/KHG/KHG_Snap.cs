@@ -10,10 +10,12 @@ public class KHG_Snap : MonoBehaviour
         None,
         Needle,
         Tourniquet,
+        IVPole
 
     }
 
     bool isDo = false;
+    bool isLeft = false;
     Material mat;
 
     public GameObject bloodEfx;
@@ -22,7 +24,7 @@ public class KHG_Snap : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
-        //Debug.Log(coll.name);
+        Debug.Log(coll.name);
 
         if (_objectType == ObjectType.Needle)
         {
@@ -38,6 +40,7 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("Fail to Snap");
+
 
                 Quaternion rot = needle2.transform.rotation;
 
@@ -61,15 +64,50 @@ public class KHG_Snap : MonoBehaviour
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                 transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.37f, -0.353f, -0.75f);
+                transform.localPosition = new Vector3(0.488f, -0.348f, -0.75f);
                 transform.localEulerAngles = new Vector3(50f, -25f, 45f);
 
-                mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[1];  //숫자보정
+                mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
                 StartCoroutine("SetBloodLineAlpha");
 
                 isDo = true;
 
             }
+        }
+
+        if (_objectType == ObjectType.IVPole)
+        {
+            if (!isDo && coll.name == "GrabVolumeBig")
+            {
+                string name = coll.transform.parent.parent.name;
+                Debug.Log(name);
+
+                if (name == "CustomHandLeft")
+                {
+                    //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                    StartCoroutine("PoleControl");
+                    isDo = true;
+                    isLeft = true;
+                }
+                else if (name == "CustomHandRight")
+                {
+                    // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                    StartCoroutine("PoleControl");
+                    isDo = true;
+                    isLeft = false;
+                }
+
+            }
+        }
+    }
+
+    void OnTriggerExit()
+    {
+        if (isDo && _objectType == ObjectType.IVPole)
+        {
+            GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
+            StopCoroutine("PoleControl");
+            isDo = false;
         }
     }
 
@@ -79,6 +117,54 @@ public class KHG_Snap : MonoBehaviour
         {
             mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.1f * i);
             yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator PoleControl()
+    {
+        Vector2 value;
+        float index, hand;
+        WaitForSeconds ws = new WaitForSeconds(0.3f);
+        while (true)
+        {
+            if (isLeft)
+            {
+                value = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
+                index = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.Touch);
+                hand = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.Touch);
+            }
+            else
+            {
+                value = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+                index = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch);
+                hand = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger, OVRInput.Controller.Touch);
+            }
+
+
+
+            //! +,- 효과주기
+            BGB_Sap sap = GameObject.Find("Patient").GetComponent<BGB_Sap>();
+
+            if (index >= 0.3f && hand >= 0.3f)
+            {
+                GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                if (value.y >= 0.3f)
+                {
+                    sap.UpdateSpeed(1);
+                    Debug.Log("++");
+                }
+                else if (value.y <= -0.3f)
+                {
+                    sap.UpdateSpeed(-1);
+                    Debug.Log("--");
+                }
+
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
+            }
+            yield return ws;
         }
     }
 }

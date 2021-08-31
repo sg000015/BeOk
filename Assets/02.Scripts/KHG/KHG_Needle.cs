@@ -87,7 +87,7 @@ public class KHG_Needle : MonoBehaviour
                 Debug.Log("rot:" + rot.eulerAngles);
 
                 //Temp
-                if (rot.eulerAngles.x <= 45 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 40 && rot.eulerAngles.y > -40)
+                if (rot.eulerAngles.x <= 45 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 55 && rot.eulerAngles.y > -30)
                 {
                     Debug.Log("Good Needle");
                 }
@@ -99,7 +99,7 @@ public class KHG_Needle : MonoBehaviour
                     anim.SetTrigger("HandShakingTrigger");
 
                     //!
-                    GameObject.Find("Lobby_1").GetComponent<KHG_Init>().NewNeedle();
+                    GameObject.Find("GameManager").GetComponent<KHG_Init>().NewNeedle();
                     Destroy(this.gameObject);
 
                 }
