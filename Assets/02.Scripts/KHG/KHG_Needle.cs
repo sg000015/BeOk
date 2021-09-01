@@ -90,6 +90,9 @@ public class KHG_Needle : MonoBehaviour
                 if (rot.eulerAngles.x <= 45 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 55 && rot.eulerAngles.y > -30)
                 {
                     Debug.Log("Good Needle");
+
+                    // 다음 단계 시작 : 수액 종류
+                    InjectionMgr.injection.SapType();
                 }
                 else
                 {

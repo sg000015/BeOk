@@ -35,6 +35,9 @@ public class KHG_Snap : MonoBehaviour
                 isDo = true;
                 Debug.Log("Arm to Snap");
 
+                // 다음 단계 시작 : 주사 각도
+                InjectionMgr.injection.InjectAngle();
+
             }
             else if (!isDo && coll.gameObject.name == "Fail_Snap")
             {
@@ -69,6 +72,9 @@ public class KHG_Snap : MonoBehaviour
 
                 mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
                 StartCoroutine("SetBloodLineAlpha");
+
+                // 다음 단계 시작 : 소독
+                InjectionMgr.injection.Disinfect();
 
                 isDo = true;
 
