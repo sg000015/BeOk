@@ -48,6 +48,11 @@ public class KHG_Control : MonoBehaviour
     void Update()
     {
 
+        if (isGrabbed && currentGrabbedObject == null)
+        {
+            isGrabbed = false;
+            grabCount = 0;
+        }
 
         prevFlex = m_prevFlex;
         prevFlex_Grab = m_prevFlex_Grab;
