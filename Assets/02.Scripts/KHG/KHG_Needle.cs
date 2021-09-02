@@ -22,6 +22,7 @@ public class KHG_Needle : MonoBehaviour
 
     public GameObject needle;
     public GameObject snapPoint;
+    public GameObject rubberPoint;
 
 
 
@@ -38,6 +39,7 @@ public class KHG_Needle : MonoBehaviour
         // isSnaped = false;
         // isStabed = false;
 
+        rubberPoint.SetActive(false);
         zelcoColl = GetComponent<BoxCollider>();
         zelcoColl.size = new Vector3(0.03f, 0.03f, 0.4f);
         zelcoColl.center = new Vector3(0, 0, -0.2f);
@@ -116,6 +118,7 @@ public class KHG_Needle : MonoBehaviour
 
 
                 transform.localRotation = rot;
+                if (!stylet) return;
 
                 float dis = Vector3.Distance(stylet.position, pos);
                 if (dis < 0.1f)
@@ -133,9 +136,10 @@ public class KHG_Needle : MonoBehaviour
 
                 }
 
-                if (stylet && dis > 0.5f)
+                if (stylet && dis > 0.3f)
                 {
                     stylet.gameObject.GetComponent<KHG_Grabble>().destroy = true;
+                    rubberPoint.SetActive(true);
 
                 }
 
