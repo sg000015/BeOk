@@ -6,20 +6,25 @@ public class KHG_Line : MonoBehaviour
 {
 
 
-    LineRenderer line;
     // Start is called before the first frame update
     void Start()
     {
-        line = GetComponent<LineRenderer>();
-        SetLine(new Vector3(-4.7f, 1.25f, 0.61f));
+
+        // SetLine(new Vector3(-4.7f, 1.25f, 0.61f));
     }
 
 
     public void SetLine(Vector3 pos)
     {
+        LineRenderer line = GetComponent<LineRenderer>();
         line.positionCount = 230;
         Vector3 vec = Vector3.zero;
-        for (int i = 0; i < 45; i++)
+
+        for (int i = 0; i < 5; i++)
+        {
+            line.SetPosition(i, pos);
+        }
+        for (int i = 5; i < 45; i++)
         {
             vec = new Vector3(pos.x + (-5.0f - pos.x) / 90 * i, 0.05f * Mathf.Sin(i / 14f) + pos.y + (1.2f - pos.y) / 90 * i, pos.z + (0.8f - pos.z) / 90 * i);
             line.SetPosition(i, vec);

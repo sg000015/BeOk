@@ -25,6 +25,7 @@ public class KHG_Snap : MonoBehaviour
 
     public GameObject bloodEfx;
     public GameObject needle2;
+    public GameObject line;
     public ObjectType _objectType = ObjectType.None;
 
     void OnTriggerEnter(Collider coll)
@@ -72,8 +73,9 @@ public class KHG_Snap : MonoBehaviour
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                 transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.488f, -0.348f, -0.75f);
+                transform.localPosition = new Vector3(0.6f, -0.32f, -0.66f);
                 transform.localEulerAngles = new Vector3(50f, -25f, 45f);
+
 
                 mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
                 StartCoroutine("SetBloodLineAlpha");
@@ -147,6 +149,11 @@ public class KHG_Snap : MonoBehaviour
                 transform.localPosition = Vector3.zero;
                 transform.localEulerAngles = Vector3.zero;
                 isDo = true;
+
+
+                GameObject obj = Instantiate(line);
+                obj.GetComponent<KHG_Line>().SetLine(transform.Find("Line_Snap").position);
+
 
             }
         }
