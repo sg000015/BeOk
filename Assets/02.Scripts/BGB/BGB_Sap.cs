@@ -12,7 +12,8 @@ public class BGB_Sap : MonoBehaviour
     //환자 몸 메쉬
     public SkinnedMeshRenderer patientMesh;
     float patientSpeed;
-    string sapBag;
+    string PatientSapBag;
+    string curSapBag;
 
     float curSpeed;
     void Start()
@@ -21,7 +22,17 @@ public class BGB_Sap : MonoBehaviour
         patientSpeed = 10f;
 
         //환자에게 맞는 수액 종류
-        sapBag = "DW";
+        PatientSapBag = "DW";
+
+        //현재 걸려있는 수액 종류
+        curSapBag = "DW";
+    }
+
+    //수액이 스냅 되었을 때 실행되는 콜백
+    public void SetCurSapBag(string sapBag)
+    {
+        //현재 걸려있는 수액 변수 초기화
+        curSapBag = sapBag;
     }
 
     //버튼 클릭시 활성화 되는 함수.
@@ -49,9 +60,15 @@ public class BGB_Sap : MonoBehaviour
     
 
 
-       if(sapBag == "DW")
+       if(PatientSapBag == curSapBag)
        {
-           //다른종류의 수액이라면 팔이 보라색으로 변함
+           //같은 종류의 수액이라면 팔에 두드러기가 사라짐
+           byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
+           handMesh.materials[1].color = new Color32(255,255,255, alphaHives);
+       }
+       else
+       {
+            //다른종류의 수액이라면 팔이 보라색으로 변함
            byte alphaPurple = (byte)Mathf.Round((curSpeed / patientSpeed * 255));
            if (alphaPurple > 50 ) alphaPurple = 50;
            
@@ -59,12 +76,6 @@ public class BGB_Sap : MonoBehaviour
            handMesh.materials[3].color = new Color32(178, 0, 255, alphaPurple);
            //환자 몸 보라색변하는정도. 아직 조정이필요함
            patientMesh.materials[1].color = new Color32(255, 255, 255, alphaPurple);
-       }
-       else
-       {
-           //같은 종류의 수액이라면 팔에 두드러기가 사라짐
-           byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
-           handMesh.materials[1].color = new Color32(255,255,255, alphaHives);
        }
     }
 
