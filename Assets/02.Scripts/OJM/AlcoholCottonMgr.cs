@@ -8,6 +8,7 @@ public class AlcoholCottonMgr : MonoBehaviour
     private int rubCnt = 0;
     private int rubPointNum = 5;
 
+    public GameObject virusGroupObj;
     public Animator[] virusList;
 
     public GameObject virusFx;
@@ -15,11 +16,12 @@ public class AlcoholCottonMgr : MonoBehaviour
 
     private void Start()
     {
-        virusList = GameObject.Find("VirusGroup").GetComponentsInChildren<Animator>();
+        virusList = virusGroupObj.GetComponentsInChildren<Animator>();
     }
 
     public void StartDisinfect()
     {
+        virusGroupObj.SetActive(true);
         StartCoroutine(nameof(ActiveVirus), rubCnt);
     }
 
@@ -78,8 +80,8 @@ public class AlcoholCottonMgr : MonoBehaviour
         yield return new WaitForSeconds(3);
         Destroy(disinfectFxObj);
 
-        // TODO
-        // GameManager.instance.TestFinishDisinfect();
+        // 다음 단계 시작 : 주사 위치
+        InjectionMgr.injection.InjectArea();
 
     }
 }
