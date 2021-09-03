@@ -16,17 +16,20 @@ public class InjectionMgr : MonoBehaviour
 
     public GameObject bloodLine;
 
-    [Header("UI")]
-    public TMP_Text infoTxt;
-    public TMP_Text patientTxt;
-    public Timer timer;
-    public Image progress;
+    // UI
+    private TMP_Text infoTxt;
+    private TMP_Text patientTxt;
+    private Timer timer;
+    private Image progress;
 
     // 수액
     private string[] type = { "5% DW", "A", "B", "C", "D" };
     private float[] speed = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f };
     private string _sapType;
     private float _sapSpeed;
+
+    // 화살표
+    public GameObject arrow;
 
 
 
@@ -48,7 +51,7 @@ public class InjectionMgr : MonoBehaviour
     }
 
     // 초기화
-    [ContextMenu("Init")]
+    // [ContextMenu("Init")]
     void InitInjection()
     {
         // 타이머 초기화
@@ -73,6 +76,7 @@ public class InjectionMgr : MonoBehaviour
     }
 
     // 0.지혈
+    [ContextMenu("0.지혈")]
     public void Hemostasis()
     {
         state = STATE.Hemostasis;
@@ -82,9 +86,13 @@ public class InjectionMgr : MonoBehaviour
         // 타이머 시작
         timer.timerOn = true;
 
+        // 화살표
+        //! 임시 이름. 좌표 수정 후 이름 변경할 것
+        ActiveArrow("Tourniquet_Arm");
     }
 
     // 1.소독
+    [ContextMenu("1.소독")]
     public void Disinfect()
     {
         state = STATE.Disinfect;
@@ -93,23 +101,28 @@ public class InjectionMgr : MonoBehaviour
 
         // 바이러스 활성화
         GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>().StartDisinfect();
+
+        // 화살표
+        ActiveArrow("AlcoholCotton");
     }
 
     // 2.주사 위치
+    [ContextMenu("2.주사 위치")]
     public void InjectArea()
     {
         state = STATE.InjectArea;
         progress.fillAmount = progressNum * 2;
         infoTxt.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을 놓지 말아주세요.)";
 
-        // 바이러스그룹 비활성화
-        GameObject.Find("VirusGroup").SetActive(false);
-
         // BloodLine 활성화
         bloodLine.SetActive(true);
+
+        // 화살표
+        ActiveArrow("Catheter");
     }
 
     // 3.주사 각도
+    [ContextMenu("3.주사 각도")]
     public void InjectAngle()
     {
         state = STATE.InjectAngle;
@@ -119,19 +132,33 @@ public class InjectionMgr : MonoBehaviour
     }
 
     // 4.수액 종류
+    [ContextMenu("4.수액 종류")]
     public void SapType()
     {
         state = STATE.SapType;
         progress.fillAmount = progressNum * 4;
         infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을 골라 수액걸대에 걸어주세요.";
 
+        // 화살표
+        //! 수액 임의값..!
+        // ActiveArrow("Sap_" + _sapType);
+        ActiveArrow("Sap_" + "5% DW");
+
     }
 
     // 5.수액 속도
+    [ContextMenu("5.수액 속도")]
     public void SapSpeed()
     {
         state = STATE.SapSpeed;
         progress.fillAmount = progressNum * 5;
+
+        // 화살표
+        Vector3 pos = new Vector3(-5.16f, 1.571f, 1.408f);
+        Quaternion rot = Quaternion.Euler(0, 0, -35.31f);
+        arrow.transform.position = pos;
+        arrow.transform.rotation = rot;
+        arrow.SetActive(true);
 
     }
 
@@ -152,5 +179,21 @@ public class InjectionMgr : MonoBehaviour
     {
         _sapType = type[Random.Range(0, type.Length)];
         _sapSpeed = speed[Random.Range(0, speed.Length)];
+    }
+
+    // 화살표 On
+    void ActiveArrow(string obj)
+    {
+        Vector3 pos = GameObject.Find(obj).transform.position;
+        arrow.transform.position = pos + Vector3.up * 0.3f;
+
+        arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        arrow.SetActive(true);
+    }
+
+    public void InactiveArrow()
+    {
+        arrow.SetActive(false);
     }
 }

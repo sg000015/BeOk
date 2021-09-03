@@ -11,7 +11,7 @@ public class KHG_Init : MonoBehaviour
     void Awake()
     {
         Hand.GetComponent<MeshRenderer>().materials[2].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
-        Instantiate(newNeedle);
+        NewNeedle();
     }
 
     // Update is called once per frame
@@ -22,6 +22,8 @@ public class KHG_Init : MonoBehaviour
 
     public void NewNeedle()
     {
-        Instantiate(newNeedle);
+        GameObject needle = Instantiate(newNeedle);
+        Debug.Log($"{needle.name}");
+        needle.name = "Catheter";
     }
 }
