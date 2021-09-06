@@ -151,8 +151,7 @@ public class KHG_Snap : MonoBehaviour
                 isDo = true;
 
 
-                GameObject obj = Instantiate(line);
-                obj.GetComponent<KHG_Line>().SetLine(transform.Find("Line_Snap").position);
+                Invoke("LineCreate", 0.1f);
 
 
             }
@@ -168,6 +167,16 @@ public class KHG_Snap : MonoBehaviour
             isDo = false;
         }
     }
+
+    void LineCreate()
+    {
+
+        GameObject obj = Instantiate(line);
+        Transform trline = transform.Find("Line_Snap");
+        obj.GetComponent<KHG_Line>().SetLine(trline.position);
+        Debug.Log(trline.position);
+    }
+
 
     IEnumerator SetBloodLineAlpha()
     {
