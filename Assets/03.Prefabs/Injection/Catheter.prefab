@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 1926010018472106980}
   - component: {fileID: 1926010018472106981}
   m_Layer: 0
-  m_Name: Zelco_khg
+  m_Name: Catheter
   m_TagString: GrabObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

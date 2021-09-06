@@ -80,6 +80,9 @@ public class AlcoholCottonMgr : MonoBehaviour
         yield return new WaitForSeconds(3);
         Destroy(disinfectFxObj);
 
+        // 바이러스그룹 비활성화
+        virusGroupObj.SetActive(false);
+
         // 다음 단계 시작 : 주사 위치
         InjectionMgr.injection.InjectArea();
 
