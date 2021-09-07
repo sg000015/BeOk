@@ -14,7 +14,6 @@ public class KHG_Snap : MonoBehaviour
         Sap,
         Rubber,
 
-
     }
 
     public bool isDo = false;
@@ -74,6 +73,7 @@ public class KHG_Snap : MonoBehaviour
 
                 transform.SetParent(coll.gameObject.transform.parent);
                 transform.localPosition = new Vector3(0.6f, -0.32f, -0.66f);
+                transform.GetChild(0).localPosition = Vector3.zero;
                 transform.localEulerAngles = new Vector3(50f, -25f, 45f);
 
 
