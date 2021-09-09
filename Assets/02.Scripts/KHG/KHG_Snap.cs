@@ -150,6 +150,8 @@ public class KHG_Snap : MonoBehaviour
                 transform.localEulerAngles = Vector3.zero;
                 isDo = true;
 
+                // 다음 단계 시작 : 수액 종류
+                InjectionMgr.injection.SapType();
 
                 Invoke("LineCreate", 0.1f);
 

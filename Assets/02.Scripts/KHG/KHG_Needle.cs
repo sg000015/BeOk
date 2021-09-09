@@ -93,8 +93,8 @@ public class KHG_Needle : MonoBehaviour
                 {
                     Debug.Log("Good Needle");
 
-                    // 다음 단계 시작 : 수액 종류
-                    InjectionMgr.injection.SapType();
+                    // 다음 단계 시작 : 고무관 연결
+                    InjectionMgr.injection.ConnectRubber();
                 }
                 else
                 {

@@ -87,8 +87,7 @@ public class InjectionMgr : MonoBehaviour
         timer.timerOn = true;
 
         // 화살표
-        //! 임시 이름. 좌표 수정 후 이름 변경할 것
-        ActiveArrow("Tourniquet_Arm");
+        ActiveArrow("Tourniquet");
     }
 
     // 1.소독
@@ -126,10 +125,24 @@ public class InjectionMgr : MonoBehaviour
     public void InjectAngle()
     {
         state = STATE.InjectAngle;
-        progress.fillAmount = progressNum * 3;
+        progress.fillAmount = progressNum * 2.5f;
         infoTxt.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 버튼을 놓으면 주사됩니다.)";
 
     }
+
+    // 3-1.고무관 연결
+    [ContextMenu("3-1.고무관 연결")]
+    public void ConnectRubber()
+    {
+        // state = STATE.InjectAngle;
+        progress.fillAmount = progressNum * 3;
+        infoTxt.text = "!!!!!임시!!!!!고무관 연결";
+
+        // 화살표
+        ActiveArrow("RubberArrowPivot");
+
+    }
+
 
     // 4.수액 종류
     [ContextMenu("4.수액 종류")]
