@@ -103,8 +103,7 @@ public class KHG_Needle : MonoBehaviour
                     Animator anim = GameObject.Find("polySurface2").GetComponent<Animator>(); //손 찾기
                     anim.SetTrigger("HandShakingTrigger");
 
-                    //!
-                    GameObject.Find("GameManager").GetComponent<KHG_Init>().NewNeedle();
+                    InjectionMgr.injection.CreateCatheter();
                     Destroy(this.gameObject);
 
                 }
