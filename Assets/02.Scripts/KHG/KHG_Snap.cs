@@ -10,16 +10,21 @@ public class KHG_Snap : MonoBehaviour
         None,
         Needle,
         Tourniquet,
-        IVPole
+        IVPole,
+        Sap,
+        Rubber,
 
     }
 
-    bool isDo = false;
+    public bool isDo = false;
+
     bool isLeft = false;
+
     Material mat;
 
     public GameObject bloodEfx;
     public GameObject needle2;
+    public GameObject line;
     public ObjectType _objectType = ObjectType.None;
 
     void OnTriggerEnter(Collider coll)
@@ -67,8 +72,10 @@ public class KHG_Snap : MonoBehaviour
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                 transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.488f, -0.348f, -0.75f);
+                transform.localPosition = new Vector3(0.6f, -0.32f, -0.66f);
+                transform.GetChild(0).localPosition = Vector3.zero;
                 transform.localEulerAngles = new Vector3(50f, -25f, 45f);
+
 
                 mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
                 StartCoroutine("SetBloodLineAlpha");
@@ -105,6 +112,52 @@ public class KHG_Snap : MonoBehaviour
 
             }
         }
+
+        if (_objectType == ObjectType.Sap)
+        {
+            if (!isDo && coll.gameObject.name == "Sap_Snap")
+            {
+
+                gameObject.GetComponent<BoxCollider>().enabled = false;
+                coll.gameObject.GetComponent<BoxCollider>().enabled = false;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                gameObject.GetComponent<Rigidbody>().useGravity = false;
+                gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+                transform.SetParent(coll.gameObject.transform.parent);
+                transform.localPosition = new Vector3(-0.0884362f, -0.0881395f, 1.912366f);
+                transform.localEulerAngles = Vector3.zero;
+
+                transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
+
+                isDo = true;
+
+            }
+        }
+
+        if (_objectType == ObjectType.Rubber)
+        {
+            if (!isDo && coll.gameObject.name == "Rubber_Snap")
+            {
+
+                gameObject.GetComponent<BoxCollider>().enabled = false;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+                gameObject.GetComponent<Rigidbody>().useGravity = false;
+                gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+                transform.SetParent(coll.gameObject.transform.parent);
+                transform.localPosition = Vector3.zero;
+                transform.localEulerAngles = Vector3.zero;
+                isDo = true;
+
+                // 다음 단계 시작 : 수액 종류
+                InjectionMgr.injection.SapType();
+
+                Invoke("LineCreate", 0.1f);
+
+
+            }
+        }
     }
 
     void OnTriggerExit()
@@ -116,6 +169,16 @@ public class KHG_Snap : MonoBehaviour
             isDo = false;
         }
     }
+
+    void LineCreate()
+    {
+
+        GameObject obj = Instantiate(line);
+        Transform trline = transform.Find("Line_Snap");
+        obj.GetComponent<KHG_Line>().SetLine(trline.position);
+        Debug.Log(trline.position);
+    }
+
 
     IEnumerator SetBloodLineAlpha()
     {
@@ -151,7 +214,7 @@ public class KHG_Snap : MonoBehaviour
             //! +,- 효과주기
             BGB_Sap sap = GameObject.Find("Patient").GetComponent<BGB_Sap>();
 
-            if (index >= 0.3f && hand >= 0.3f)
+            if (index >= 0.3f || hand >= 0.3f)
             {
                 GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
                 if (value.y >= 0.3f)
@@ -173,4 +236,5 @@ public class KHG_Snap : MonoBehaviour
             yield return ws;
         }
     }
+
 }

@@ -26,10 +26,22 @@ public class InjectionMgr : MonoBehaviour
     private string[] type = { "5% DW", "A", "B", "C", "D" };
     private float[] speed = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f };
     private string _sapType;
+    private int _sapTypeidx;
     private float _sapSpeed;
 
     // 화살표
     public GameObject arrow;
+
+    [Header("물품 리스트")]
+    public GameObject hand;
+    public GameObject tourniquet;
+    public GameObject alcoholCotton;
+    public GameObject rubber;
+    public GameObject[] sapList;
+    public GameObject catheter = null;
+
+    public GameObject catheterPref;
+
 
 
 
@@ -54,6 +66,16 @@ public class InjectionMgr : MonoBehaviour
     // [ContextMenu("Init")]
     void InitInjection()
     {
+        // 혈관 초기화
+        hand.GetComponent<MeshRenderer>().materials[2].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
+
+        // 카테터 생성
+        if (catheter != null)
+        {
+            Destroy(catheter);
+        }
+        CreateCatheter();
+
         // 타이머 초기화
         timer.totalTime = 0.0f;
 
@@ -69,10 +91,14 @@ public class InjectionMgr : MonoBehaviour
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가 끝난 상황입니다.\n두드러기 환자에게 {_sapType} 500ml를\n{_sapSpeed}의 속도로 정맥주사 투약해주세요.";
 
-
-
         // 지혈 시작
         Hemostasis();
+    }
+
+    public void CreateCatheter()
+    {
+        catheter = Instantiate(catheterPref);
+        catheter.name = "Catheter";
     }
 
     // 0.지혈
@@ -87,8 +113,9 @@ public class InjectionMgr : MonoBehaviour
         timer.timerOn = true;
 
         // 화살표
-        //! 임시 이름. 좌표 수정 후 이름 변경할 것
-        ActiveArrow("Tourniquet_Arm");
+        ActiveArrow(tourniquet);
+
+
     }
 
     // 1.소독
@@ -103,7 +130,8 @@ public class InjectionMgr : MonoBehaviour
         GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>().StartDisinfect();
 
         // 화살표
-        ActiveArrow("AlcoholCotton");
+        ActiveArrow(alcoholCotton);
+
     }
 
     // 2.주사 위치
@@ -118,7 +146,8 @@ public class InjectionMgr : MonoBehaviour
         bloodLine.SetActive(true);
 
         // 화살표
-        ActiveArrow("Catheter");
+        GameObject catheterPivot = GameObject.Find("CatheterArrowPivot");
+        ActiveArrow(catheterPivot);
     }
 
     // 3.주사 각도
@@ -126,10 +155,25 @@ public class InjectionMgr : MonoBehaviour
     public void InjectAngle()
     {
         state = STATE.InjectAngle;
-        progress.fillAmount = progressNum * 3;
+        progress.fillAmount = progressNum * 2.5f;
         infoTxt.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 버튼을 놓으면 주사됩니다.)";
 
     }
+
+    // 3-1.고무관 연결
+    [ContextMenu("3-1.고무관 연결")]
+    public void ConnectRubber()
+    {
+        // state = STATE.InjectAngle;
+        progress.fillAmount = progressNum * 3;
+        infoTxt.text = "!!!!!임시!!!!!고무관 연결";
+
+        // 화살표
+        GameObject rubberPivot = GameObject.Find("RubberArrowPivot");
+        ActiveArrow(rubberPivot);
+
+    }
+
 
     // 4.수액 종류
     [ContextMenu("4.수액 종류")]
@@ -141,8 +185,8 @@ public class InjectionMgr : MonoBehaviour
 
         // 화살표
         //! 수액 임의값..!
-        // ActiveArrow("Sap_" + _sapType);
-        ActiveArrow("Sap_" + "5% DW");
+        GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
+        ActiveArrow(sap);
 
     }
 
@@ -177,15 +221,20 @@ public class InjectionMgr : MonoBehaviour
     // 수액 랜덤값으로 설정
     void SetSap()
     {
-        _sapType = type[Random.Range(0, type.Length)];
+        _sapTypeidx = Random.Range(0, type.Length);
+
+        //! 아래 코드 삭제
+        _sapTypeidx = 0;
+
+        _sapType = type[_sapTypeidx];
         _sapSpeed = speed[Random.Range(0, speed.Length)];
     }
 
     // 화살표 On
-    void ActiveArrow(string obj)
+    void ActiveArrow(GameObject obj)
     {
-        Vector3 pos = GameObject.Find(obj).transform.position;
-        arrow.transform.position = pos + Vector3.up * 0.3f;
+        Vector3 pos = obj.transform.position;
+        arrow.transform.position = pos + Vector3.up * 0.21f;
 
         arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
 

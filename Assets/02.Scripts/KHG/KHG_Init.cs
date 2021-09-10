@@ -5,25 +5,27 @@ using UnityEngine;
 public class KHG_Init : MonoBehaviour
 {
 
-    public GameObject Hand;
-    public GameObject newNeedle;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        Hand.GetComponent<MeshRenderer>().materials[2].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
-        NewNeedle();
-    }
+    // public GameObject Hand;
+    // public GameObject newNeedle;
+    // // Start is called before the first frame update
+    // void Awake()
+    // {
+    //     NewNeedle();
+    // }
 
-    // Update is called once per frame
-    void Update()
-    {
+    // // Update is called once per frame
+    // void Update()
+    // {
 
-    }
+    // }
 
-    public void NewNeedle()
-    {
-        GameObject needle = Instantiate(newNeedle);
-        Debug.Log($"{needle.name}");
-        needle.name = "Catheter";
-    }
+    // public void NewNeedle()
+    // {
+    //     GameObject needle = Instantiate(newNeedle);
+    //     Debug.Log($"{needle.name}");
+    //     needle.name = "Catheter";
+
+    //     // InjectionMgr Catheter 연결
+    //     InjectionMgr.injection.Catheter = needle;
+    // }
 }

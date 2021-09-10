@@ -91,7 +91,7 @@ public class KHG_Control : MonoBehaviour
         {
             //엄지,검지버튼
             // if ((m_prevFlex >= grabBegin) && (prevFlex < grabBegin) && ThumbTouch)    //그랩시작 순간
-            if ((m_prevFlex >= 0.35f && m_prevFlex < 0.99f) && ThumbTouch)    //그랩시작 순간
+            if ((m_prevFlex >= 0.35f && m_prevFlex < 0.99f))    //그랩시작 순간
             {
                 grabState = (GrabState)1;
                 if (!isGrabbed)
@@ -100,7 +100,7 @@ public class KHG_Control : MonoBehaviour
 
                 }
             }
-            else if (m_prevFlex <= 0.3f || !ThumbTouch)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
+            else if (m_prevFlex <= 0.3f)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
             {
                 grabState = (GrabState)0;
 
@@ -201,9 +201,13 @@ public class KHG_Control : MonoBehaviour
         {
             if (OtherController.GetComponent<KHG_Control>().currentGrabbedObject != currentGrabbedObject)
             {
-                currentGrabbedObject.SetParent(null);
-                currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = false;
-                //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
+                if (currentGrabbedObject.parent == controllerTr)
+                {
+                    currentGrabbedObject.SetParent(null);
+                    currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+                    //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
+
+                }
             }
 
             isGrabbed = false;
