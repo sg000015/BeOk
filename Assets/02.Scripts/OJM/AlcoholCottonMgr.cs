@@ -31,6 +31,7 @@ public class AlcoholCottonMgr : MonoBehaviour
         {
             StartCoroutine(nameof(InactiveVirus), rubCnt);
             rubCnt++;
+            Debug.Log($"rubCnt(Virus) : {rubCnt}");
         }
 
         // Finish Disinfection
@@ -47,6 +48,7 @@ public class AlcoholCottonMgr : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
 
+        //! 여기서 에러 발생
         virusList[idx].GetComponentInChildren<Collider>().enabled = true;
         virusList[idx].GetComponent<Animator>().SetTrigger("isActive");
     }
@@ -85,6 +87,5 @@ public class AlcoholCottonMgr : MonoBehaviour
 
         // 다음 단계 시작 : 주사 위치
         InjectionMgr.injection.InjectArea();
-
     }
 }
