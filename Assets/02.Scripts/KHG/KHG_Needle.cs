@@ -100,7 +100,7 @@ public class KHG_Needle : MonoBehaviour
                 {
                     Debug.Log("Bad Needle");
 
-                    Animator anim = GameObject.Find("polySurface2").GetComponent<Animator>(); //손 찾기
+                    Animator anim = GameObject.Find("Arm").GetComponent<Animator>(); //손 찾기
                     anim.SetTrigger("HandShakingTrigger");
 
                     InjectionMgr.injection.CreateCatheter();
