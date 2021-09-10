@@ -32,16 +32,16 @@ public class AlcoholCottonMgr : MonoBehaviour
             StartCoroutine(nameof(InactiveVirus), rubCnt);
             rubCnt++;
             Debug.Log($"rubCnt(Virus) : {rubCnt}");
+
+            // Finish Disinfection
+            if (rubCnt == rubPointNum)
+            {
+                StartCoroutine(nameof(FinishDisinfect));
+                return;
+            }
+            StartCoroutine(nameof(ActiveVirus), rubCnt);
         }
 
-        // Finish Disinfection
-        if (rubCnt == rubPointNum)
-        {
-            StartCoroutine(nameof(FinishDisinfect));
-            return;
-        }
-
-        StartCoroutine(nameof(ActiveVirus), rubCnt);
     }
 
     IEnumerator ActiveVirus(int idx)
