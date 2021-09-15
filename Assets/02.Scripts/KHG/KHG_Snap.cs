@@ -149,16 +149,16 @@ public class KHG_Snap : MonoBehaviour
                 if (name == "CustomHandLeft")
                 {
                     //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                    StartCoroutine("PoleControl");
                     isDo = true;
                     isLeft = true;
+                    StartCoroutine("PoleControl");
                 }
                 else if (name == "CustomHandRight")
                 {
                     // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                    StartCoroutine("PoleControl");
                     isDo = true;
                     isLeft = false;
+                    StartCoroutine("PoleControl");
                 }
 
             }

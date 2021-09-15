@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class BGB_Sap : MonoBehaviour
 {
@@ -16,6 +18,10 @@ public class BGB_Sap : MonoBehaviour
 
     KHG_Line line;
     float curSpeed = 0.0f;
+
+    public GameObject canvasSap;
+    private TMP_Text sapText;
+
     void Start()
     {
         //환자에게 맞는 수액 속도
@@ -43,8 +49,19 @@ public class BGB_Sap : MonoBehaviour
     //Up 클릭시 +1, Down 클릭시 -1;
     public void UpdateSpeed(int num)
     {
+        if (curSpeed == 0.0f)
+        {
+            // 수액 속도 UI On
+            canvasSap.SetActive(true);
+
+            sapText = canvasSap.GetComponentInChildren<TMP_Text>();
+        }
+
         curSpeed += num;
-        Debug.Log($"수액속도 : {curSpeed}");
+
+        // UI 표시
+        sapText.text = num.ToString();
+
 
         // 수액 스피드를 초과
         if (curSpeed > patientSpeed)

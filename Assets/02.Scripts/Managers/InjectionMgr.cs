@@ -17,10 +17,11 @@ public class InjectionMgr : MonoBehaviour
     public GameObject bloodLine;
 
     // UI
-    private TMP_Text infoTxt;
-    private TMP_Text patientTxt;
-    private Timer timer;
-    private Image progress;
+    [Header("UI")]
+    public TMP_Text infoTxt;
+    public TMP_Text patientTxt;
+    public Timer timer;
+    public Image progress;
 
     // 수액
     private string[] type = { "Normal Saline", "5% Dextrose", "0.45% Saline" };
@@ -51,12 +52,6 @@ public class InjectionMgr : MonoBehaviour
     {
 
         animator = GameObject.FindWithTag("Patient").GetComponent<Animator>();
-
-        injection = this;
-        infoTxt = GameObject.Find("Text - Info").GetComponent<TMP_Text>();
-        patientTxt = GameObject.Find("Text - Patient").GetComponent<TMP_Text>();
-        timer = GameObject.Find("Text - Timer").GetComponent<Timer>();
-        progress = GameObject.Find("Progress").GetComponent<Image>();
 
         InitInjection();
 
