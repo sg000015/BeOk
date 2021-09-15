@@ -28,6 +28,7 @@ public class InjectionMgr : MonoBehaviour
     public string _sapType;
     private int _sapTypeidx;
     public float _sapSpeed;
+    public GameObject curruntSap;
 
     // 화살표
     public GameObject arrow;
@@ -212,6 +213,9 @@ public class InjectionMgr : MonoBehaviour
         arrow.transform.position = pos;
         arrow.transform.rotation = rot;
         arrow.SetActive(true);
+
+        // 수액 속도 조절하는 콜라이더 On
+        curruntSap.transform.Find("IVPole_Snap").gameObject.SetActive(true);
 
     }
 

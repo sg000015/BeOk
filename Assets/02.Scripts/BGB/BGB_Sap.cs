@@ -44,6 +44,7 @@ public class BGB_Sap : MonoBehaviour
     public void UpdateSpeed(int num)
     {
         curSpeed += num;
+        Debug.Log($"수액속도 : {curSpeed}");
 
         // 수액 스피드를 초과
         if (curSpeed > patientSpeed)

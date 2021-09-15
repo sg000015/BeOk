@@ -181,6 +181,7 @@ public class KHG_Snap : MonoBehaviour
 
                 transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
                 GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
+                InjectionMgr.injection.curruntSap = this.gameObject;
 
                 isDo = true;
 
@@ -221,8 +222,8 @@ public class KHG_Snap : MonoBehaviour
                     ChangeRubber(2);
                 }
 
-                // 다음 단계 시작 : 수액 종류
-                InjectionMgr.injection.SapType();
+                // 다음 단계 시작 : 수액 속도
+                InjectionMgr.injection.SapSpeed();
 
 
 
@@ -252,6 +253,7 @@ public class KHG_Snap : MonoBehaviour
         //지혈대 초기화
         GameObject tourniquet = GameObject.Find("Tourniquet");
         tourniquet.GetComponent<BoxCollider>().enabled = true;
+        tourniquet.GetComponent<Rigidbody>().useGravity = true;
         tourniquet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
     }
 

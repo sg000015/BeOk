@@ -169,6 +169,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FileDressimg
       objectReference: {fileID: 0}
+    - target: {fileID: 2781863301715380722, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2781863301715380723, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -250,6 +254,7 @@ MonoBehaviour:
   bloodLine: {fileID: 8100890360104660020}
   _sapType: 
   _sapSpeed: 0
+  curruntSap: {fileID: 0}
   arrow: {fileID: 1397265688}
   patient: {fileID: 1133551037}
   tourniquet: {fileID: 954210368}
@@ -304,7 +309,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &72387362
 Transform:
   m_ObjectHideFlags: 0
@@ -314,7 +319,7 @@ Transform:
   m_GameObject: {fileID: 72387361}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.016533732, y: -0.0008107722, z: -0.5255958}
-  m_LocalScale: {x: 0.031831745, y: 0.03863038, z: 0.12913217}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.12913217}
   m_Children: []
   m_Father: {fileID: 1087419113}
   m_RootOrder: 0
@@ -336,7 +341,7 @@ MonoBehaviour:
   needle2: {fileID: 0}
   line: {fileID: 0}
   band: []
-  _objectType: 0
+  _objectType: 3
 --- !u!65 &72387364
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -502,7 +507,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 89137165}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.10000028, y: 0.026798964, z: 1.637301}
+  m_LocalPosition: {x: -0.059, y: -0.065, z: 1.74}
   m_LocalScale: {x: 0.100000024, y: 0.09999999, z: 0.42667004}
   m_Children: []
   m_Father: {fileID: 913017935}
@@ -1274,7 +1279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &297909460
 Transform:
   m_ObjectHideFlags: 0
@@ -1284,7 +1289,7 @@ Transform:
   m_GameObject: {fileID: 297909459}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.016533732, y: -0.0008107722, z: -0.5255958}
-  m_LocalScale: {x: 0.031831745, y: 0.03863038, z: 0.12913217}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.12913217}
   m_Children: []
   m_Father: {fileID: 360512944}
   m_RootOrder: 0
@@ -1306,7 +1311,7 @@ MonoBehaviour:
   needle2: {fileID: 0}
   line: {fileID: 0}
   band: []
-  _objectType: 0
+  _objectType: 3
 --- !u!65 &297909462
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5029,7 +5034,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &941532560
 Transform:
   m_ObjectHideFlags: 0
@@ -5039,7 +5044,7 @@ Transform:
   m_GameObject: {fileID: 941532559}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.016533732, y: -0.0008107722, z: -0.5255958}
-  m_LocalScale: {x: 0.031831745, y: 0.03863038, z: 0.12913217}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.12913217}
   m_Children: []
   m_Father: {fileID: 1372246910}
   m_RootOrder: 0
@@ -5061,7 +5066,7 @@ MonoBehaviour:
   needle2: {fileID: 0}
   line: {fileID: 0}
   band: []
-  _objectType: 0
+  _objectType: 3
 --- !u!65 &941532562
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13830,7 +13835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8100890360104660023
 Transform:
   m_ObjectHideFlags: 0
@@ -14231,8 +14236,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8100890361306630860}
   m_LocalRotation: {x: -0.65035504, y: 0.021663403, z: 0.0131901475, w: 0.75920683}
-  m_LocalPosition: {x: -0.0565, y: -0.006, z: 0.0082}
-  m_LocalScale: {x: 0.3, y: 0.02, z: 0.053402964}
+  m_LocalPosition: {x: -0.0616, y: -0.0079, z: -0.0039}
+  m_LocalScale: {x: 0.3, y: 0.017413199, z: 0.078101836}
   m_Children: []
   m_Father: {fileID: 8100890360104660023}
   m_RootOrder: 0
