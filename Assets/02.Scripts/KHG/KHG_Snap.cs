@@ -25,11 +25,9 @@ public class KHG_Snap : MonoBehaviour
     public GameObject bloodEfx;
     public GameObject needle2;
     public GameObject line;
-    public MeshRenderer[] band;
     public ObjectType _objectType = ObjectType.None;
 
     private Animator anim;
-
 
 
     int animCount = -1;
@@ -37,26 +35,6 @@ public class KHG_Snap : MonoBehaviour
     void Start()
     {
         anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
-        //! 확인
-        if (_objectType == ObjectType.Rubber)
-        {
-            band = new MeshRenderer[3];
-            band[0] = GameObject.FindGameObjectWithTag("FilmDressimg").transform.GetChild(0).GetComponent<MeshRenderer>();
-            band[1] = GameObject.FindGameObjectWithTag("FilmDressimg").transform.GetChild(1).GetComponent<MeshRenderer>();
-            band[2] = GameObject.FindGameObjectWithTag("FilmDressimg").transform.GetChild(2).GetComponent<MeshRenderer>();
-
-
-            band[0].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-            band[1].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-            band[2].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
-
-            band[0].enabled = false;
-            band[1].enabled = false;
-            band[2].enabled = false;
-
-
-
-        }
     }
 
     void OnTriggerEnter(Collider coll)
@@ -110,7 +88,6 @@ public class KHG_Snap : MonoBehaviour
 
         if (_objectType == ObjectType.Tourniquet)
         {
-
             if (!isDo && coll.gameObject.name == "Tor_Snap")
             {
 
@@ -121,9 +98,9 @@ public class KHG_Snap : MonoBehaviour
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                 transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.0162f, -0.0081f, 0.0106f);
+                transform.localPosition = new Vector3(0.05f, -0.01f, 0.01f);
                 // transform.GetChild(0).localPosition = Vector3.zero;
-                transform.localEulerAngles = new Vector3(-204.02f, -17.67f, -129.84f);
+                transform.localEulerAngles = new Vector3(20f, 170f, 56f);
 
 
                 mat = GameObject.Find("David_LOD2").GetComponent<SkinnedMeshRenderer>().materials[1];  //!숫자보정
@@ -133,8 +110,6 @@ public class KHG_Snap : MonoBehaviour
                 InjectionMgr.injection.Disinfect();
 
                 isDo = true;
-
-
 
             }
         }
@@ -180,7 +155,6 @@ public class KHG_Snap : MonoBehaviour
                 transform.localEulerAngles = Vector3.zero;
 
                 transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
-                GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
 
                 isDo = true;
 
@@ -202,29 +176,10 @@ public class KHG_Snap : MonoBehaviour
                 transform.localEulerAngles = Vector3.zero;
                 isDo = true;
 
-
-                float posZ = transform.parent.Find("Needle_2").position.z;
-
-                // float bandZ = band[0].transform.GetChild(2).position.z;
-
-                //0.019
-                if (posZ < 1.75f)
-                {
-                    ChangeRubber(0);
-                }
-                else if (posZ < 1.85f)
-                {
-                    ChangeRubber(1);
-                }
-                else
-                {
-                    ChangeRubber(2);
-                }
-
                 // 다음 단계 시작 : 수액 종류
                 InjectionMgr.injection.SapType();
 
-
+                Invoke("LineCreate", 0.1f);
 
 
             }
@@ -247,20 +202,7 @@ public class KHG_Snap : MonoBehaviour
         GameObject obj = Instantiate(line);
         //Transform trline = transform.Find("Line_Snap");
         obj.GetComponent<KHG_Line>().SetLine();
-
-
-        //지혈대 초기화
-        GameObject tourniquet = GameObject.Find("Tourniquet");
-        tourniquet.GetComponent<BoxCollider>().enabled = true;
-        tourniquet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
     }
-
-    void ChangeRubber(int num)
-    {
-        StartCoroutine("ChangeRubberAlpha", num);
-
-    }
-
 
 
     IEnumerator SetBloodLineAlpha()
@@ -318,62 +260,6 @@ public class KHG_Snap : MonoBehaviour
             }
             yield return ws;
         }
-    }
-
-    IEnumerator ChangeRubberAlpha(int num)
-    {
-        WaitForSeconds ws = new WaitForSeconds(0.3f);
-
-        MeshRenderer band1 = band[num];
-        MeshRenderer band2 = band[num].transform.GetChild(0).GetComponent<MeshRenderer>();
-
-        GameObject Film = GameObject.FindGameObjectWithTag("FilmDressimg");
-        for (int i = 0; i < Film.transform.childCount; i++)
-        {
-            if (i != num)
-            {
-                Film.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-
-        //!
-        Material[] bandMats = new Material[5];
-        bandMats[0] = band1.material;
-        bandMats[1] = band2.materials[0];
-        bandMats[2] = band2.materials[1];
-        bandMats[3] = band2.materials[2];
-        bandMats[4] = band2.materials[3];
-
-        Material[] CatheterMats = transform.parent.GetComponent<MeshRenderer>().materials;
-        Material[] RubberMats = GetComponent<MeshRenderer>().materials;
-
-        foreach (Material mat in bandMats)
-        {
-            mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0);
-        }
-
-        band1.enabled = true;
-        band2.enabled = true;
-        for (int i = 0; i < 11; i++)
-        {
-
-            foreach (Material mat in bandMats)
-            {
-                mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.1f * i);
-            }
-            foreach (Material mat in CatheterMats)
-            {
-                mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1.0f - 0.1f * i);
-            }
-            foreach (Material mat in RubberMats)
-            {
-                mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 1.0f - 0.1f * i);
-            }
-            yield return ws;
-        }
-
-        Invoke("LineCreate", 0.1f);
-
     }
 
 }
