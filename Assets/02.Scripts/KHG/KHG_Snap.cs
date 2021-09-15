@@ -27,10 +27,16 @@ public class KHG_Snap : MonoBehaviour
     public GameObject line;
     public ObjectType _objectType = ObjectType.None;
 
-    public Animator anim;
+    private Animator anim;
 
 
     int animCount =-1;
+
+    void Start()
+    {
+        anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
+    }
+
     void OnTriggerEnter(Collider coll)
     {
         Debug.Log(coll.name);
@@ -83,6 +89,7 @@ public class KHG_Snap : MonoBehaviour
             if (!isDo && coll.gameObject.name == "Tor_Snap")
             {
 
+                Debug.Log("SNAP");
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -90,11 +97,11 @@ public class KHG_Snap : MonoBehaviour
 
                 transform.SetParent(coll.gameObject.transform.parent);
                 transform.localPosition = new Vector3(0.05f, -0.01f, 0.01f);
-                transform.GetChild(0).localPosition = Vector3.zero;
+                // transform.GetChild(0).localPosition = Vector3.zero;
                 transform.localEulerAngles = new Vector3(20f, 170f, 56f);
 
 
-                mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
+                mat = GameObject.Find("David_LOD2").GetComponent<SkinnedMeshRenderer>().materials[1];  //!숫자보정
                 StartCoroutine("SetBloodLineAlpha");
 
                 // 다음 단계 시작 : 소독
@@ -198,10 +205,10 @@ public class KHG_Snap : MonoBehaviour
 
     IEnumerator SetBloodLineAlpha()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 10; i++)
         {
             mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, 0.1f * i);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 

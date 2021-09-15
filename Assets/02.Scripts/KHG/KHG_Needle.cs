@@ -24,7 +24,7 @@ public class KHG_Needle : MonoBehaviour
     public GameObject snapPoint;
     public GameObject rubberPoint;
 
-
+    private Animator anim;
 
 
 
@@ -78,6 +78,7 @@ public class KHG_Needle : MonoBehaviour
                 Debug.Log("default:" + transform.position);
                 transform.position = pos;
                 rot = transform.rotation;
+
                 this.GetComponent<BoxCollider>().enabled = false;
                 this.GetComponent<Rigidbody>().isKinematic = true;
                 this.GetComponent<Rigidbody>().useGravity = false;
@@ -104,8 +105,8 @@ public class KHG_Needle : MonoBehaviour
                 {
                     Debug.Log("Bad Needle");
 
-                    Animator anim = GameObject.Find("Arm").GetComponent<Animator>(); //손 찾기
-                    anim.SetTrigger("HandShakingTrigger");
+                    anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
+                    anim.SetTrigger("WrongAngle");
 
                     InjectionMgr.injection.CreateCatheter();
                     Destroy(this.gameObject);
