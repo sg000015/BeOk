@@ -13180,10 +13180,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FilmDressimg
       objectReference: {fileID: 0}
-    - target: {fileID: 2781863301715380722, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2781863301715380723, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -13227,26 +13223,6 @@ PrefabInstance:
     - target: {fileID: 2781863301715380723, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781863301777910403, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781863303057496144, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781863303274275333, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781863303274275339, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2781863303442444003, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07dd56e8f1f5a564da452d621a8321e2, type: 3}
