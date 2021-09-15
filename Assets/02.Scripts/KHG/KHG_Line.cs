@@ -9,13 +9,18 @@ public class KHG_Line : MonoBehaviour
     bool hasLine = false;
 
     LineRenderer line;
+    public int a;
 
     //함수 종류 : SetLine(), SetLineState(),StopLineState()
 
 
+    void Start()
+    {
+        SetLineState(0);
 
+    }
 
-
+    [ContextMenu("SetLIne")]
     public void SetLine()
     {
         //! Find 이름 주의
@@ -79,7 +84,16 @@ public class KHG_Line : MonoBehaviour
 
     }
 
+    [ContextMenu("AABBCCDD")]
+    public void asdf()
+    {
+        if (!hasLine) { Debug.Log("There is no Line"); return; }
 
+        //수액 종류 설정
+        status = a;
+
+        StartCoroutine("SetLineColor");
+    }
 
     public void SetLineState(int _status)
     {
@@ -138,37 +152,38 @@ public class KHG_Line : MonoBehaviour
         // }
 
 
+        Color origin = new Color(202f / 255f, 181f / 255f, 160f / 255f);
         switch (status)
         {
             case 0:
                 gColor[0].color = Color.red;
-                gColor[1].color = Color.white;
+                gColor[1].color = origin;
                 gAlpha[0].alpha = 0.8f;
                 gAlpha[0].time = 0.1f;
                 gradient.mode = GradientMode.Blend;
                 break;
             case 1:
                 gColor[0].color = Color.red;
-                gColor[1].color = Color.white;
+                gColor[1].color = origin;
                 gAlpha[0].alpha = 0.8f;
                 gAlpha[0].time = 0.1f;
                 gradient.mode = GradientMode.Blend;
                 break;
             case 2:
-                gColor[0].color = Color.white;
-                gColor[1].color = Color.green;
+                gColor[0].color = origin;
+                gColor[1].color = new Color(41f / 255f, 169f / 255f, 243f / 255f);
                 gAlpha[0].alpha = 1.0f;
                 gradient.mode = GradientMode.Fixed;
                 break;
             case 3:
-                gColor[0].color = Color.white;
+                gColor[0].color = origin;
                 gColor[1].color = Color.blue;
                 gAlpha[0].alpha = 1.0f;
                 gradient.mode = GradientMode.Fixed;
                 break;
             default:
-                gColor[0].color = Color.white;
-                gColor[1].color = Color.white;
+                gColor[0].color = origin;
+                gColor[1].color = origin;
                 gAlpha[0].alpha = 1.0f;
                 gradient.mode = GradientMode.Fixed;
                 break;

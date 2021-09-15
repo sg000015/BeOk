@@ -14,7 +14,8 @@ public class BGB_Sap : MonoBehaviour
 
     public GameObject sapSnap;
 
-    float curSpeed;
+    KHG_Line line;
+    float curSpeed = 0.0f;
     void Start()
     {
         //환자에게 맞는 수액 속도
@@ -22,6 +23,8 @@ public class BGB_Sap : MonoBehaviour
 
         //환자에게 맞는 수액 종류
         PatientSapBag = InjectionMgr.injection._sapType;
+
+        line = GameObject.Find("Line").GetComponent<KHG_Line>();
     }
 
     //수액이 스냅 되었을 때 실행되는 콜백
@@ -40,22 +43,34 @@ public class BGB_Sap : MonoBehaviour
     public void UpdateSpeed(int num)
     {
         curSpeed += num;
+
+        // 수액 스피드를 초과
         if (curSpeed > patientSpeed)
         {
-            //수액 스피드를 초과한다면 애니메이션
             anim.SetBool("Trumble", true);
             return;
         }
+        // 수액 스피드 미만
         else if (curSpeed < 0)
         {
             curSpeed = 0;
             return;
         }
+        // 수액 스피드 적절
         else
         {
-            //정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
+            // 수액 채워짐
+            line.SetLineState(1);
+            Invoke("InitBlood", 4.0f);
+
+            // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
             anim.SetBool("Trumble", false);
 
+        }
+
+        void InitBlood()
+        {
+            line.SetLineState(2);
         }
 
 

@@ -295,7 +295,7 @@ public class KHG_Snap : MonoBehaviour
 
 
             //! +,- 효과주기
-            BGB_Sap sap = GameObject.Find("Patient").GetComponent<BGB_Sap>();
+            BGB_Sap sap = GameObject.FindWithTag("Patient").GetComponent<BGB_Sap>();
 
             if (index >= 0.3f || hand >= 0.3f)
             {
