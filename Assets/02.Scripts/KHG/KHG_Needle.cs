@@ -66,7 +66,7 @@ public class KHG_Needle : MonoBehaviour
     {
         if (isSnaped)
         {
-            transform.position = pos;
+            if (!isStabed) transform.position = pos;
 
             //찌르기 액션
             if (transform.parent == null && !isStabed) //&& zelcoColl.enabled
@@ -78,7 +78,11 @@ public class KHG_Needle : MonoBehaviour
                 Debug.Log("default:" + transform.position);
                 transform.position = pos;
                 rot = transform.rotation;
+                this.GetComponent<BoxCollider>().enabled = false;
+                this.GetComponent<Rigidbody>().isKinematic = true;
+                this.GetComponent<Rigidbody>().useGravity = false;
                 this.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
                 stylet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
                 styletColl.enabled = true;
                 //stylet.SetParent(null);

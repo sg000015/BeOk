@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KHG_Scernario : MonoBehaviour
 {
-
+    //! 이 스크립트는 테스트 플레이용이기에, 추후에 삭제될 것임을 알림
 
     public enum Scernario_state
     {

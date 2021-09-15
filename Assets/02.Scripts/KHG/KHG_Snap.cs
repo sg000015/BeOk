@@ -174,9 +174,8 @@ public class KHG_Snap : MonoBehaviour
     {
 
         GameObject obj = Instantiate(line);
-        Transform trline = transform.Find("Line_Snap");
-        obj.GetComponent<KHG_Line>().SetLine(trline.position);
-        Debug.Log(trline.position);
+        //Transform trline = transform.Find("Line_Snap");
+        obj.GetComponent<KHG_Line>().SetLine();
     }
 
 
