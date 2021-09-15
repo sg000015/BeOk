@@ -27,6 +27,10 @@ public class KHG_Snap : MonoBehaviour
     public GameObject line;
     public ObjectType _objectType = ObjectType.None;
 
+    public Animator anim;
+
+
+    int animCount =-1;
     void OnTriggerEnter(Collider coll)
     {
         Debug.Log(coll.name);
@@ -48,6 +52,19 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("Fail to Snap");
+                //잘못되었을때 애니메이션
+                animCount ++;
+                if(animCount <= 0)
+                {
+                    anim.SetTrigger("Tremble");
+                }else if (animCount == 1)
+                {
+                    anim.SetTrigger("HeadShaking");
+
+                }else if (animCount >= 2)
+                {
+                    anim.SetTrigger("BedCrush");
+                }
 
 
                 Quaternion rot = needle2.transform.rotation;
@@ -72,9 +89,9 @@ public class KHG_Snap : MonoBehaviour
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                 transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.6f, -0.32f, -0.66f);
+                transform.localPosition = new Vector3(0.05f, -0.01f, 0.01f);
                 transform.GetChild(0).localPosition = Vector3.zero;
-                transform.localEulerAngles = new Vector3(50f, -25f, 45f);
+                transform.localEulerAngles = new Vector3(20f, 170f, 56f);
 
 
                 mat = coll.transform.parent.GetComponent<MeshRenderer>().materials[2];  //!숫자보정
