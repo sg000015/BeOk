@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GrabObject
   - Patient
+  - FilmDressimg
   layers:
   - Default
   - TransparentFX

@@ -46,7 +46,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1926010017876975895
 Transform:
   m_ObjectHideFlags: 0
@@ -464,6 +464,7 @@ MonoBehaviour:
   bloodEfx: {fileID: 1000013355911406, guid: d32aa916f50cac94db11e6f19821a58f, type: 3}
   needle2: {fileID: 7417456869420964396}
   line: {fileID: 0}
+  band: []
   _objectType: 1
 --- !u!1 &1926010018846563354
 GameObject:
