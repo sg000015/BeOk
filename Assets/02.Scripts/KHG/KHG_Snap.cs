@@ -110,6 +110,7 @@ public class KHG_Snap : MonoBehaviour
 
         if (_objectType == ObjectType.Tourniquet)
         {
+
             if (!isDo && coll.gameObject.name == "Tor_Snap")
             {
 
@@ -132,6 +133,8 @@ public class KHG_Snap : MonoBehaviour
                 InjectionMgr.injection.Disinfect();
 
                 isDo = true;
+
+
 
             }
         }
@@ -177,6 +180,7 @@ public class KHG_Snap : MonoBehaviour
                 transform.localEulerAngles = Vector3.zero;
 
                 transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
+                GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
 
                 isDo = true;
 
@@ -243,6 +247,12 @@ public class KHG_Snap : MonoBehaviour
         GameObject obj = Instantiate(line);
         //Transform trline = transform.Find("Line_Snap");
         obj.GetComponent<KHG_Line>().SetLine();
+
+
+        //지혈대 초기화
+        GameObject tourniquet = GameObject.Find("Tourniquet");
+        tourniquet.GetComponent<BoxCollider>().enabled = true;
+        tourniquet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
     }
 
     void ChangeRubber(int num)
