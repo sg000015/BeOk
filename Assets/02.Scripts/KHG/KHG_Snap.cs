@@ -30,7 +30,7 @@ public class KHG_Snap : MonoBehaviour
     private Animator anim;
 
 
-    int animCount =-1;
+    int animCount = -1;
 
     void Start()
     {
@@ -59,15 +59,17 @@ public class KHG_Snap : MonoBehaviour
 
                 Debug.Log("Fail to Snap");
                 //잘못되었을때 애니메이션
-                animCount ++;
-                if(animCount <= 0)
+                animCount++;
+                if (animCount <= 0)
                 {
                     anim.SetTrigger("Tremble");
-                }else if (animCount == 1)
+                }
+                else if (animCount == 1)
                 {
                     anim.SetTrigger("HeadShaking");
 
-                }else if (animCount >= 2)
+                }
+                else if (animCount >= 2)
                 {
                     anim.SetTrigger("BedCrush");
                 }

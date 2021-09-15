@@ -8,7 +8,7 @@ public class InjectionMgr : MonoBehaviour
 {
     public static InjectionMgr injection = null;
 
-    public enum STATE { Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, SapType, Grade };
+    public enum STATE { SapType, Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, Grade };
     private float progressNum = 1.0f / 6.0f;
 
     public STATE state = STATE.Hemostasis;
@@ -23,11 +23,11 @@ public class InjectionMgr : MonoBehaviour
     private Image progress;
 
     // 수액
-    private string[] type = { "5% DW", "A", "B", "C", "D" };
-    private float[] speed = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f };
-    private string _sapType;
+    private string[] type = { "Normal Saline", "5% Dextrose", "0.45% Saline" };
+    private float[] speed = { 30f, 35f, 40f, 45f, 50f };
+    public string _sapType;
     private int _sapTypeidx;
-    private float _sapSpeed;
+    public float _sapSpeed;
 
     // 화살표
     public GameObject arrow;
@@ -92,19 +92,33 @@ public class InjectionMgr : MonoBehaviour
         }
 
         // 환자차트 UI
-        patientTxt.text = $"손 위생과 물품준비가 끝난 상황입니다.\n두드러기 환자에게 {_sapType} 500ml를\n{_sapSpeed}의 속도로 정맥주사 투약해주세요.";
+        patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
 
         // 애니메이션
         animator.SetTrigger("Idle");
 
-        // 지혈 시작
-        Hemostasis();
+        // 수액 종류 시작
+        SapType();
     }
 
     public void CreateCatheter()
     {
         catheter = Instantiate(catheterPref);
         catheter.name = "Catheter";
+    }
+
+    // 4.수액 종류
+    [ContextMenu("4.수액 종류")]
+    public void SapType()
+    {
+        state = STATE.SapType;
+        progress.fillAmount = progressNum * 4;
+        infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을 골라\n수액걸대에 걸어주세요.";
+
+        // 타이머 시작
+        timer.timerOn = true;
+
+        GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
     }
 
     // 0.지혈
@@ -115,10 +129,11 @@ public class InjectionMgr : MonoBehaviour
         progress.fillAmount = 0;
         infoTxt.text = "정맥 상태가 양호한 부위보다 위쪽을 \n지혈대로 묶어주세요.\n(지혈대를 집어 팔에 가져다대세요.)";
 
-        // 타이머 시작
-        timer.timerOn = true;
+        // 토니켓 스냅 On
+        tourniquet.GetComponent<KHG_Snap>().isDo = false;
 
         // 화살표
+        GameObject.Find("Arrow_Sap").SetActive(false);
         ActiveArrow(tourniquet);
 
         // 애니메이션
@@ -184,21 +199,6 @@ public class InjectionMgr : MonoBehaviour
     }
 
 
-    // 4.수액 종류
-    [ContextMenu("4.수액 종류")]
-    public void SapType()
-    {
-        state = STATE.SapType;
-        progress.fillAmount = progressNum * 4;
-        infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을 골라 수액걸대에 걸어주세요.";
-
-        // 화살표
-        //! 수액 임의값..!
-        GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
-        ActiveArrow(sap);
-
-    }
-
     // 5.수액 속도
     [ContextMenu("5.수액 속도")]
     public void SapSpeed()
@@ -231,9 +231,6 @@ public class InjectionMgr : MonoBehaviour
     void SetSap()
     {
         _sapTypeidx = Random.Range(0, type.Length);
-
-        //! 아래 코드 삭제
-        _sapTypeidx = 0;
 
         _sapType = type[_sapTypeidx];
         _sapSpeed = speed[Random.Range(0, speed.Length)];
