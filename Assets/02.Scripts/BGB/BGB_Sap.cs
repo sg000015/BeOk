@@ -36,6 +36,7 @@ public class BGB_Sap : MonoBehaviour
         Debug.Log("수액이 스냅됨");
 
         sapSnap.SetActive(false);
+        InjectionMgr.injection.Hemostasis();
     }
 
     //버튼 클릭시 활성화 되는 함수.
