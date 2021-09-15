@@ -33,7 +33,7 @@ public class InjectionMgr : MonoBehaviour
     public GameObject arrow;
 
     [Header("물품 리스트")]
-    public GameObject hand;
+    public GameObject patient;
     public GameObject tourniquet;
     public GameObject alcoholCotton;
     public GameObject rubber;
@@ -44,10 +44,13 @@ public class InjectionMgr : MonoBehaviour
 
 
 
-
+    Animator animator;
 
     void Awake()
     {
+
+        animator = GameObject.FindWithTag("Patient").GetComponent<Animator>();
+
         injection = this;
         infoTxt = GameObject.Find("Text - Info").GetComponent<TMP_Text>();
         patientTxt = GameObject.Find("Text - Patient").GetComponent<TMP_Text>();
@@ -67,7 +70,7 @@ public class InjectionMgr : MonoBehaviour
     void InitInjection()
     {
         // 혈관 초기화
-        hand.GetComponent<MeshRenderer>().materials[2].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
+        patient.GetComponent<SkinnedMeshRenderer>().materials[1].color = new Color(1f, 1f, 1f, 0f); //!숫자보정
 
         // 카테터 생성
         if (catheter != null)
@@ -90,6 +93,9 @@ public class InjectionMgr : MonoBehaviour
 
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가 끝난 상황입니다.\n두드러기 환자에게 {_sapType} 500ml를\n{_sapSpeed}의 속도로 정맥주사 투약해주세요.";
+
+        // 애니메이션
+        animator.SetTrigger("Idle");
 
         // 지혈 시작
         Hemostasis();
@@ -114,6 +120,9 @@ public class InjectionMgr : MonoBehaviour
 
         // 화살표
         ActiveArrow(tourniquet);
+
+        // 애니메이션
+        animator.SetTrigger("IdleToInjection");
 
 
     }
