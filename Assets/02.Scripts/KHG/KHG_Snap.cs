@@ -19,6 +19,7 @@ public class KHG_Snap : MonoBehaviour
     public bool isDo = false;
 
     bool isLeft = false;
+    public bool isEnd = false;
 
     Material mat;
 
@@ -56,6 +57,16 @@ public class KHG_Snap : MonoBehaviour
 
 
 
+        }
+    }
+
+    void Update()
+    {
+        if (isEnd && _objectType == ObjectType.Tourniquet && transform.parent == null)
+        {
+            isEnd = false;
+            //!엔딩
+            Debug.Log("Ending");
         }
     }
 
@@ -255,6 +266,7 @@ public class KHG_Snap : MonoBehaviour
         tourniquet.GetComponent<BoxCollider>().enabled = true;
         tourniquet.GetComponent<Rigidbody>().useGravity = true;
         tourniquet.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+        tourniquet.GetComponent<KHG_Snap>().isEnd = true;
     }
 
     void ChangeRubber(int num)
