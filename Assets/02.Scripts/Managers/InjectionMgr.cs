@@ -12,7 +12,9 @@ public class InjectionMgr : MonoBehaviour
     private float progressNum = 1.0f / 9.0f;
 
     public STATE state = STATE.Hemostasis;
-    public int[] scoreList = { 0, 0, 0, 0, 0, 0 };
+
+    // 수액종류, 수액속도, 주사위치, 주사각도, 시간
+    public int[] scoreList = { 20, 20, 20, 20, 20 };
 
     public GameObject bloodLine;
 
@@ -82,10 +84,10 @@ public class InjectionMgr : MonoBehaviour
         SetSap();
 
         // 점수 초기화
-        for (int i = 0; i < scoreList.Length; i++)
-        {
-            scoreList[i] = 0;
-        }
+        // for (int i = 0; i < scoreList.Length; i++)
+        // {
+        //     scoreList[i] = 0;
+        // }
 
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
@@ -102,7 +104,7 @@ public class InjectionMgr : MonoBehaviour
         catheter = Instantiate(catheterPref);
         catheter.name = "Catheter";
     }
-
+    #region 술기
     // 0.수액 종류
     [ContextMenu("0.수액 종류")]
     public void SapType()
@@ -207,7 +209,6 @@ public class InjectionMgr : MonoBehaviour
 
     }
 
-
     // 7.수액 속도
     [ContextMenu("7.수액 속도")]
     public void SapSpeed()
@@ -239,14 +240,40 @@ public class InjectionMgr : MonoBehaviour
         ActiveArrow(tourniquet);
     }
 
-    // 평가
+    #endregion
+
+    //! ANCHOR 평가
+    [ContextMenu("10.평가")]
     public void GradeInjection()
     {
         state = STATE.Grade;
         progress.fillAmount = 1;
 
+        // 화살표 비활성화
+        arrow.SetActive(false);
+
         // 타이머 정지
         timer.timerOn = false;
+        int[] times = timer.GetTime();
+
+        // 수액종류, 수액속도, 주사위치, 주사각도, 시간
+        // 수액종류
+        string tempSapName = curruntSap.name;
+        string[] tempSapNames = tempSapName.Split('_');
+        string curruntSapType = tempSapNames[1];
+        Debug.Log(curruntSapType);
+
+        // 수액종류를 틀릴 경우
+        if (string.Compare(_sapType, curruntSapType, false) == -1)
+        {
+            Debug.Log("수액 종류가 다름");
+            scoreList[0] = 0;
+        }
+        else if (string.Compare(_sapType, curruntSapType, false) == 1)
+        {
+            Debug.Log("수액 종류가 같음!!!!!");
+        }
+
 
     }
 
