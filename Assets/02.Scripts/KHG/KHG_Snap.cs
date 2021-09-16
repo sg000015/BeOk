@@ -33,6 +33,7 @@ public class KHG_Snap : MonoBehaviour
 
 
 
+
     int animCount = -1;
 
     void Start()
@@ -55,8 +56,6 @@ public class KHG_Snap : MonoBehaviour
             band[1].enabled = false;
             band[2].enabled = false;
 
-
-
         }
     }
 
@@ -65,9 +64,10 @@ public class KHG_Snap : MonoBehaviour
         if (isEnd && _objectType == ObjectType.Tourniquet && transform.parent == null)
         {
             isEnd = false;
-            //!엔딩
-            Debug.Log("Ending");
+            //!
+            Debug.Log("GameEnd");
             InjectionMgr.injection.GradeInjection();
+
         }
     }
 
