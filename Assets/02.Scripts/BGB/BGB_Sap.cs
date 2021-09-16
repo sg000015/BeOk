@@ -113,8 +113,55 @@ public class BGB_Sap : MonoBehaviour
         //     patientMesh.materials[1].color = new Color32(255, 255, 255, alphaPurple);
         // }
     }
+
+    [ContextMenu("WrongSapType")]
     public void WrongSapType()
     {
+        if ( curSapBag == PatientSapBag)
+        {
+            StartCoroutine("ToNormalSkin");
+        }
+        else if ( curSapBag != PatientSapBag)
+        {
+            StartCoroutine("ToZombieSkin");
+        }
+    }
+
+    IEnumerator ToNormalSkin()
+    {
+        float value = 255;
+
+        Debug.Log("수액맞음");
+        while(value >= 0)
+        {
+            
+            patientMesh.materials[2].color = new Color(255, 255, 255 , value);
+            Debug.Log(value);
+            
+            value = value - 1;
+            yield return new WaitForSeconds(0.1f);
+
+        }
+
+        yield break;
+    }
+    IEnumerator ToZombieSkin()
+    {
+        float value = 0;
+        Debug.Log("수액다름");
+
+        while(value <= 255)
+        {
+            
+            patientMesh.materials[3].color = new Color(255, 255, 255 , value);
+            
+            value = value + 1;
+            yield return new WaitForSeconds(0.1f);
+
+        }
+
+        yield break;
+
     }
 
 }
