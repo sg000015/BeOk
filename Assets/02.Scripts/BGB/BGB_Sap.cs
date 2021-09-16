@@ -91,8 +91,8 @@ public class BGB_Sap : MonoBehaviour
         }
 
 
-        byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
-        patientMesh.materials[2].color = new Color32(255, 255, 255, alphaHives);
+
+
 
 
         // if (PatientSapBag == curSapBag)
@@ -112,6 +112,9 @@ public class BGB_Sap : MonoBehaviour
         //     //환자 몸 보라색변하는정도. 아직 조정이필요함
         //     patientMesh.materials[1].color = new Color32(255, 255, 255, alphaPurple);
         // }
+    }
+    public void WrongSapType()
+    {
     }
 
 }

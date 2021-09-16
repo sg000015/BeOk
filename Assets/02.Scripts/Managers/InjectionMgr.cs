@@ -267,6 +267,9 @@ public class InjectionMgr : MonoBehaviour
         if (string.Compare(_sapType, curruntSapType, false) == -1)
         {
             Debug.Log("수액 종류가 다름");
+            //! 환자 색 변함
+            // WrongSapType
+
             scoreList[0] = 0;
         }
 
