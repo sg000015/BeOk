@@ -114,6 +114,9 @@ public class KHG_Snap : MonoBehaviour
                     anim.SetTrigger("BedCrush");
                 }
 
+                // 점수 --
+                InjectionMgr.injection.MinusAreaScore();
+
 
                 Quaternion rot = needle2.transform.rotation;
 
