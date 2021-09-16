@@ -245,9 +245,12 @@ public class KHG_Snap : MonoBehaviour
     void LineCreate()
     {
 
-        GameObject obj = Instantiate(line);
+        GameObject obj = GameObject.Find("Line");
         //Transform trline = transform.Find("Line_Snap");
         obj.GetComponent<KHG_Line>().SetLine();
+        // obj.GetComponent<KHG_Line>().SetLineState(-1);
+
+        obj.GetComponent<KHG_Line>().SetLineState(0);
 
 
         //지혈대 초기화

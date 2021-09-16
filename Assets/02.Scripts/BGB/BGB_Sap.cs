@@ -10,7 +10,7 @@ public class BGB_Sap : MonoBehaviour
 
     //환자 몸 메쉬
     public SkinnedMeshRenderer patientMesh;
-    float patientSpeed;
+    int patientSpeed;
     string PatientSapBag;
     string curSapBag;
 
@@ -22,7 +22,17 @@ public class BGB_Sap : MonoBehaviour
     public GameObject canvasSap;
     private TMP_Text sapText;
 
+    private int state = 0;
+
+    bool isDo = false;
+
     void Start()
+    {
+        line = GameObject.Find("Line").GetComponent<KHG_Line>();
+    }
+
+    //수액이 스냅 되었을 때 실행되는 콜백
+    public void SetCurSapBag(string sapBag)
     {
         //환자에게 맞는 수액 속도
         patientSpeed = InjectionMgr.injection._sapSpeed;
@@ -30,13 +40,6 @@ public class BGB_Sap : MonoBehaviour
         //환자에게 맞는 수액 종류
         PatientSapBag = InjectionMgr.injection._sapType;
 
-        line = GameObject.Find("Line").GetComponent<KHG_Line>();
-    }
-
-    //수액이 스냅 되었을 때 실행되는 콜백
-    //! 콜백되도록 처리해야함
-    public void SetCurSapBag(string sapBag)
-    {
         //현재 걸려있는 수액 변수 초기화
         curSapBag = sapBag;
         Debug.Log("수액이 스냅됨");
@@ -60,7 +63,7 @@ public class BGB_Sap : MonoBehaviour
         curSpeed += num;
 
         // UI 표시
-        sapText.text = num.ToString();
+        sapText.text = curSpeed.ToString();
 
 
         // 수액 스피드를 초과
@@ -70,26 +73,21 @@ public class BGB_Sap : MonoBehaviour
             return;
         }
         // 수액 스피드 미만
-        else if (curSpeed < 0)
+        else if (curSpeed < patientSpeed)
         {
-            curSpeed = 0;
             return;
         }
         // 수액 스피드 적절
-        else
+        else if(!isDo)
         {
             // 수액 채워짐
+            
             line.SetLineState(1);
-            Invoke("InitBlood", 4.0f);
+            isDo = true;
 
             // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
             anim.SetBool("Trumble", false);
 
-        }
-
-        void InitBlood()
-        {
-            line.SetLineState(2);
         }
 
 

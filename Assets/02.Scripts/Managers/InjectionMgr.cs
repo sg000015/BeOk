@@ -25,10 +25,10 @@ public class InjectionMgr : MonoBehaviour
 
     // 수액
     private string[] type = { "Normal Saline", "5% Dextrose", "0.45% Saline" };
-    private float[] speed = { 30f, 35f, 40f, 45f, 50f };
+    private int[] speed = { 30, 35, 40, 45, 50 };
     public string _sapType;
     private int _sapTypeidx;
-    public float _sapSpeed;
+    public int _sapSpeed;
     public GameObject curruntSap;
 
     // 화살표
@@ -50,7 +50,7 @@ public class InjectionMgr : MonoBehaviour
 
     void Awake()
     {
-
+        injection = this;
         animator = GameObject.FindWithTag("Patient").GetComponent<Animator>();
 
         InitInjection();
@@ -114,7 +114,7 @@ public class InjectionMgr : MonoBehaviour
         // 타이머 시작
         timer.timerOn = true;
 
-        GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
+        // GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
     }
 
     // 0.지혈
@@ -230,9 +230,10 @@ public class InjectionMgr : MonoBehaviour
     void SetSap()
     {
         _sapTypeidx = Random.Range(0, type.Length);
-
         _sapType = type[_sapTypeidx];
+        
         _sapSpeed = speed[Random.Range(0, speed.Length)];
+        Debug.Log($"sap speed : {_sapSpeed}");
     }
 
     // 화살표 On
