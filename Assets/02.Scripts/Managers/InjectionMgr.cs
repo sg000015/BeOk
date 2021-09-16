@@ -14,7 +14,7 @@ public class InjectionMgr : MonoBehaviour
     public STATE state = STATE.Hemostasis;
 
     // 수액종류, 수액속도, 주사위치, 주사각도, 시간
-    public int[] scoreList = { 20, 20, 20, 20, 20 };
+    private int[] scoreList = { 20, 20, 20, 20, 20 };
 
     public GameObject bloodLine;
 
@@ -55,6 +55,7 @@ public class InjectionMgr : MonoBehaviour
     {
         injection = this;
         animator = GameObject.FindWithTag("Patient").GetComponent<Animator>();
+        sapScript = GameObject.FindWithTag("Patient").GetComponent<BGB_Sap>();
 
         InitInjection();
 
@@ -62,7 +63,6 @@ public class InjectionMgr : MonoBehaviour
 
     void Start()
     {
-        sapScript = patient.GetComponent<BGB_Sap>();
     }
 
     // 초기화
@@ -86,10 +86,11 @@ public class InjectionMgr : MonoBehaviour
         SetSap();
 
         // 점수 초기화
-        // for (int i = 0; i < scoreList.Length; i++)
-        // {
-        //     scoreList[i] = 0;
-        // }
+        for (int i = 0; i < scoreList.Length; i++)
+        {
+            // scoreList[i] = 0;
+            Debug.Log($"{i} : {scoreList[i]}");
+        }
 
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
@@ -321,7 +322,7 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
-        infoTxt.text += $"\n\n총합 : {score}";
+        infoTxt.text += $"\n\n<b>총합 : {score}</b>";
     }
 
     public void MinusAreaScore()
