@@ -32,6 +32,7 @@ public class InjectionMgr : MonoBehaviour
     private int _sapTypeidx;
     public int _sapSpeed;
     public GameObject curruntSap;
+    private BGB_Sap sapScript;
 
     // 화살표
     public GameObject arrow;
@@ -61,6 +62,7 @@ public class InjectionMgr : MonoBehaviour
 
     void Start()
     {
+        sapScript = patient.GetComponent<BGB_Sap>();
     }
 
     // 초기화
@@ -257,24 +259,52 @@ public class InjectionMgr : MonoBehaviour
         int[] times = timer.GetTime();
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
-        // 수액종류
+        // 0.수액종류
         string tempSapName = curruntSap.name;
         string[] tempSapNames = tempSapName.Split('_');
         string curruntSapType = tempSapNames[1];
         Debug.Log(curruntSapType);
 
-        // 수액종류를 틀릴 경우
+        // 수액 종류를 틀릴 경우
         if (string.Compare(_sapType, curruntSapType, false) == -1)
         {
             Debug.Log("수액 종류가 다름");
+
+            // 환자 색 변함
+            sapScript.WrongSapType();
+
             scoreList[0] = 0;
         }
-        else if (string.Compare(_sapType, curruntSapType, false) == 1)
+
+        // 1.수액속도
+        int currentSapSpeed = (int)sapScript.curSpeed;
+        if (_sapSpeed != currentSapSpeed)
         {
-            Debug.Log("수액 종류가 같음!!!!!");
+            scoreList[1] = 0;
         }
 
+        // 2.주사위치
 
+        // 3.주사각도
+
+        // 4.시간
+        // 일단 만점처리
+        //! TODO : 시간별 점수처리
+
+    }
+
+    public void MinusAreaScore()
+    {
+        if (scoreList[2] == 0) return;
+
+        scoreList[2] -= 5;
+    }
+
+    public void MinusAngleScore()
+    {
+        if (scoreList[3] == 0) return;
+
+        scoreList[3] -= 5;
     }
 
 
@@ -283,7 +313,7 @@ public class InjectionMgr : MonoBehaviour
     {
         _sapTypeidx = Random.Range(0, type.Length);
         _sapType = type[_sapTypeidx];
-        
+
         _sapSpeed = speed[Random.Range(0, speed.Length)];
         Debug.Log($"sap speed : {_sapSpeed}");
     }
