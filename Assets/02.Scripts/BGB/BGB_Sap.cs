@@ -17,7 +17,7 @@ public class BGB_Sap : MonoBehaviour
     public GameObject sapSnap;
 
     KHG_Line line;
-    float curSpeed = 0.0f;
+    public float curSpeed = 0.0f;
 
     public GameObject canvasSap;
     private TMP_Text sapText;
@@ -69,7 +69,7 @@ public class BGB_Sap : MonoBehaviour
         // 수액 스피드를 초과
         if (curSpeed > patientSpeed)
         {
-            anim.SetBool("Trumble", true);
+            anim.SetBool("SpeedOver", true);
             return;
         }
         // 수액 스피드 미만
@@ -78,10 +78,10 @@ public class BGB_Sap : MonoBehaviour
             return;
         }
         // 수액 스피드 적절
-        else if(!isDo)
+        else if (!isDo)
         {
             // 수액 채워짐
-            
+
             line.SetLineState(1);
             isDo = true;
 
@@ -91,12 +91,15 @@ public class BGB_Sap : MonoBehaviour
         }
 
 
+        byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
+        patientMesh.materials[2].color = new Color32(255, 255, 255, alphaHives);
+
 
         // if (PatientSapBag == curSapBag)
         // {
         //     //같은 종류의 수액이라면 팔에 두드러기가 사라짐
-        //     byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
-        //     handMesh.materials[1].color = new Color32(255, 255, 255, alphaHives);
+        // byte alphaHives = (byte)Mathf.Round(255 - (curSpeed / patientSpeed * 255));
+        // handMesh.materials[1].color = new Color32(255, 255, 255, alphaHives);
         // }
         // else
         // {
