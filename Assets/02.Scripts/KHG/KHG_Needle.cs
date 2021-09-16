@@ -98,8 +98,8 @@ public class KHG_Needle : MonoBehaviour
                 {
                     Debug.Log("Good Needle");
 
-                    // 다음 단계 시작 : 고무관 연결
-                    InjectionMgr.injection.ConnectRubber();
+                    // 다음 단계 시작 : 카테터 분리
+                    InjectionMgr.injection.SeparateCatheter();
                 }
                 else
                 {
@@ -142,6 +142,10 @@ public class KHG_Needle : MonoBehaviour
 
                 if (stylet && dis > 0.3f)
                 {
+                    // 카테터 뒷부분 분리됨
+                    // 다음 단계 시작 : 고무관 연결
+                    InjectionMgr.injection.ConnectRubber();
+
                     stylet.gameObject.GetComponent<KHG_Grabble>().destroy = true;
                     rubberPoint.SetActive(true);
 
