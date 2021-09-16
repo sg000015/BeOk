@@ -78,10 +78,10 @@ public class BGB_Sap : MonoBehaviour
             return;
         }
         // 수액 스피드 적절
-        else if(!isDo)
+        else if (!isDo)
         {
             // 수액 채워짐
-            
+
             line.SetLineState(1);
             isDo = true;
 
