@@ -31,7 +31,7 @@ public class KHG_Snap : MonoBehaviour
 
     private Animator anim;
 
-    KHG_AudioClip soundManager;
+    SoundManager soundManager;
 
 
 
@@ -40,7 +40,7 @@ public class KHG_Snap : MonoBehaviour
 
     void Start()
     {
-        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<KHG_AudioClip>();
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
         //! 확인
