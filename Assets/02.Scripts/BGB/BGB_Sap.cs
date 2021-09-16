@@ -82,7 +82,7 @@ public class BGB_Sap : MonoBehaviour
         {
             // 수액 채워짐
 
-            line.SetLineState(1);
+            line.SetLineState(2);
             isDo = true;
 
             // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
@@ -115,14 +115,14 @@ public class BGB_Sap : MonoBehaviour
     }
 
     [ContextMenu("WrongSapType")]
-    public void WrongSapType()
+    public void WrongSapType(bool isRightSap)
     {
 
-        if ( curSapBag == PatientSapBag)
+        if ( isRightSap )
         {
             StartCoroutine("ToNormalSkin");
         }
-        else if ( curSapBag != PatientSapBag)
+        else
         {
             StartCoroutine("ToZombieSkin");
         }

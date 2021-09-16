@@ -87,7 +87,6 @@ public class KHG_Snap : MonoBehaviour
                 transform.parent.GetComponent<KHG_Needle>().NeedleSnap();
                 isDo = true;
                 Debug.Log("Arm to Snap");
-                soundManager.Sound(4);
 
                 // 다음 단계 시작 : 주사 각도
                 InjectionMgr.injection.InjectAngle();
@@ -95,7 +94,7 @@ public class KHG_Snap : MonoBehaviour
             }
             else if (!isDo && coll.gameObject.name == "Fail_Snap")
             {
-
+                InjectionMgr.injection.MinusAreaScore();
                 Debug.Log("Fail to Snap");
                 soundManager.Sound(2);
                 //잘못되었을때 애니메이션
@@ -133,7 +132,6 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("SNAP");
-                soundManager.Sound(4);
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -187,7 +185,6 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Sap_Snap")
             {
-                soundManager.Sound(4);
 
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 coll.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -212,7 +209,6 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Rubber_Snap")
             {
-                soundManager.Sound(4);
 
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -326,13 +322,24 @@ public class KHG_Snap : MonoBehaviour
             //! +,- 효과주기
             BGB_Sap sap = GameObject.FindWithTag("Patient").GetComponent<BGB_Sap>();
 
+
+            bool isPlay = false;
             if (index >= 0.3f || hand >= 0.3f)
             {
+                if (!isPlay)
+                {
+                    isPlay = true;
+                    InjectionMgr.injection.UntieTourniquet();
+                }
+
+
                 if (!trigger)
                 {
                     GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
                     soundManager.Sound(4);
                     trigger = true;
+                    
+                  
 
                 }
 
@@ -361,7 +368,7 @@ public class KHG_Snap : MonoBehaviour
 
     IEnumerator ChangeRubberAlpha(int num)
     {
-        WaitForSeconds ws = new WaitForSeconds(0.3f);
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
 
         MeshRenderer band1 = band[num];
         MeshRenderer band2 = band[num].transform.GetChild(0).GetComponent<MeshRenderer>();

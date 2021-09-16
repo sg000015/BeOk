@@ -19,6 +19,10 @@ public class SoundManager : MonoBehaviour
     {
         audio.PlayOneShot(audios[num]);
     }
+    public void SoundStop()
+    {
+        audio.Stop();
+    }
 
 
 
