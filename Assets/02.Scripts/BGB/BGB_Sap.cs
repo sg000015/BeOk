@@ -136,6 +136,7 @@ public class BGB_Sap : MonoBehaviour
         {
             
             patientMesh.materials[2].color = new Color(255, 255, 255 , value);
+            Debug.Log(value);
             
             value = value - 1;
             yield return new WaitForSeconds(0.1f);
