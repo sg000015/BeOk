@@ -67,6 +67,7 @@ public class KHG_Snap : MonoBehaviour
             isEnd = false;
             //!엔딩
             Debug.Log("Ending");
+            InjectionMgr.injection.GradeInjection();
         }
     }
 
