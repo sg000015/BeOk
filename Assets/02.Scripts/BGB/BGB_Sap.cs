@@ -117,22 +117,21 @@ public class BGB_Sap : MonoBehaviour
     [ContextMenu("WrongSapType")]
     public void WrongSapType()
     {
-            StartCoroutine("ToZombieSkin");
 
-        // if ( curSapBag == PatientSapBag)
-        // {
-        //     StartCoroutine("ToNormalSkin");
-        // }
-        // else if ( curSapBag != PatientSapBag)
-        // {
-        //     StartCoroutine("ToZombieSkin");
-        // }
+        if ( curSapBag == PatientSapBag)
+        {
+            StartCoroutine("ToNormalSkin");
+        }
+        else if ( curSapBag != PatientSapBag)
+        {
+            StartCoroutine("ToZombieSkin");
+        }
     }
 
     IEnumerator ToNormalSkin()
     {
         byte value = (byte)Mathf.Round(255);
-
+        anim.SetTrigger("TumbsUp");
         while(true)
         {
             
@@ -153,7 +152,7 @@ public class BGB_Sap : MonoBehaviour
     IEnumerator ToZombieSkin()
     {
         byte value = (byte)Mathf.Round(0);
-        anim.SetTrigger("SpeedOver");
+        anim.SetTrigger("WrongSapType");
         while(true)
         {
             
