@@ -291,6 +291,37 @@ public class InjectionMgr : MonoBehaviour
         // 일단 만점처리
         //! TODO : 시간별 점수처리
 
+        // UI
+        StartCoroutine(nameof(ShowScore));
+
+    }
+
+    IEnumerator ShowScore()
+    {
+        float time = 1.0f;
+        int score = 0;
+
+        // 수액종류, 수액속도, 주사위치, 주사각도, 시간
+        infoTxt.text = $"수액 종류 : {scoreList[0]}";
+
+        yield return new WaitForSeconds(time);
+        infoTxt.text += $"\n수액 속도 : {scoreList[1]}";
+
+        yield return new WaitForSeconds(time);
+        infoTxt.text += $"\n주사 위치 : {scoreList[2]}";
+
+        yield return new WaitForSeconds(time);
+        infoTxt.text += $"\n주사 각도 : {scoreList[3]}";
+
+        yield return new WaitForSeconds(time);
+        infoTxt.text += $"\n시간 : {scoreList[4]}";
+
+        yield return new WaitForSeconds(time);
+        foreach (int i in scoreList)
+        {
+            score += i;
+        }
+        infoTxt.text += $"\n\n총합 : {score}";
     }
 
     public void MinusAreaScore()
