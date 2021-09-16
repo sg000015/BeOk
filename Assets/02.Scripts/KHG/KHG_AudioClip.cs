@@ -7,15 +7,14 @@ public class KHG_AudioClip : MonoBehaviour
 
     public AudioClip[] audios;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    AudioSource audio;
 
+    public void Sound(int num)
+    {
+        audio.PlayOneShot(audios[num]);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
+
+
 }

@@ -31,6 +31,8 @@ public class KHG_Snap : MonoBehaviour
 
     private Animator anim;
 
+    KHG_AudioClip soundManager;
+
 
 
 
@@ -38,6 +40,8 @@ public class KHG_Snap : MonoBehaviour
 
     void Start()
     {
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<KHG_AudioClip>();
+
         anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
         //! 확인
         if (_objectType == ObjectType.Rubber)
@@ -83,6 +87,7 @@ public class KHG_Snap : MonoBehaviour
                 transform.parent.GetComponent<KHG_Needle>().NeedleSnap();
                 isDo = true;
                 Debug.Log("Arm to Snap");
+                soundManager.Sound(4);
 
                 // 다음 단계 시작 : 주사 각도
                 InjectionMgr.injection.InjectAngle();
@@ -92,6 +97,7 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("Fail to Snap");
+                soundManager.Sound(2);
                 //잘못되었을때 애니메이션
                 animCount++;
                 if (animCount <= 0)
@@ -127,6 +133,7 @@ public class KHG_Snap : MonoBehaviour
             {
 
                 Debug.Log("SNAP");
+                soundManager.Sound(4);
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -180,6 +187,7 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Sap_Snap")
             {
+                soundManager.Sound(4);
 
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 coll.gameObject.GetComponent<BoxCollider>().enabled = false;
@@ -204,6 +212,7 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Rubber_Snap")
             {
+                soundManager.Sound(4);
 
                 gameObject.GetComponent<BoxCollider>().enabled = false;
                 gameObject.GetComponent<Rigidbody>().isKinematic = true;
@@ -295,6 +304,8 @@ public class KHG_Snap : MonoBehaviour
         Vector2 value;
         float index, hand;
         WaitForSeconds ws = new WaitForSeconds(0.3f);
+
+        bool trigger = false;
         while (true)
         {
             if (isLeft)
@@ -317,14 +328,23 @@ public class KHG_Snap : MonoBehaviour
 
             if (index >= 0.3f || hand >= 0.3f)
             {
-                GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                if (!trigger)
+                {
+                    GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                    soundManager.Sound(4);
+                    trigger = true;
+
+                }
+
                 if (value.y >= 0.3f)
                 {
+                    soundManager.Sound(0);
                     sap.UpdateSpeed(1);
                     Debug.Log("++");
                 }
                 else if (value.y <= -0.3f)
                 {
+                    soundManager.Sound(0);
                     sap.UpdateSpeed(-1);
                     Debug.Log("--");
                 }
@@ -333,6 +353,7 @@ public class KHG_Snap : MonoBehaviour
             else
             {
                 GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
+                trigger = false;
             }
             yield return ws;
         }

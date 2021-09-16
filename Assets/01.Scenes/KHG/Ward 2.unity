@@ -769,8 +769,8 @@ GameObject:
   - component: {fileID: 169285354}
   - component: {fileID: 169285353}
   m_Layer: 0
-  m_Name: AudioClips
-  m_TagString: Untagged
+  m_Name: SoundManager
+  m_TagString: SoundManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9244,6 +9244,7 @@ MonoBehaviour:
   anim: {fileID: 1275246052}
   patientMesh: {fileID: 1133551039}
   sapSnap: {fileID: 89137165}
+  curSpeed: 0
   canvasSap: {fileID: 0}
 --- !u!114 &1275246054
 MonoBehaviour:
@@ -14405,6 +14406,7 @@ MonoBehaviour:
   anim: {fileID: 8791094052554852963}
   patientMesh: {fileID: 1456449872301760828}
   sapSnap: {fileID: 0}
+  curSpeed: 0
   canvasSap: {fileID: 0}
 --- !u!1 &2874060847870964330
 GameObject:
