@@ -295,11 +295,13 @@ public class KHG_Snap : MonoBehaviour
         }
     }
 
+    
+
     IEnumerator PoleControl()
     {
         Vector2 value;
         float index, hand;
-        WaitForSeconds ws = new WaitForSeconds(0.3f);
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
 
         bool trigger = false;
         while (true)
@@ -335,7 +337,7 @@ public class KHG_Snap : MonoBehaviour
 
                 if (!trigger)
                 {
-                    GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                    // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
                     soundManager.Sound(4);
                     trigger = true;
                     
@@ -348,18 +350,38 @@ public class KHG_Snap : MonoBehaviour
                     soundManager.Sound(0);
                     sap.UpdateSpeed(1);
                     Debug.Log("++");
+                    if(value.y>=0.8f)
+                    {
+                        soundManager.Sound(0);
+                        sap.UpdateSpeed(1);
+                    }
+                    if(value.y>=0.99f)
+                    {
+                        soundManager.Sound(0);
+                        sap.UpdateSpeed(1);
+                    }
                 }
                 else if (value.y <= -0.3f)
                 {
                     soundManager.Sound(0);
                     sap.UpdateSpeed(-1);
                     Debug.Log("--");
+                    if(value.y<=-0.8f)
+                    {
+                        soundManager.Sound(0);
+                        sap.UpdateSpeed(-1);
+                    }
+                    if(value.y<=-0.99f)
+                    {
+                        soundManager.Sound(0);
+                        sap.UpdateSpeed(-1);
+                    }
                 }
 
             }
             else
             {
-                GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
+                // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0f);
                 trigger = false;
             }
             yield return ws;

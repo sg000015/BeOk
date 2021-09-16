@@ -118,7 +118,7 @@ public class BGB_Sap : MonoBehaviour
     public void WrongSapType(bool isRightSap)
     {
 
-        if ( isRightSap )
+        if ( isRightSap == true)
         {
             StartCoroutine("ToNormalSkin");
         }

@@ -280,14 +280,19 @@ public class InjectionMgr : MonoBehaviour
         // 수액 종류를 틀릴 경우
         if (string.Compare(_sapType, curruntSapType, false) == -1)
         {
+            Debug.Log($"{_sapType}, {curruntSapType}");
             Debug.Log("수액 종류가 다름");
             // 환자 색 변함
             sapScript.WrongSapType(false);
             scoreList[0] = 0;
         }
-        
-        // 환자 색 변함
-        sapScript.WrongSapType(true);
+        else
+        {
+            Debug.Log($"{_sapType}, {curruntSapType}");
+            Debug.Log("수액 종류가 같음");
+            // 환자 색 변함
+            sapScript.WrongSapType(true);
+        }
 
         // 1.수액속도
         int currentSapSpeed = (int)sapScript.curSpeed;
