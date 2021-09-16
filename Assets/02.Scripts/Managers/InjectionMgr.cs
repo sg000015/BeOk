@@ -32,6 +32,7 @@ public class InjectionMgr : MonoBehaviour
     private int _sapTypeidx;
     public int _sapSpeed;
     public GameObject curruntSap;
+    private BGB_Sap sapScript;
 
     // 화살표
     public GameObject arrow;
@@ -61,6 +62,7 @@ public class InjectionMgr : MonoBehaviour
 
     void Start()
     {
+        sapScript = patient.GetComponent<BGB_Sap>();
     }
 
     // 초기화
@@ -267,14 +269,19 @@ public class InjectionMgr : MonoBehaviour
         if (string.Compare(_sapType, curruntSapType, false) == -1)
         {
             Debug.Log("수액 종류가 다름");
-            //! 환자 색 변함
-            // WrongSapType
+
+            // 환자 색 변함
+            sapScript.WrongSapType();
 
             scoreList[0] = 0;
         }
 
         // 1.수액속도
-
+        int currentSapSpeed = (int)sapScript.curSpeed;
+        if (_sapSpeed != currentSapSpeed)
+        {
+            scoreList[1] = 0;
+        }
 
         // 2.주사위치
 
@@ -284,7 +291,20 @@ public class InjectionMgr : MonoBehaviour
         // 일단 만점처리
         //! TODO : 시간별 점수처리
 
+    }
 
+    public void MinusAreaScore()
+    {
+        if (scoreList[2] == 0) return;
+
+        scoreList[2] -= 5;
+    }
+
+    public void MinusAngleScore()
+    {
+        if (scoreList[3] == 0) return;
+
+        scoreList[3] -= 5;
     }
 
 

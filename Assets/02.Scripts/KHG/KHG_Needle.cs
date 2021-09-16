@@ -104,6 +104,8 @@ public class KHG_Needle : MonoBehaviour
                 else
                 {
                     Debug.Log("Bad Needle");
+                    // 점수 --
+                    InjectionMgr.injection.MinusAngleScore();
 
                     anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
                     anim.SetTrigger("WrongAngle");
