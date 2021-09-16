@@ -678,7 +678,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.10855007}
+  m_AnchoredPosition: {x: 0.941, y: -0.10855007}
   m_SizeDelta: {x: 0, y: 0.21710002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &142926810
@@ -4480,7 +4480,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 801292006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1536314575}
@@ -4490,7 +4490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 1.3877, y: 0.6513}
+  m_AnchoredPosition: {x: 0.635, y: 0.6513}
   m_SizeDelta: {x: 1.0413, y: 1.3025}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &801292008
@@ -6373,6 +6373,7 @@ MonoBehaviour:
   anim: {fileID: 1275246052}
   patientMesh: {fileID: 1133551039}
   sapSnap: {fileID: 89137165}
+  curSpeed: 0
   canvasSap: {fileID: 760787206}
 --- !u!114 &1275246054
 MonoBehaviour:
@@ -7866,7 +7867,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663986846}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 627345421}
@@ -7877,8 +7878,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.5291, y: 0.6513}
-  m_SizeDelta: {x: 2.7078, y: 1.3025}
+  m_AnchoredPosition: {x: -0.9063, y: 0.6513}
+  m_SizeDelta: {x: 1.9535, y: 1.3025}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1663986848
 MonoBehaviour:
@@ -11678,6 +11679,7 @@ MonoBehaviour:
   anim: {fileID: 8791094052554852963}
   patientMesh: {fileID: 1456449872301760828}
   sapSnap: {fileID: 0}
+  curSpeed: 0
   canvasSap: {fileID: 0}
 --- !u!1 &2874060847870964330
 GameObject:
@@ -12080,6 +12082,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4991014131895354966, guid: 4a87182d04c6d8848965dcfa49187322, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4991014131895354966, guid: 4a87182d04c6d8848965dcfa49187322, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7bad9399e71f97147ba40602c55f65b4, type: 2}
+    - target: {fileID: 4991014131895354966, guid: 4a87182d04c6d8848965dcfa49187322, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: e6faf92c1f67cfa4594941bcc571e74d, type: 2}
     - target: {fileID: 5283392752974762317, guid: 4a87182d04c6d8848965dcfa49187322, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
