@@ -102,15 +102,18 @@ public class KHG_Snap : MonoBehaviour
                 if (animCount <= 0)
                 {
                     anim.SetTrigger("Tremble");
+                    soundManager.PlayPatientSound(0);
                 }
                 else if (animCount == 1)
                 {
                     anim.SetTrigger("HeadShaking");
+                    soundManager.PlayPatientSound(1);
 
                 }
                 else if (animCount >= 2)
                 {
                     anim.SetTrigger("BedCrush");
+                    soundManager.PlayPatientSound(2);
                 }
 
 
@@ -295,7 +298,7 @@ public class KHG_Snap : MonoBehaviour
         }
     }
 
-    
+
 
     IEnumerator PoleControl()
     {
@@ -340,8 +343,8 @@ public class KHG_Snap : MonoBehaviour
                     // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
                     soundManager.Sound(4);
                     trigger = true;
-                    
-                  
+
+
 
                 }
 
@@ -350,12 +353,12 @@ public class KHG_Snap : MonoBehaviour
                     soundManager.Sound(0);
                     sap.UpdateSpeed(1);
                     Debug.Log("++");
-                    if(value.y>=0.8f)
+                    if (value.y >= 0.8f)
                     {
                         soundManager.Sound(0);
                         sap.UpdateSpeed(1);
                     }
-                    if(value.y>=0.99f)
+                    if (value.y >= 0.99f)
                     {
                         soundManager.Sound(0);
                         sap.UpdateSpeed(1);
@@ -366,12 +369,12 @@ public class KHG_Snap : MonoBehaviour
                     soundManager.Sound(0);
                     sap.UpdateSpeed(-1);
                     Debug.Log("--");
-                    if(value.y<=-0.8f)
+                    if (value.y <= -0.8f)
                     {
                         soundManager.Sound(0);
                         sap.UpdateSpeed(-1);
                     }
-                    if(value.y<=-0.99f)
+                    if (value.y <= -0.99f)
                     {
                         soundManager.Sound(0);
                         sap.UpdateSpeed(-1);

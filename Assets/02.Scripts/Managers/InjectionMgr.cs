@@ -233,7 +233,7 @@ public class InjectionMgr : MonoBehaviour
         arrow.transform.position = pos;
         arrow.transform.rotation = rot;
         arrow.SetActive(true);
-        
+
         infoTxt.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
 
         // 수액 속도 조절하는 콜라이더 On
@@ -346,7 +346,9 @@ public class InjectionMgr : MonoBehaviour
             score += i;
         }
         infoTxt.text += $"\n\n<b>총합 : {score}</b>";
-        if(score>50)
+
+        // Background Sound
+        if (score > 50)
         {
             soundManager.Sound(6);
             soundManager.Sound(6);
@@ -362,6 +364,17 @@ public class InjectionMgr : MonoBehaviour
             soundManager.Sound(5);
             soundManager.Sound(5);
         }
+
+        // Patient Sound
+        if (score >= 70)
+        {
+            soundManager.PlayPatientSound(4);
+        }
+        else if (score <= 50 || scoreList[0] == 0)
+        {
+            soundManager.PlayPatientSound(3);
+        }
+
     }
 
     public void MinusAreaScore()
