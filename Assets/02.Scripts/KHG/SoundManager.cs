@@ -12,12 +12,21 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioSource>();
-        audio.Play();
+
+
     }
 
     public void Sound(int num)
     {
         audio.PlayOneShot(audios[num]);
+    }
+
+
+    [ContextMenu("a")]
+    public void Sound2()
+    {
+        audio.PlayOneShot(audios[2]);
+        Debug.Log("a");
     }
 
 
