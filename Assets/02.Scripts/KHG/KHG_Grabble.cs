@@ -23,7 +23,7 @@ public class KHG_Grabble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (destroy && isExit)
+        if (destroy)
         {
             Destroy(this.gameObject);
         }

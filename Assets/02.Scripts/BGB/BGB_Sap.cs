@@ -82,7 +82,7 @@ public class BGB_Sap : MonoBehaviour
         {
             // 수액 채워짐
 
-            line.SetLineState(1);
+            line.SetLineState(2);
             isDo = true;
 
             // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
@@ -115,13 +115,14 @@ public class BGB_Sap : MonoBehaviour
     }
 
     [ContextMenu("WrongSapType")]
-    public void WrongSapType()
+    public void WrongSapType(bool isRightSap)
     {
-        if ( curSapBag == PatientSapBag)
+
+        if ( isRightSap == true)
         {
             StartCoroutine("ToNormalSkin");
         }
-        else if ( curSapBag != PatientSapBag)
+        else
         {
             StartCoroutine("ToZombieSkin");
         }
@@ -129,35 +130,42 @@ public class BGB_Sap : MonoBehaviour
 
     IEnumerator ToNormalSkin()
     {
-        float value = 255;
-
-        Debug.Log("수액맞음");
-        while(value >= 0)
+        byte value = (byte)Mathf.Round(255);
+        anim.SetTrigger("TumbsUp");
+        while(true)
         {
             
-            patientMesh.materials[2].color = new Color(255, 255, 255 , value);
-            Debug.Log(value);
+            patientMesh.materials[2].color = new Color32(255, 255, 255 , value);
             
-            value = value - 1;
+            value = (byte)Mathf.Round(value - 10);
             yield return new WaitForSeconds(0.1f);
 
+            if (value <= 5)
+            {
+                patientMesh.materials[2].color = new Color32(255, 255, 255 , 0);
+                break;
+            }
         }
 
         yield break;
     }
     IEnumerator ToZombieSkin()
     {
-        float value = 0;
-        Debug.Log("수액다름");
-
-        while(value <= 255)
+        byte value = (byte)Mathf.Round(0);
+        anim.SetTrigger("WrongSapType");
+        while(true)
         {
             
-            patientMesh.materials[3].color = new Color(255, 255, 255 , value);
+            patientMesh.materials[3].color = new Color32(255, 255, 255 , value);
             
-            value = value + 1;
+            value = (byte)Mathf.Round(value + 10);
             yield return new WaitForSeconds(0.1f);
 
+            if (value >= 250)
+            {
+                patientMesh.materials[2].color = new Color32(255, 255, 255 , 255);
+                break;
+            }
         }
 
         yield break;
