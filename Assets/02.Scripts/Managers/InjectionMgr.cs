@@ -278,20 +278,16 @@ public class InjectionMgr : MonoBehaviour
         Debug.Log(curruntSapType);
 
         // 수액 종류를 틀릴 경우
-        if (string.Compare(_sapType, curruntSapType, false) == -1)
+        if (string.Compare(_sapType, curruntSapType, true) != 0)
         {
             Debug.Log($"{_sapType}, {curruntSapType}");
             Debug.Log("수액 종류가 다름");
-            // 환자 색 변함
-            sapScript.WrongSapType(false);
             scoreList[0] = 0;
         }
         else
         {
             Debug.Log($"{_sapType}, {curruntSapType}");
             Debug.Log("수액 종류가 같음");
-            // 환자 색 변함
-            sapScript.WrongSapType(true);
         }
 
         // 1.수액속도
@@ -362,6 +358,9 @@ public class InjectionMgr : MonoBehaviour
             // Patient Sound
             if (score >= 70)
             {
+                // 환자 anim
+                sapScript.WrongSapType(false);
+
                 StartCoroutine(nameof(PlayPatientSound), 4);
             }
             else
@@ -376,6 +375,9 @@ public class InjectionMgr : MonoBehaviour
             soundManager.Sound(5);
             soundManager.Sound(5);
             soundManager.Sound(5);
+
+            // 환자 색 anim
+            sapScript.WrongSapType(true);
 
             // Patient Sound
             StartCoroutine(nameof(PlayPatientSound), 3);

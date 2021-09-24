@@ -118,7 +118,7 @@ public class BGB_Sap : MonoBehaviour
     public void WrongSapType(bool isRightSap)
     {
 
-        if ( isRightSap == true)
+        if (isRightSap == false)
         {
             StartCoroutine("ToNormalSkin");
         }
@@ -132,17 +132,17 @@ public class BGB_Sap : MonoBehaviour
     {
         byte value = (byte)Mathf.Round(255);
         anim.SetTrigger("TumbsUp");
-        while(true)
+        while (true)
         {
-            
-            patientMesh.materials[2].color = new Color32(255, 255, 255 , value);
-            
+
+            patientMesh.materials[2].color = new Color32(255, 255, 255, value);
+
             value = (byte)Mathf.Round(value - 10);
             yield return new WaitForSeconds(0.1f);
 
             if (value <= 5)
             {
-                patientMesh.materials[2].color = new Color32(255, 255, 255 , 0);
+                patientMesh.materials[2].color = new Color32(255, 255, 255, 0);
                 break;
             }
         }
@@ -153,17 +153,17 @@ public class BGB_Sap : MonoBehaviour
     {
         byte value = (byte)Mathf.Round(0);
         anim.SetTrigger("WrongSapType");
-        while(true)
+        while (true)
         {
-            
-            patientMesh.materials[3].color = new Color32(255, 255, 255 , value);
-            
+
+            patientMesh.materials[3].color = new Color32(255, 255, 255, value);
+
             value = (byte)Mathf.Round(value + 10);
             yield return new WaitForSeconds(0.1f);
 
             if (value >= 250)
             {
-                patientMesh.materials[2].color = new Color32(255, 255, 255 , 255);
+                patientMesh.materials[2].color = new Color32(255, 255, 255, 255);
                 break;
             }
         }
