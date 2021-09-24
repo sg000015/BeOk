@@ -94,6 +94,7 @@ public class KHG_Snap : MonoBehaviour
             }
             else if (!isDo && coll.gameObject.name == "Fail_Snap")
             {
+                isDo = true;
                 InjectionMgr.injection.MinusAreaScore();
                 Debug.Log("Fail to Snap");
                 soundManager.Sound(2);
@@ -121,6 +122,9 @@ public class KHG_Snap : MonoBehaviour
 
                 GameObject obj = Instantiate(bloodEfx, needle2.transform.position, rot);
                 Destroy(obj, 2.0f);
+                //! 주사 찌르기 딜레이
+                Invoke("SetIsDo", 2.0f);
+
 
             }
         }
@@ -256,7 +260,7 @@ public class KHG_Snap : MonoBehaviour
     {
         if (isDo && _objectType == ObjectType.IVPole)
         {
-            GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
+            // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0.35f);
             StopCoroutine("PoleControl");
             isDo = false;
         }
@@ -285,6 +289,11 @@ public class KHG_Snap : MonoBehaviour
     {
         StartCoroutine("ChangeRubberAlpha", num);
 
+    }
+
+    void SetIsDo()
+    {
+        isDo = false;
     }
 
 

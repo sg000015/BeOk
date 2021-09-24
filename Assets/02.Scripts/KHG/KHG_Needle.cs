@@ -114,6 +114,7 @@ public class KHG_Needle : MonoBehaviour
                     anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
                     anim.SetTrigger("WrongAngle");
                     soundManager.Sound(2);
+                    soundManager.PlayPatientSound(6);
 
                     InjectionMgr.injection.CreateCatheter();
                     Destroy(this.gameObject);
