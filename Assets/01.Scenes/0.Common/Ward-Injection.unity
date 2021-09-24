@@ -8002,6 +8002,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 817e7ebdf836c1f4a8dc3c3d975f32ff, type: 3}
   - {fileID: 8300000, guid: bdf2cb0ed8305ea46a289d517ac50178, type: 3}
   - {fileID: 8300000, guid: 167f5156b44aaea4a9ae47a09ad8cc2b, type: 3}
+  - {fileID: 8300000, guid: 8fc9d4758ceb85f43817df3f2cffb251, type: 3}
+  - {fileID: 8300000, guid: 3f2d18abc90a94e40a4305ab897437aa, type: 3}
   patientAudio: {fileID: 1275246055}
 --- !u!4 &1583156908
 Transform:

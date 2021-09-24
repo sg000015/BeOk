@@ -12,6 +12,8 @@ public class SoundManager : MonoBehaviour
     // 2 : 아프다구요
     // 3 : 당신은 사람을 죽였어요
     // 4 : 최고예요
+    // 5 : 나쁘지 않아요
+    // 6 : 똑바로 하세요
 
     AudioSource audio;
     public AudioSource patientAudio;

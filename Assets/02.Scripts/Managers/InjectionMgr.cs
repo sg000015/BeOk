@@ -320,6 +320,12 @@ public class InjectionMgr : MonoBehaviour
         float time = 1.0f;
         int score = 0;
 
+        // 점수 총합
+        foreach (int i in scoreList)
+        {
+            score += i;
+        }
+
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
         soundManager.Sound(3);
@@ -341,40 +347,53 @@ public class InjectionMgr : MonoBehaviour
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
-        foreach (int i in scoreList)
-        {
-            score += i;
-        }
         infoTxt.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
-        if (score > 50)
+        // 50점 초과 && 수액 종류 맞음
+        if (score > 50 && scoreList[0] != 0)
         {
+            // 4초
             soundManager.Sound(6);
             soundManager.Sound(6);
             soundManager.Sound(6);
             soundManager.Sound(6);
-            soundManager.Sound(6);
+
+            // Patient Sound
+            if (score >= 70)
+            {
+                StartCoroutine(nameof(PlayPatientSound), 4);
+            }
+            else
+            {
+                StartCoroutine(nameof(PlayPatientSound), 5);
+            }
         }
         else
         {
+            // 2초
             soundManager.Sound(5);
             soundManager.Sound(5);
             soundManager.Sound(5);
             soundManager.Sound(5);
-            soundManager.Sound(5);
+
+            // Patient Sound
+            StartCoroutine(nameof(PlayPatientSound), 3);
         }
 
-        // Patient Sound
-        if (score >= 70)
-        {
-            soundManager.PlayPatientSound(4);
-        }
-        else if (score <= 50 || scoreList[0] == 0)
-        {
-            soundManager.PlayPatientSound(3);
-        }
+    }
 
+    IEnumerator PlayPatientSound(int num)
+    {
+        if (num == 3)
+        {
+            yield return new WaitForSeconds(2f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(4f);
+        }
+        soundManager.PlayPatientSound(num);
     }
 
     public void MinusAreaScore()
