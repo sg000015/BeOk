@@ -26,6 +26,8 @@ public class KHG_Needle : MonoBehaviour
 
     private Animator anim;
 
+    SoundManager soundManager;
+
 
 
     // Start is called before the first frame update
@@ -39,6 +41,7 @@ public class KHG_Needle : MonoBehaviour
         // isSnaped = false;
         // isStabed = false;
 
+        soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
         rubberPoint.SetActive(false);
         zelcoColl = GetComponent<BoxCollider>();
         zelcoColl.size = new Vector3(0.03f, 0.03f, 0.4f);
@@ -97,6 +100,7 @@ public class KHG_Needle : MonoBehaviour
                 if (rot.eulerAngles.x <= 45 && rot.eulerAngles.x >= 15 && rot.eulerAngles.y < 55 && rot.eulerAngles.y > -30)
                 {
                     Debug.Log("Good Needle");
+                    soundManager.Sound(3);
 
                     // 다음 단계 시작 : 카테터 분리
                     InjectionMgr.injection.SeparateCatheter();
@@ -109,6 +113,8 @@ public class KHG_Needle : MonoBehaviour
 
                     anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
                     anim.SetTrigger("WrongAngle");
+                    soundManager.Sound(2);
+                    soundManager.PlayPatientSound(6);
 
                     InjectionMgr.injection.CreateCatheter();
                     Destroy(this.gameObject);
