@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         }
 
         // A 버튼 누름 && 메뉴 켜져있음
-        if (OVRInput.GetDown(OVRInput.Button.One) && isMenu)
+        else if (OVRInput.GetDown(OVRInput.Button.One) && isMenu)
         {
             // Go to Lobby
             SceneManager.LoadScene("WatingRoom");
