@@ -19,10 +19,14 @@ public class HandedInputSelector : MonoBehaviour
     OVRCameraRig m_CameraRig;
     OVRInputModule m_InputModule;
 
+    OVRInputModule Es;
     void Start()
     {
         m_CameraRig = FindObjectOfType<OVRCameraRig>();
         m_InputModule = FindObjectOfType<OVRInputModule>();
+
+        Es = transform.Find("EventSystem").GetComponent<OVRInputModule>();
+
     }
 
     void Update()
@@ -30,12 +34,12 @@ public class HandedInputSelector : MonoBehaviour
         if (OVRInput.GetActiveController() == OVRInput.Controller.LTouch)
         {
             SetActiveController(OVRInput.Controller.LTouch);
-            transform.Find("EventSystem").GetComponent<OVRInputModule>().joyPadClickButton = (OVRInput.Button)0x00006000;
+            Es.joyPadClickButton = (OVRInput.Button)0x00006000;
         }
         else
         {
             SetActiveController(OVRInput.Controller.RTouch);
-            transform.Find("EventSystem").GetComponent<OVRInputModule>().joyPadClickButton = (OVRInput.Button)0x00600000;
+            Es.joyPadClickButton = (OVRInput.Button)0x00600000;
         }
 
     }
