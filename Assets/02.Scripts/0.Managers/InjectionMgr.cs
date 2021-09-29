@@ -7,6 +7,7 @@ using TMPro;
 public class InjectionMgr : MonoBehaviour
 {
     public static InjectionMgr injection = null;
+    public FirebaseManager fb;
 
     public enum STATE { SapType, Hemostasis, Disinfect, InjectArea, InjectAngle, SapSpeed, Grade };
     private float progressNum = 1.0f / 9.0f;
@@ -321,6 +322,7 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
+        InsertData(score);
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
@@ -410,6 +412,18 @@ public class InjectionMgr : MonoBehaviour
         if (scoreList[3] == 0) return;
 
         scoreList[3] -= 5;
+    }
+
+    void InsertData(int score)
+    {
+        int[] times = timer.GetTime();
+        int _score = score * 10000;
+        int min = 60 - times[0];
+        int sec = 60 - times[1];
+
+        _score += min * 100;
+        _score += sec;
+        fb.InsertData("Injection", "ojui", _score);
     }
 
 
