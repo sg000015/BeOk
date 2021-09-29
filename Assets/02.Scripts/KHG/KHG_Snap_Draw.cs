@@ -10,6 +10,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         None,
         AlcoholCotton,
         Pull,
+        NeedleCover,
 
         Needle,
         Tourniquet,
@@ -58,7 +59,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 // StartCoroutine("SetBloodLineAlpha");
 
                 // 다음 단계 시작 : 소독
-                DrawingMgr.drawing.Disinfect();
+                DrawingMgr.drawing.Hemostasis();
 
                 isDo = true;
             }
@@ -69,26 +70,35 @@ public class KHG_Snap_Draw : MonoBehaviour
     Transform syringeBack;
     void Start()
     {
+        Debug.Log(this.name);
         if (_objectType == ObjectType.Pull)
         {
             syringeBack = GameObject.Find("Syringe_Back").transform;
+            tag = "Untagged";
         }
     }
 
     public void AirOffStart()
     {
-        StartCoroutine("AirOff");
+        if (_objectType == ObjectType.Pull)
+        {
+            StartCoroutine("AirOff");
+        }
     }
 
 
     IEnumerator AirOff()
     {
+        tag = "GrabObject";
         while (true)
         {
             if (_objectType == ObjectType.Pull)
             {
+
                 if (transform.parent == null)
                 {
+                    transform.GetComponent<Rigidbody>().isKinematic = true;
+                    transform.GetComponent<Rigidbody>().useGravity = false;
                     transform.parent = syringeBack;
 
                     syringeBack.localPosition = Vector3.forward * -1.6f;
@@ -98,16 +108,18 @@ public class KHG_Snap_Draw : MonoBehaviour
                     transform.localEulerAngles = Vector3.zero;
 
                 }
-                else if (transform.parent.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft")
+                else if (transform.parent.name == "CustomHandRight" || transform.name == "CustomHandLeft")
                 {
+                    Debug.Log("a");
                     Transform temp = transform.parent;
 
                     transform.parent = syringeBack;
 
-                    float dis = transform.localPosition.z;
-                    if (dis > 4.0f)
+                    float dis = Vector3.Distance(syringeBack.position, transform.position);
+                    Debug.Log(dis);
+                    if (true)
                     {
-                        syringeBack.localPosition += Vector3.forward * (dis - 4.0f) * 0.1f;
+                        syringeBack.localPosition = Vector3.forward * (-1.6f + 2 * Mathf.Abs(dis));
                     }
 
                     transform.parent = temp;

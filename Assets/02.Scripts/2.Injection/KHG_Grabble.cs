@@ -12,6 +12,7 @@ public class KHG_Grabble : MonoBehaviour
     public GrabByState grabByState = GrabByState.All;
 
     public bool isExit = false;
+    public bool isGrab = false;
     public bool destroy = false;
 
     // Start is called before the first frame update
@@ -26,6 +27,10 @@ public class KHG_Grabble : MonoBehaviour
         if (destroy)
         {
             Destroy(this.gameObject);
+        }
+        if (transform.parent == null)
+        {
+            isGrab = false;
         }
     }
 }

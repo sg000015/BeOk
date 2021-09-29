@@ -102,6 +102,6 @@ public class VirusMgr : MonoBehaviour
         virusGroupObj.SetActive(false);
 
         // 다음 단계 시작 : 주사 위치
-        // InjectionMgr.injection.InjectArea();
+        DrawingMgr.drawing.Disinfect();
     }
 }

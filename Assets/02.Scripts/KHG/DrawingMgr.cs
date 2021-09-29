@@ -31,8 +31,7 @@ public class DrawingMgr : MonoBehaviour
     public void Disinfect()
     {
 
-
-        Syringe.transform.Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().AirOffStart();
+        Syringe.transform.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().AirOffStart();
     }
 
 }

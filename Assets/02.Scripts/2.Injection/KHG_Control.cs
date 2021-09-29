@@ -155,13 +155,16 @@ public class KHG_Control : MonoBehaviour
     void GrabBegin()
     {
 
-
         // Debug.Log("Grab Check : " + Physics.OverlapSphere(this.transform.position, 0.13f).Length);
 
         if (Physics.OverlapSphere(this.transform.position, 0.13f).Length == 2) { grabCount = 0; grabbedObject = null; currentGrabbedObject = null; isGrabbed = false; } //버그방지
 
         if (grabbedObject != null)
         {
+
+            //!
+            if (grabbedObject.GetComponent<KHG_Grabble>().isGrab) { return; }
+
             var _grabByState = grabbedObject.GetComponent<KHG_Grabble>().grabByState;
 
             if (grabState == GrabState.Pinch && (_grabByState == KHG_Grabble.GrabByState.All || _grabByState == KHG_Grabble.GrabByState.Pinch))
@@ -172,6 +175,8 @@ public class KHG_Control : MonoBehaviour
                 //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
                 isGrabbed = true;
                 // isGrabbed = true;
+                //!
+                grabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
 
             }
             else if (grabState == GrabState.Grab && (_grabByState == KHG_Grabble.GrabByState.All || _grabByState == KHG_Grabble.GrabByState.Grab))
@@ -182,6 +187,8 @@ public class KHG_Control : MonoBehaviour
                 //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
                 isGrabbed = true;
                 // isGrabbed = true;
+                //!
+                grabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
 
             }
         }
@@ -212,6 +219,8 @@ public class KHG_Control : MonoBehaviour
 
             isGrabbed = false;
             currentGrabbedObject = null;
+            //!
+            grabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
 
         }
 
