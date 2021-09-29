@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "309852051850",
+    "project_id": "be-ok-6591b",
+    "storage_bucket": "be-ok-6591b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309852051850:android:61006a90da54c45f2c1073",
+        "android_client_info": {
+          "package_name": "com.BeOK.BeOK"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309852051850-k185or5brpkv3fcl586il97c5p5av04b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQrM3fVaJXSgaLJ1FeoXPRnevCHEyV_ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309852051850-k185or5brpkv3fcl586il97c5p5av04b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
