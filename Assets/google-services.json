@@ -2,7 +2,8 @@
   "project_info": {
     "project_number": "309852051850",
     "project_id": "be-ok-6591b",
-    "storage_bucket": "be-ok-6591b.appspot.com"
+    "storage_bucket": "be-ok-6591b.appspot.com",
+    "firebase_url": "https://be-ok-6591b-default-rtdb.firebaseio.com/"
   },
   "client": [
     {
