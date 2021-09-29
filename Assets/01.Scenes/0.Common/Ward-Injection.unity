@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: b19ac874bd0bef849913d213f5f67f00, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 04834258438825f4e898bdea406e6558, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -230,7 +230,6 @@ GameObject:
   - component: {fileID: 67058237}
   - component: {fileID: 67058236}
   - component: {fileID: 67058235}
-  - component: {fileID: 67058238}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -250,7 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca40e566615e0a449b8910b010f9fe6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fb: {fileID: 67058238}
+  fb: {fileID: 0}
   state: 0
   bloodLine: {fileID: 8100890360104660020}
   infoTxt: {fileID: 627345422}
@@ -296,20 +295,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &67058238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67058234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d685f0ece898d428515c25bac127b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &72387361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,7 +1528,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 2
+  m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -1560,7 +1547,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258466171}
   m_LocalRotation: {x: 0.8493282, y: -0, z: -0, w: 0.5278651}
-  m_LocalPosition: {x: -4.421, y: 2.818, z: 1.778}
+  m_LocalPosition: {x: -4.421, y: -0.72, z: 1.778}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 396678916}
@@ -9075,7 +9062,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1588936206
 GameObject:
