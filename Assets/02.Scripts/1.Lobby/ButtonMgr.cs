@@ -15,7 +15,9 @@ public class ButtonMgr : MonoBehaviour
     public GameObject ranksPanelI;
 
     public TMP_Text text;
-    
+
+    public GameManager_Lobby GM;
+
 
 
     GameObject prevPanel;
@@ -62,27 +64,30 @@ public class ButtonMgr : MonoBehaviour
         curPanel = contentsPanel;
         ShowAndHideUI();
 
+        //!
+        GM.SetNickname();
+
     }
 
-    
+
     bool SW = false;
     public void OnClickShift()
     {
         Transform keyboard = NickNamePanel.transform.GetChild(0);
         SW = !SW;
-        foreach(TMP_Text text in keyboard.GetComponentsInChildren<TMP_Text>())
-        {   
+        foreach (TMP_Text text in keyboard.GetComponentsInChildren<TMP_Text>())
+        {
             Debug.Log(text.text);
             if (text.text == "Enter" ||
                 text.text == "Space" ||
                 text.text == "Delete")
             {
-                
+
             }
             else
             {
-                
-                if(SW)
+
+                if (SW)
                 {
                     text.text = text.text.ToUpper();
                 }
@@ -96,11 +101,11 @@ public class ButtonMgr : MonoBehaviour
 
     public void OnClickKey(string str)
     {
-        if ( SW )
-        text.text += str.ToUpper();
+        if (SW)
+            text.text += str.ToUpper();
         else
-        text.text += str.ToLower();
-        
+            text.text += str.ToLower();
+
     }
     public void OnClickDelete()
     {
