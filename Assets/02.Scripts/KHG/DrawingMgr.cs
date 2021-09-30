@@ -74,7 +74,8 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("5. 지혈대 제거")]
     public void TourniquetOff()
     {
-        //!알콜솜 전달해줄시, 환자팔 이동
+        //!알콜솜 활성화, 팔
+        GameObject.Find("AlcoholCotton").GetComponent<KHG_Snap_Draw>().AlcoholCottonActiveStart();
     }
 
     //혈액 지압했을 경우
@@ -83,6 +84,7 @@ public class DrawingMgr : MonoBehaviour
     {
         //! 주사기 분리하기 (스냅 해제, 키네마틱으로 일단 고정)
         //! 진공튜브에 닿으면 스냅되고, 뒷부분 다시 활성화
+        Syringe.transform.Find("Front").Find("Needle_Point").GetComponent<KHG_Snap_Draw>().SyringeOffStart();
     }
 
 
@@ -92,6 +94,8 @@ public class DrawingMgr : MonoBehaviour
     {
         //!다 담은 뒤, 주사기 다시잡으면 분리가능
         //! 분리후에 흔들 것 
+        GameObject.Find("Vaccum").GetComponent<KHG_Snap_Draw>().ShakingStart();
+
     }
 
     //혈액 흔들기

@@ -11,9 +11,10 @@ public class KHG_Snap_Draw : MonoBehaviour
         AlcoholCotton,
         Pull,
         NeedleCover,
-
         Needle,
         Tourniquet,
+        Syringe,
+
         IVPole,
         Sap,
         Rubber,
@@ -66,6 +67,17 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log("check");
 
             }
+
+            else if (functionState[5])
+            {
+                if (coll.name == "Needle_Point")
+                {
+                    //! 팔에 알콜솜 스냅될것
+                    soundManager.Sound(4);
+                    DrawingMgr.drawing.BloodSafety();
+                }
+
+            }
         }
 
 
@@ -102,16 +114,29 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log("DegreeY: " + transform.eulerAngles.y);
                 Debug.Log("DegreeZ: " + transform.eulerAngles.z);
                 //!각도체크
-                if (true)
-                {
-                    syringe = transform.parent.parent;
-                    pos = syringe.position;
-                    rot = syringe.eulerAngles;
-                    functionState[2] = true;
-                    DrawingMgr.drawing.SyringeArea();
-                    soundManager.Sound(4);
-                    isDo = true;
 
+                syringe = transform.parent.parent;
+                syringe.GetComponent<Rigidbody>().isKinematic = true;
+                syringe.tag = "Untagged";
+                pos = syringe.position;
+                rot = syringe.eulerAngles;
+                functionState[2] = true;
+                DrawingMgr.drawing.SyringeArea();
+                soundManager.Sound(4);
+                isDo = true;
+
+
+            }
+        }
+        else if (_objectType == ObjectType.Syringe)
+        {
+            if (!isDo && coll.name == "Vaccum_Snap")
+            {
+                if (functionState[6])
+                {
+                    //!주사기 스냅 되었을시
+                    soundManager.Sound(4);
+                    functionState[7] = true;
 
                 }
             }
@@ -121,32 +146,21 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void Start()
     {
-
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
-
-        Debug.Log(this.name);
-        // if (_objectType == ObjectType.Pull)
-        // {
-        //     syringeBack = GameObject.Find("Syringe_Back").transform;
-        //     tag = "Untagged";
-        // }
     }
-
-
-
 
     void LateUpdate()
     {
-
         if (functionState[0]) AirOff();
         if (functionState[1]) AirCover();
         if (functionState[2]) SyringeSnap();
         if (functionState[3]) Drawing();
         if (functionState[4]) TorniquetRestore();
-
+        if (functionState[7]) VaccumInsert();
     }
 
 
+    #region start
 
     public void AirOffStart()
     {
@@ -166,7 +180,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             Debug.Log("First" + Vector3.Distance(back.position, transform.position));
         }
     }
-
 
     public void AirCoverStart()
     {
@@ -214,9 +227,30 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     }
 
+    public void AlcoholCottonActiveStart()
+    {
+        functionState[5] = true;
+    }
+
+    public void SyringeOffStart()
+    {
+        syringe = transform.parent.parent;
+        syringe.GetComponent<Rigidbody>().isKinematic = true;
+        syringe.tag = "GrabObject";
+        functionState[2] = false;
+        functionState[6] = true;
+    }
+
+    public void ShakingStart()
+    {
+        functionState[8] = true;
+
+    }
+    #endregion
 
 
 
+    #region Actions(LateUpdate)
 
     void AirOff()
     {
@@ -281,7 +315,6 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     }
 
-
     void AirCover()
     {
 
@@ -324,8 +357,6 @@ public class KHG_Snap_Draw : MonoBehaviour
         syringe.position = pos;
         syringe.eulerAngles = rot;
     }
-
-
 
     void Drawing()
     {
@@ -395,14 +426,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                 isFirst = false;
                 lastDis = dis;
 
-                back.localPosition = backReset - Vector3.up * 12 * (-0.2f + Mathf.Abs(dis));
+                back.localPosition = backReset - Vector3.up * 15 * (-0.2f + Mathf.Abs(dis));
                 //!피 채우기(dis를 이용)
 
                 if (dis > 0.35f)
                 {
                     soundManager.Sound(4);
                     functionState[3] = false;
-                    functionState[2] = false;
                     tag = "Untagged";
                     DrawingMgr.drawing.BloodDrawing();
 
@@ -425,10 +455,25 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (transform.parent == null)
             {
                 soundManager.Sound(4);
-                DrawingMgr.drawing.BloodDrawing();
+                DrawingMgr.drawing.TourniquetOff();
+                functionState[4] = false;
             }
         }
     }
+
+    void VaccumInsert()
+    {
+        if (true)
+        {
+            DrawingMgr.drawing.VaccumTube();
+            functionState[7] = false;
+
+        }
+    }
+
+    #endregion
+
+
 
 
 }

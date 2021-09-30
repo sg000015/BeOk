@@ -1526,6 +1526,7 @@ GameObject:
   - component: {fileID: 1053897593}
   - component: {fileID: 1053897592}
   - component: {fileID: 1053897591}
+  - component: {fileID: 1053897594}
   m_Layer: 0
   m_Name: Syringe
   m_TagString: GrabObject
@@ -1644,6 +1645,19 @@ MonoBehaviour:
   isExit: 0
   isGrab: 0
   destroy: 0
+--- !u!114 &1053897594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053897587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42648e1e0d8cff46a2ed7e54df88ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectType: 6
 --- !u!1 &1073088166
 GameObject:
   m_ObjectHideFlags: 0
