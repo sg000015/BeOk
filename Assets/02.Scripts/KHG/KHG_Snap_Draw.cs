@@ -31,8 +31,6 @@ public class KHG_Snap_Draw : MonoBehaviour
     //함수 실행 여부
     bool[] functionState = new bool[10];
 
-    int airCount;
-    bool airCheck;
     Transform syringe;
     Transform front;
     Transform back;
@@ -43,6 +41,17 @@ public class KHG_Snap_Draw : MonoBehaviour
     Vector3 reset;
     Vector3 backReset;
     Vector3 pos;
+
+
+    float dis;
+    float lastDis;
+
+    int minusNum = 0;
+    int minusNum2 = 0;
+    int airCount;
+
+    bool airCheck;
+    bool isFirst = false;
 
 
     void OnTriggerEnter(Collider coll)
@@ -133,6 +142,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (functionState[1]) AirCover();
         if (functionState[2]) SyringeSnap();
         if (functionState[3]) Drawing();
+        if (functionState[4]) TorniquetRestore();
 
     }
 
@@ -188,6 +198,20 @@ public class KHG_Snap_Draw : MonoBehaviour
             isFirst = true;
             functionState[3] = true;
         }
+    }
+
+    public void TorniquetRestoreStart()
+    {
+        if (_objectType == ObjectType.Tourniquet)
+        {
+            gameObject.GetComponent<BoxCollider>().enabled = true;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+            gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+
+            functionState[4] = true;
+        }
+
     }
 
 
@@ -292,9 +316,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 Destroy(this.gameObject);
             }
-
         }
-
     }
 
     void SyringeSnap()
@@ -304,16 +326,6 @@ public class KHG_Snap_Draw : MonoBehaviour
     }
 
 
-
-
-    float dis;
-    float lastDis;
-
-
-    int minusNum = 0;
-    int minusNum2 = 0;
-
-    bool isFirst = false;
 
     void Drawing()
     {
@@ -405,4 +417,18 @@ public class KHG_Snap_Draw : MonoBehaviour
         }
 
     }
+
+    void TorniquetRestore()
+    {
+        if (_objectType == ObjectType.Tourniquet)
+        {
+            if (transform.parent == null)
+            {
+                soundManager.Sound(4);
+                DrawingMgr.drawing.BloodDrawing();
+            }
+        }
+    }
+
+
 }

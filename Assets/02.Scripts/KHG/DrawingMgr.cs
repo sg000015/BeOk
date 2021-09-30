@@ -67,6 +67,7 @@ public class DrawingMgr : MonoBehaviour
     public void BloodDrawing()
     {
         //!지혈대  다시 활성화
+        GameObject.Find("Tourniquet").GetComponent<KHG_Snap_Draw>().TorniquetRestoreStart();
     }
 
     //지혈대 제거 시
