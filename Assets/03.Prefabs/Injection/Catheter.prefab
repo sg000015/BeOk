@@ -245,6 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 3
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!1 &1926010018472106978
 GameObject:
@@ -383,6 +384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 0
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!114 &1926010018472106981
 MonoBehaviour:

@@ -92,10 +92,9 @@ public class VirusMgr : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
         Vector3 pos = GameObject.Find("DisinfectFxPivot").GetComponent<Transform>().position;
         GameObject disinfectFxObj = Instantiate(disinfectFx, pos, Quaternion.identity);
-        soundManager.Sound(4);
 
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         Destroy(disinfectFxObj);
 
         // 바이러스그룹 비활성화
@@ -103,5 +102,7 @@ public class VirusMgr : MonoBehaviour
 
         // 다음 단계 시작 : 주사 위치
         DrawingMgr.drawing.Disinfect();
+        soundManager.Sound(4);
+
     }
 }

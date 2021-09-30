@@ -164,6 +164,7 @@ public class KHG_Control : MonoBehaviour
 
             //!
             if (grabbedObject.GetComponent<KHG_Grabble>().isGrab) { return; }
+            if (grabbedObject.tag != "GrabObject") { return; }
 
             var _grabByState = grabbedObject.GetComponent<KHG_Grabble>().grabByState;
 
