@@ -24,5 +24,6 @@ public class GameManager_Lobby : MonoBehaviour
     public void SetNickname()
     {
         PlayerPrefs.SetString("USER_ID", userIdText.text);
+        this.GetComponent<FirebaseManager>().SetNickname();
     }
 }
