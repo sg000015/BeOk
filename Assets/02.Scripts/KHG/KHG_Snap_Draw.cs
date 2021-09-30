@@ -41,6 +41,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     Vector3 rot;
     Vector3 reset;
+    Vector3 backReset;
     Vector3 pos;
 
 
@@ -125,6 +126,17 @@ public class KHG_Snap_Draw : MonoBehaviour
 
 
 
+    void LateUpdate()
+    {
+
+        if (functionState[0]) AirOff();
+        if (functionState[1]) AirCover();
+        if (functionState[2]) SyringeSnap();
+        if (functionState[3]) Drawing();
+
+    }
+
+
 
     public void AirOffStart()
     {
@@ -137,12 +149,13 @@ public class KHG_Snap_Draw : MonoBehaviour
             back = transform.parent;
             functionState[0] = true;
 
+            rot = new Vector3(90, -90f, 0);
+            reset = new Vector3(0, 0.363f, 4f);
+            backReset = new Vector3(0.383f, 1.31f, 0);
+
             Debug.Log("First" + Vector3.Distance(back.position, transform.position));
         }
     }
-
-
-
 
 
     public void AirCoverStart()
@@ -156,6 +169,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
             rot = new Vector3(0, -90f, -90f);
             reset = new Vector3(0, 0.372f, -4.5f);
+            backReset = new Vector3(0.383f, 1.31f, 0);
             functionState[1] = true;
         }
     }
@@ -165,27 +179,19 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (_objectType == ObjectType.Pull)
         {
             tag = "GrabObject";
-            // airCount = 0;
-            // airCheck = false;
             syringe = transform.parent.parent;
             back = transform.parent;
-            minusNum = 50;
+            minusNum = 100;
+            rot = new Vector3(90, -90f, 0);
+            reset = new Vector3(0, 0.363f, 4f);
+            backReset = new Vector3(0.383f, 1.31f, 0);
+            isFirst = true;
             functionState[3] = true;
         }
     }
 
 
 
-
-    void LateUpdate()
-    {
-
-        if (functionState[0]) AirOff();
-        if (functionState[1]) AirCover();
-        if (functionState[2]) SyringeSnap();
-        if (functionState[3]) Drawing();
-
-    }
 
 
     void AirOff()
@@ -200,9 +206,9 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.parent = back;
 
 
-                back.localPosition = Vector3.forward * -1.6f;
-                back.localEulerAngles = Vector3.zero;
-                transform.localPosition = new Vector3(0, 0.363f, 4f);
+                back.localPosition = backReset;
+                back.localEulerAngles = rot;
+                transform.localPosition = reset;
                 transform.localEulerAngles = Vector3.zero;
                 airCheck = false;
 
@@ -210,8 +216,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (airCount > 2)
                 {
 
-                    back.localPosition = Vector3.forward * -1.6f;
-                    back.localEulerAngles = Vector3.zero;
+                    back.localPosition = backReset;
+                    back.localEulerAngles = rot;
                     tag = "Untagged";
                     DrawingMgr.drawing.SyringeAirOff();
                     soundManager.Sound(4);
@@ -229,8 +235,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 dis = Vector3.Distance(back.position, transform.position);
 
-
-                back.localPosition = Vector3.forward * (-1.6f + 2 * (-0.2f + Mathf.Abs(dis)));
+                back.localPosition = backReset - Vector3.up * 3 * (-0.2f + Mathf.Abs(dis));
 
                 if (!airCheck && dis > 0.4f)
                 {
@@ -308,64 +313,80 @@ public class KHG_Snap_Draw : MonoBehaviour
     int minusNum = 0;
     int minusNum2 = 0;
 
+    bool isFirst = false;
+
     void Drawing()
     {
-        if (minusNum2 > 0) { minusNum2--; }
-        if (minusNum > 0) { minusNum--; }
 
         if (_objectType == ObjectType.Pull)
         {
-            //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+            minusNum2--;
             if (syringe.parent == null)
             {
-                transform.GetComponent<Rigidbody>().isKinematic = true;
-                transform.GetComponent<Rigidbody>().useGravity = false;
-                transform.parent = back;
-
-                back.localPosition = Vector3.forward * -1.6f;
-                back.localEulerAngles = Vector3.zero;
-
-                dis = Vector3.Distance(back.position, transform.position);
-                transform.localPosition = new Vector3(0, 0.363f, 4f);
-                transform.localEulerAngles = Vector3.zero;
-
+                minusNum--;
+                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
                 if (minusNum < 1)
                 {
                     minusNum = 300;
                     soundManager.Sound(2);
                     soundManager.Sound(2);
                     soundManager.Sound(2);
+                    soundManager.Sound(10);
                     Debug.Log("주사기 들기 감점");
                 }
+
+            }
+            else
+            {
+                minusNum = 100;
+            }
+
+            if (transform.parent == null)
+            {
+                isFirst = true;
+                transform.GetComponent<Rigidbody>().isKinematic = true;
+                transform.GetComponent<Rigidbody>().useGravity = false;
+                transform.parent = back;
+
+                back.localPosition = backReset;
+                back.localEulerAngles = rot;
+
+                dis = Vector3.Distance(back.position, transform.position);
+                transform.localPosition = reset;
+                transform.localEulerAngles = Vector3.zero;
+
             }
             else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
 
-                tempTr = transform.parent;
-                dis = Vector3.Distance(back.position, transform.position);
 
+                tempTr = transform.parent;
+
+                dis = Vector3.Magnitude(back.position - transform.position);
+
+                // Debug.Log("First dis" + dis);
+                Debug.Log((dis - lastDis) * 1000);
                 //! 이동거리 차이에 따라 감점(속도)
-                if ((dis - lastDis) * 1000 > 3)
+                if ((dis - lastDis) * 1000 > 5)
                 {
-                    Debug.Log("감점");
-                    if (minusNum2 < 1)
-                    {
-                        minusNum2 = 100;
-                        soundManager.Sound(2);
-                        soundManager.Sound(2);
-                        soundManager.Sound(2);
-                        Debug.Log("주사기 속도 감점");
-                    }
+                    if (!isFirst)
+                        if (minusNum2 < 1)
+                        {
+                            minusNum2 = 20;
+                            soundManager.Sound(1);
+                            soundManager.Sound(1);
+                            soundManager.Sound(1);
+                            soundManager.Sound(9);
+                            Debug.Log("주사기 속도 감점");
+                        }
                 }
+                isFirst = false;
                 lastDis = dis;
 
-                if (true)
-                {
-                    back.localPosition = Vector3.forward * (-1.6f + 2 * (-0.2f + Mathf.Abs(dis)));
-                    //!피 채우기(dis를 이용)
-                }
+                back.localPosition = backReset - Vector3.up * 12 * (-0.2f + Mathf.Abs(dis));
+                //!피 채우기(dis를 이용)
 
-                if (dis > 0.5f)
+                if (dis > 0.35f)
                 {
                     soundManager.Sound(4);
                     functionState[3] = false;
