@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
 using Firebase.Database;
+using UnityEngine.Events;
 
 public class Player
 {
@@ -26,12 +27,22 @@ public class FirebaseManager : MonoBehaviour
 
     private bool isLoad = false;
     private Query playerNameQuery;
-    private int rankNum = 10;
+    [HideInInspector]
+    public int rankNum = 7;
 
-    private string[] rankersName;
-    private int[] rankersScore;
-    private int[] rankersMin;
-    private int[] rankersSec;
+    [HideInInspector]
+    public string[] rankersName;
+    [HideInInspector]
+    public int[] rankersScore;
+    [HideInInspector]
+    public int[] rankersMin;
+    [HideInInspector]
+    public int[] rankersSec;
+
+
+    private string nickname;
+    // public defaultev rankingEvent;
+    public UnityEvent rankingEvent = new UnityEvent();
 
 
     void Awake()
@@ -44,14 +55,24 @@ public class FirebaseManager : MonoBehaviour
     void Start()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-        rankersName = new string[rankNum];
-        rankersScore = new int[rankNum];
-        rankersMin = new int[rankNum];
-        rankersSec = new int[rankNum];
+        rankersName = new string[rankNum + 1];
+        rankersScore = new int[rankNum + 1];
+        rankersMin = new int[rankNum + 1];
+        rankersSec = new int[rankNum + 1];
+
+        InitRankers();
+
+        //!삭제
+        SetNickname();
+    }
+
+    public void SetNickname()
+    {
+        nickname = PlayerPrefs.GetString("USER_ID");
     }
 
     // 데이터 등록
-    public void InsertData(string skill, string nickname, int currentScore)
+    public void InsertData(string skill, int currentScore)
     {
         // UI 입력값
         string _playerName = nickname;
@@ -66,8 +87,9 @@ public class FirebaseManager : MonoBehaviour
     // 전체 데이터 불러오기
     public void LoadAllData(string skill)
     {
+        InitRankers();
+
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(skill);
-        //.OrderByChild("min").OrderByChild("score")
         reference.OrderByChild("score").LimitToLast(rankNum).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -88,18 +110,12 @@ public class FirebaseManager : MonoBehaviour
                     string _name = _data["playerName"].ToString();
                     int _score = int.Parse(_data["score"].ToString());
 
-                    int score = _score / 10000;
-
-                    _score %= 10000;
-                    int min = _score / 100;
-
-                    _score %= 100;
-                    int sec = _score;
+                    int[] datas = processData(_score);
 
                     rankersName[cnt - 1] = _name;
-                    rankersScore[cnt - 1] = score;
-                    rankersMin[cnt - 1] = 60 - min;
-                    rankersSec[cnt - 1] = 60 - sec;
+                    rankersScore[cnt - 1] = datas[0];
+                    rankersMin[cnt - 1] = datas[1];
+                    rankersSec[cnt - 1] = datas[2];
 
                     cnt--;
                 }
@@ -115,15 +131,16 @@ public class FirebaseManager : MonoBehaviour
         yield return new WaitUntil(() => isLoad);
         isLoad = false;
 
-        for (int i = 0; i < rankNum; i++)
-        {
-            Debug.Log($"{rankersName[i]} - {rankersScore[i]} / {rankersMin[i]}:{rankersSec[i]}");
-        }
+        rankingEvent.Invoke();
+
+        // for (int i = 0; i < rankNum; i++)
+        // {
+        //     Debug.Log($"{rankersName[i]} - {rankersScore[i]} / {rankersMin[i]}:{rankersSec[i]}");
+        // }
     }
 
-    // 정맥주사
     // 현재 플레이어 검색
-    public void SelectData(string skill, string nickname)
+    public void SelectData(string skill)
     {
         string _playerName = nickname;
         // 지역 레퍼런스 선언
@@ -137,13 +154,70 @@ public class FirebaseManager : MonoBehaviour
     void OnDataLoaded(object sender, ValueChangedEventArgs args)
     {
         DataSnapshot snapshot = args.Snapshot;
+        string _name;
+        int _score;
 
         foreach (var data in snapshot.Children)
         {
             IDictionary _data = (IDictionary)data.Value;
-            Debug.Log($"Name : {_data["playerName"]}, Score : {_data["score"]}");
+            // Debug.Log($"Name : {_data["playerName"]}, Score : {_data["score"]}");
+
+            _name = _data["playerName"].ToString();
+            _score = int.Parse(_data["score"].ToString());
+
+            int[] datas = processData(_score);
+
+            rankersName[rankNum] = _name;
+            rankersScore[rankNum] = datas[0];
+            rankersMin[rankNum] = datas[1];
+            rankersSec[rankNum] = datas[2];
+
         }
 
         playerNameQuery.ValueChanged -= OnDataLoaded;
+    }
+
+
+
+    int[] processData(int _score)
+    {
+        int[] datas = new int[3];
+
+        // Debug.Log($"processData : {_score}");
+
+        datas[0] = _score / 10000;
+
+        _score %= 10000;
+        datas[1] = _score / 100;
+        datas[1] = 60 - datas[1];
+
+        _score %= 100;
+        datas[2] = _score;
+        datas[2] = 60 - datas[2];
+
+        // Debug.Log($"processData : {datas[0]}");
+        // Debug.Log($"processData : {datas[1]}");
+        // Debug.Log($"processData : {datas[2]}");
+        // Debug.Log($"--------------------------------------------");
+
+        return datas;
+    }
+
+
+    // private string[] rankersName;
+    // private int[] rankersScore;
+    // private int[] rankersMin;
+    // private int[] rankersSec;
+    void InitRankers()
+    {
+        int i;
+        for (i = 0; i <= rankNum; i++)
+        {
+            rankersName[i] = "None";
+            rankersScore[i] = 0;
+            rankersMin[i] = 0;
+            rankersSec[i] = 0;
+        }
+
     }
 }
