@@ -25,7 +25,7 @@ public class InputMgr : MonoBehaviour
 
         _score += min * 100;
         _score += sec;
-        fb.InsertData("Injection", nickname, _score);
+        fb.InsertData("Injection", _score);
     }
 
     [ContextMenu("정맥주사 - All")]
@@ -37,6 +37,6 @@ public class InputMgr : MonoBehaviour
     [ContextMenu("정맥주사 - 내 점수")]
     void InjectionSelect()
     {
-        fb.SelectData("Injection", nickname);
+        fb.SelectData("Injection");
     }
 }

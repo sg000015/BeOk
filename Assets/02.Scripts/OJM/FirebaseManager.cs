@@ -33,6 +33,8 @@ public class FirebaseManager : MonoBehaviour
     private int[] rankersMin;
     private int[] rankersSec;
 
+    public string nickname;
+
 
     void Awake()
     {
@@ -48,10 +50,18 @@ public class FirebaseManager : MonoBehaviour
         rankersScore = new int[rankNum];
         rankersMin = new int[rankNum];
         rankersSec = new int[rankNum];
+
+        //!삭제
+        SetNickname();
+    }
+
+    public void SetNickname()
+    {
+        nickname = PlayerPrefs.GetString("USER_ID");
     }
 
     // 데이터 등록
-    public void InsertData(string skill, string nickname, int currentScore)
+    public void InsertData(string skill, int currentScore)
     {
         // UI 입력값
         string _playerName = nickname;
@@ -67,7 +77,6 @@ public class FirebaseManager : MonoBehaviour
     public void LoadAllData(string skill)
     {
         DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(skill);
-        //.OrderByChild("min").OrderByChild("score")
         reference.OrderByChild("score").LimitToLast(rankNum).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -88,18 +97,12 @@ public class FirebaseManager : MonoBehaviour
                     string _name = _data["playerName"].ToString();
                     int _score = int.Parse(_data["score"].ToString());
 
-                    int score = _score / 10000;
-
-                    _score %= 10000;
-                    int min = _score / 100;
-
-                    _score %= 100;
-                    int sec = _score;
+                    int[] datas = processData(_score);
 
                     rankersName[cnt - 1] = _name;
-                    rankersScore[cnt - 1] = score;
-                    rankersMin[cnt - 1] = 60 - min;
-                    rankersSec[cnt - 1] = 60 - sec;
+                    rankersScore[cnt - 1] = datas[0];
+                    rankersMin[cnt - 1] = datas[1];
+                    rankersSec[cnt - 1] = datas[2];
 
                     cnt--;
                 }
@@ -121,9 +124,8 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    // 정맥주사
     // 현재 플레이어 검색
-    public void SelectData(string skill, string nickname)
+    public void SelectData(string skill)
     {
         string _playerName = nickname;
         // 지역 레퍼런스 선언
@@ -137,13 +139,45 @@ public class FirebaseManager : MonoBehaviour
     void OnDataLoaded(object sender, ValueChangedEventArgs args)
     {
         DataSnapshot snapshot = args.Snapshot;
+        string _name;
+        int _score;
 
         foreach (var data in snapshot.Children)
         {
             IDictionary _data = (IDictionary)data.Value;
-            Debug.Log($"Name : {_data["playerName"]}, Score : {_data["score"]}");
+            // Debug.Log($"Name : {_data["playerName"]}, Score : {_data["score"]}");
+
+            _name = _data["playerName"].ToString();
+            _score = int.Parse(_data["score"].ToString());
+
+            int[] datas = processData(_score);
+
         }
 
         playerNameQuery.ValueChanged -= OnDataLoaded;
+    }
+
+    int[] processData(int _score)
+    {
+        int[] datas = new int[3];
+
+        // Debug.Log($"processData : {_score}");
+
+        datas[0] = _score / 10000;
+
+        _score %= 10000;
+        datas[1] = _score / 100;
+        datas[1] = 60 - datas[1];
+
+        _score %= 100;
+        datas[2] = _score;
+        datas[2] = 60 - datas[2];
+
+        // Debug.Log($"processData : {datas[0]}");
+        // Debug.Log($"processData : {datas[1]}");
+        // Debug.Log($"processData : {datas[2]}");
+        // Debug.Log($"--------------------------------------------");
+
+        return datas;
     }
 }

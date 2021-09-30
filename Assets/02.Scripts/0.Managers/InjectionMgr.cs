@@ -423,7 +423,7 @@ public class InjectionMgr : MonoBehaviour
 
         _score += min * 100;
         _score += sec;
-        fb.InsertData("Injection", "ojui", _score);
+        fb.InsertData("Injection", _score);
     }
 
 
