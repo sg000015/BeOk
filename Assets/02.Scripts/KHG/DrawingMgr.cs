@@ -58,7 +58,7 @@ public class DrawingMgr : MonoBehaviour
     {
         //!주사기 스냅완료
         //!주사뒷부분 당기기(주사기 잡은 상태로, 뒷부분 당길것)
-        Syringe.transform.Find("Syringe_Back").Find("Pull_Snap2").GetComponent<KHG_Snap_Draw>().DrawingStart();
+        Syringe.transform.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().DrawingStart();
     }
 
 

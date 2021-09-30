@@ -200,8 +200,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.parent = back;
 
 
-                // back.localPosition = Vector3.forward * -1.6f;
-                // back.localEulerAngles = Vector3.zero;
+                back.localPosition = Vector3.forward * -1.6f;
+                back.localEulerAngles = Vector3.zero;
                 transform.localPosition = new Vector3(0, 0.363f, 4f);
                 transform.localEulerAngles = Vector3.zero;
                 airCheck = false;
@@ -216,13 +216,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                     DrawingMgr.drawing.SyringeAirOff();
                     soundManager.Sound(4);
                     functionState[0] = false;
-                    Destroy(this.gameObject);
 
                 }
 
             }
-            else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.name == "CustomHandLeft"))
+            else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
+                Debug.Log(transform.parent.name);
 
                 tempTr = transform.parent;
                 transform.parent = back;
@@ -230,10 +230,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 dis = Vector3.Distance(back.position, transform.position);
 
 
-                if (true)
-                {
-                    back.localPosition = Vector3.forward * (-1.6f + 2 * (-0.2f + Mathf.Abs(dis)));
-                }
+                back.localPosition = Vector3.forward * (-1.6f + 2 * (-0.2f + Mathf.Abs(dis)));
 
                 if (!airCheck && dis > 0.4f)
                 {
@@ -325,8 +322,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.GetComponent<Rigidbody>().useGravity = false;
                 transform.parent = back;
 
-                // back.localPosition = Vector3.forward * -1.6f;
-                // back.localEulerAngles = Vector3.zero;
+                back.localPosition = Vector3.forward * -1.6f;
+                back.localEulerAngles = Vector3.zero;
 
                 dis = Vector3.Distance(back.position, transform.position);
                 transform.localPosition = new Vector3(0, 0.363f, 4f);
@@ -341,10 +338,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                     Debug.Log("주사기 들기 감점");
                 }
             }
-            else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.name == "CustomHandLeft"))
+            else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
 
-                transform.parent = tempTr;
+                tempTr = transform.parent;
                 dis = Vector3.Distance(back.position, transform.position);
 
                 //! 이동거리 차이에 따라 감점(속도)
@@ -365,7 +362,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (true)
                 {
                     back.localPosition = Vector3.forward * (-1.6f + 2 * (-0.2f + Mathf.Abs(dis)));
-                    //피 채우기(dis를 이용)
+                    //!피 채우기(dis를 이용)
                 }
 
                 if (dis > 0.5f)
@@ -373,7 +370,9 @@ public class KHG_Snap_Draw : MonoBehaviour
                     soundManager.Sound(4);
                     functionState[3] = false;
                     functionState[2] = false;
+                    tag = "Untagged";
                     DrawingMgr.drawing.BloodDrawing();
+
                 }
 
                 transform.parent = tempTr;
