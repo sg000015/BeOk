@@ -137,7 +137,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 {
                     //!주사기 스냅 되었을시
                     vaccum = coll.transform;
+                    front = transform.parent.parent.Find("Blood");
+                    back = coll.transform.parent.Find("Blood");
                     soundManager.Sound(4);
+                    minusNum = 0;
+                    minusNum2 = 0;
                     functionState[6] = false;
                     functionState[7] = true;
 
@@ -152,11 +156,12 @@ public class KHG_Snap_Draw : MonoBehaviour
                 soundManager.Sound(3);
                 soundManager.Sound(3);
                 soundManager.Sound(3);
-                Debug.Log("Floor check");
+                Debug.Log("Shakeing Check = " + airCount);
                 if (airCount > 8)
                 {
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodShake();
+                    Debug.Log("Shaking Finish");
                     GetComponent<BoxCollider>().enabled = false;
                 }
             }
@@ -400,6 +405,8 @@ public class KHG_Snap_Draw : MonoBehaviour
         syringe.eulerAngles = rot;
     }
 
+    public float testInt = 7.3f;
+
     void Drawing()
     {
 
@@ -468,8 +475,14 @@ public class KHG_Snap_Draw : MonoBehaviour
                 isFirst = false;
                 lastDis = dis;
 
-                back.localPosition = backReset - Vector3.up * 15 * (-0.1f + Mathf.Abs(dis));
+                float fixdis = Mathf.Abs(dis);
+                Debug.Log(fixdis);
+                back.localPosition = backReset - Vector3.up * 15 * (-0.1f + fixdis);
+
                 //!피 채우기(dis를 이용)
+                Transform blood = syringe.Find("Blood");
+                blood.localPosition = Vector3.up * (1.8f + -testInt * (fixdis - 0.1f));
+                blood.localScale = new Vector3(0.5f, testInt * (fixdis - 0.1f), 0.5f);
 
                 if (dis > 0.25f)
                 {
@@ -524,6 +537,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (value1 || value2 || value3)
                 {
                     minusNum++;
+                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
+                    front.localScale = front.localScale + Vector3.up * -0.0035f;
+                    back.localPosition = back.localPosition + Vector3.up * 0.00075f;
+                    back.localScale = back.localScale + Vector3.up * 0.00075f;
+
                 }
             }
             else if (tempTr.name == "CustomHandLeft")
@@ -534,20 +552,24 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (value1 || value2 || value3)
                 {
                     minusNum++;
+                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
+                    front.localScale = front.localScale + Vector3.up * -0.0035f;
+                    back.localPosition = back.localPosition + Vector3.up * 0.00075f;
+                    back.localScale = back.localScale + Vector3.up * 0.00075f;
                 }
 
             }
 
         }
 
-        if (minusNum > 10 && minusNum2 < 5)
+        if (minusNum > 50 && minusNum2 < 5)
         {
             soundManager.Sound(0);
             soundManager.Sound(0);
             minusNum -= 50;
             minusNum2++;
         }
-        else if (minusNum > 10 && minusNum2 == 5)
+        else if (minusNum > 50 && minusNum2 == 5)
         {
             soundManager.Sound(4);
             DrawingMgr.drawing.VaccumTube();
