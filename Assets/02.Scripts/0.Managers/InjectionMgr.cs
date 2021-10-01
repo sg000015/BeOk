@@ -328,7 +328,6 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
-        Ranking(score);
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
@@ -391,6 +390,8 @@ public class InjectionMgr : MonoBehaviour
             StartCoroutine(nameof(PlayPatientSound), 3);
         }
 
+        // 랭킹 UI
+        Ranking(score);
     }
 
     IEnumerator PlayPatientSound(int num)
