@@ -5,13 +5,12 @@ using TMPro;
 
 public class RankingCtrl : MonoBehaviour
 {
-    public GameManager_Lobby GM;
-
     public GameObject NickNamePanel;
     public GameObject RankingPanel;
     public TMP_Text text;
     GameObject prevPanel;
     GameObject curPanel;
+
     public void OnClickKey(string str)
     {
         if (SW)
@@ -20,8 +19,9 @@ public class RankingCtrl : MonoBehaviour
             text.text += str.ToLower();
 
     }
+
     bool SW = false;
-     public void OnClickShift()
+    public void OnClickShift()
     {
         Transform keyboard = NickNamePanel.transform.GetChild(0);
         SW = !SW;
@@ -47,10 +47,12 @@ public class RankingCtrl : MonoBehaviour
             }
         }
     }
+
     public void OnClickDelete()
     {
         text.text = " ";
     }
+
     public void OnClickSpace()
     {
         text.text += " ";
@@ -58,14 +60,15 @@ public class RankingCtrl : MonoBehaviour
 
     public void OnClickEnterBtn()
     {
+        //! Jumi
+        InjectionMgr.injection.InsertData(text.text);
 
         prevPanel = NickNamePanel;
         curPanel = RankingPanel;
         ShowAndHideUI();
-        //!
-        GM.SetNickname();
 
     }
+
     public void ShowAndHideUI(bool direction = true)
     {
         prevPanel.SetActive(!direction);

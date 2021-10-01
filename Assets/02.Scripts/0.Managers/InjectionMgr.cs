@@ -26,6 +26,12 @@ public class InjectionMgr : MonoBehaviour
     public Timer timer;
     public Image progress;
 
+    // Ranking UI
+    [Header("Ranking UI")]
+    public TMP_Text[] names;
+    public TMP_Text[] scores;
+    public TMP_Text[] times;
+
     // 수액
     private string[] type = { "Normal Saline", "5% Dextrose", "0.45% Saline" };
     private int[] speed = { 30, 35, 40, 45, 50 };
@@ -322,7 +328,7 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
-        InsertData(score);
+        Ranking(score);
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
@@ -400,6 +406,84 @@ public class InjectionMgr : MonoBehaviour
         soundManager.PlayPatientSound(num);
     }
 
+
+
+
+    /*
+        1. 랭킹 불러오기
+        2. 랭킹 안에 들었는지 확인
+            a. 랭킹 안에 듦 : 키보드 > enter > 데이터 삽입
+        3. 랭킹 불러오기 > UI 변경 
+        4. 랭킹 UI 활성화
+    */
+
+    private int myScore = 0;
+    void Ranking(int score)
+    {
+        // 랭킹 불러오기
+        fb.LoadAllData("Injection");
+
+        // 랭킹 안에 들었는지 확인
+        myScore = ConvertScore(score);
+        if (fb.lastRankerScore <= myScore)
+        {
+            // 랭킹 안에 들었으면
+            //TODO 키보드 UI on
+        }
+        else
+        {
+            // 랭킹 안에 들지 못했으면
+            ActiveRanking();
+        }
+
+    }
+
+    void ActiveRanking()
+    {
+        // 랭킹 불러오기
+        fb.LoadAllData("Injection");
+
+        // UI 변경
+        int _rankNum = fb.rankNum;
+        for (int i = 0; i < _rankNum; i++)
+        {
+            names[i].text = fb.rankersName[i];
+            scores[i].text = $"{fb.rankersScore[i]}";
+            times[i].text = $"{fb.rankersMin[i]}:{fb.rankersSec[i]}";
+        }
+
+        //TODO UI 활성화
+
+    }
+
+    int ConvertScore(int score)
+    {
+        int[] times = timer.GetTime();
+        int _score = score * 10000;
+        int min = 60 - times[0];
+        int sec = 60 - times[1];
+
+        _score += min * 100;
+        _score += sec;
+
+        return _score;
+    }
+
+    public void InsertData(string nickname)
+    {
+        fb.InsertData("Injection", nickname, myScore);
+        ActiveRanking();
+    }
+
+
+
+
+
+
+
+
+
+
     public void MinusAreaScore()
     {
         if (scoreList[2] == 0) return;
@@ -413,19 +497,6 @@ public class InjectionMgr : MonoBehaviour
 
         scoreList[3] -= 5;
     }
-
-    void InsertData(int score)
-    {
-        int[] times = timer.GetTime();
-        int _score = score * 10000;
-        int min = 60 - times[0];
-        int sec = 60 - times[1];
-
-        _score += min * 100;
-        _score += sec;
-        fb.InsertData("Injection", _score);
-    }
-
 
     // 수액 랜덤값으로 설정
     void SetSap()

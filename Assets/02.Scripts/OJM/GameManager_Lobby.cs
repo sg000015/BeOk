@@ -18,11 +18,10 @@ public class GameManager_Lobby : MonoBehaviour
     void Start()
     {
         fb = this.GetComponent<FirebaseManager>();
-        fb.rankingEvent.AddListener(() => UpdateRanking());
+        // fb.rankingEvent.AddListener(() => UpdateRanking());
 
         userId = PlayerPrefs.GetString("USER_ID", $"USER_{Random.Range(0, 100):00}");
         userIdText.text = userId;
-        SetNickname();
     }
 
     void Update()
@@ -30,16 +29,10 @@ public class GameManager_Lobby : MonoBehaviour
 
     }
 
-    public void SetNickname()
-    {
-        PlayerPrefs.SetString("USER_ID", userIdText.text);
-        fb.SetNickname();
-    }
-
     public void GetRanking(string skill)
     {
-        // 본인 점수 가져오기
-        fb.SelectData(skill);
+        // // 본인 점수 가져오기
+        // fb.SelectData(skill);
 
         // 랭커들 점수 가져오기
         fb.LoadAllData(skill);

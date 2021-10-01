@@ -38,9 +38,9 @@ public class FirebaseManager : MonoBehaviour
     public int[] rankersMin;
     [HideInInspector]
     public int[] rankersSec;
+    [HideInInspector]
+    public int lastRankerScore;
 
-
-    private string nickname;
     // public defaultev rankingEvent;
     public UnityEvent rankingEvent = new UnityEvent();
 
@@ -61,27 +61,16 @@ public class FirebaseManager : MonoBehaviour
         rankersSec = new int[rankNum + 1];
 
         InitRankers();
-
-        //!삭제
-        SetNickname();
-    }
-
-    public void SetNickname()
-    {
-        nickname = PlayerPrefs.GetString("USER_ID");
     }
 
     // 데이터 등록
-    public void InsertData(string skill, int currentScore)
+    public void InsertData(string skill, string nickname, int currentScore)
     {
-        // UI 입력값
-        string _playerName = nickname;
-        int _score = currentScore;
 
-        Player player = new Player(_playerName, _score);
+        Player player = new Player(nickname, currentScore);
 
         string json = JsonUtility.ToJson(player);
-        reference.Child(skill).Child(_playerName).SetRawJsonValueAsync(json);
+        reference.Child(skill).Child(nickname).SetRawJsonValueAsync(json);
     }
 
     // 전체 데이터 불러오기
@@ -108,9 +97,9 @@ public class FirebaseManager : MonoBehaviour
                     IDictionary _data = (IDictionary)data.Value;
 
                     string _name = _data["playerName"].ToString();
-                    int _score = int.Parse(_data["score"].ToString());
+                    lastRankerScore = int.Parse(_data["score"].ToString());
 
-                    int[] datas = processData(_score);
+                    int[] datas = processData(lastRankerScore);
 
                     rankersName[cnt - 1] = _name;
                     rankersScore[cnt - 1] = datas[0];
@@ -131,7 +120,7 @@ public class FirebaseManager : MonoBehaviour
         yield return new WaitUntil(() => isLoad);
         isLoad = false;
 
-        rankingEvent.Invoke();
+        // rankingEvent.Invoke();
 
         // for (int i = 0; i < rankNum; i++)
         // {
@@ -140,15 +129,15 @@ public class FirebaseManager : MonoBehaviour
     }
 
     // 현재 플레이어 검색
-    public void SelectData(string skill)
-    {
-        string _playerName = nickname;
-        // 지역 레퍼런스 선언
-        DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(skill);
-        playerNameQuery = reference.OrderByChild("playerName").EqualTo(_playerName);
+    // public void SelectData(string skill)
+    // {
+    //     string _playerName = nickname;
+    //     // 지역 레퍼런스 선언
+    //     DatabaseReference reference = FirebaseDatabase.DefaultInstance.GetReference(skill);
+    //     playerNameQuery = reference.OrderByChild("playerName").EqualTo(_playerName);
 
-        playerNameQuery.ValueChanged += OnDataLoaded;
-    }
+    //     playerNameQuery.ValueChanged += OnDataLoaded;
+    // }
 
     // Query 결과값을 출력하는 함수
     void OnDataLoaded(object sender, ValueChangedEventArgs args)
@@ -203,11 +192,6 @@ public class FirebaseManager : MonoBehaviour
         return datas;
     }
 
-
-    // private string[] rankersName;
-    // private int[] rankersScore;
-    // private int[] rankersMin;
-    // private int[] rankersSec;
     void InitRankers()
     {
         int i;
@@ -220,4 +204,7 @@ public class FirebaseManager : MonoBehaviour
         }
 
     }
+
+
+
 }
