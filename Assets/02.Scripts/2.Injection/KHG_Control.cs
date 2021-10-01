@@ -243,8 +243,12 @@ public class KHG_Control : MonoBehaviour
             if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
             {
                 //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-                mat.color *= 1.2f;
+                try
+                {
+                    Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                    mat.color *= 1.2f;
+                }
+                catch { }
             }
 
         }
@@ -270,9 +274,15 @@ public class KHG_Control : MonoBehaviour
         {
             if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
             {
-                //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-                mat.color /= 1.2f;
+                try
+                {
+                    //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
+                    Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                    mat.color /= 1.2f;
+                }
+                catch { }
+
+
             }
 
         }

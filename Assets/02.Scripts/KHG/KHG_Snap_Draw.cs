@@ -150,11 +150,14 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 airCount++;
                 soundManager.Sound(3);
+                soundManager.Sound(3);
+                soundManager.Sound(3);
                 Debug.Log("Floor check");
-                if (airCount > 5)
+                if (airCount > 8)
                 {
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodShake();
+                    GetComponent<BoxCollider>().enabled = false;
                 }
             }
         }
