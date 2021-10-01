@@ -27,7 +27,6 @@ public class RankingCtrl : MonoBehaviour
         SW = !SW;
         foreach (TMP_Text text in keyboard.GetComponentsInChildren<TMP_Text>())
         {
-            Debug.Log(text.text);
             if (text.text == "Enter" ||
                 text.text == "Space" ||
                 text.text == "Delete")
