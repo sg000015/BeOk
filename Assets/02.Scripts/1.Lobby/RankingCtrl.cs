@@ -71,6 +71,7 @@ public class RankingCtrl : MonoBehaviour
         // prevPanel = NickNamePanel;
         // curPanel = RankingPanel;
         // ShowAndHideUI();
+
         NickNamePanel.SetActive(false);
 
         Debug.Log($"닉네임패널 액티브 유무 : {NickNamePanel.activeSelf}");
@@ -80,6 +81,7 @@ public class RankingCtrl : MonoBehaviour
 
     public void ShowAndHideUI(bool direction = true)
     {
+        Debug.Log("//ShowAndHideUI");
         prevPanel.SetActive(!direction);
         curPanel.SetActive(direction);
     }
@@ -93,11 +95,21 @@ public class RankingCtrl : MonoBehaviour
 
     public void ActiveNickname()
     {
+        Debug.Log("//ActiveNickname");
         NickNamePanel.SetActive(true);
     }
 
-    public void ActiveRanking()
+    public void InactiveNickname()
     {
+        Debug.Log("//InactiveNickname");
+        NickNamePanel.SetActive(false);
+    }
+
+    public void ActiveRankingUI()
+    {
+        Debug.Log("//ActiveRanking");
         RankingPanel.SetActive(true);
     }
+
+
 }

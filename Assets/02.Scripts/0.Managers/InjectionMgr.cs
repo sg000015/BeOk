@@ -475,7 +475,7 @@ public class InjectionMgr : MonoBehaviour
         Debug.Log("텍스트 변경 완료");
 
         // UI 활성화
-        rankingCtrl.ActiveNickname();
+        rankingCtrl.ActiveRankingUI();
 
     }
 
