@@ -100,7 +100,7 @@ public class InjectionMgr : MonoBehaviour
         for (int i = 0; i < scoreList.Length; i++)
         {
             // scoreList[i] = 0;
-            Debug.Log($"{i} : {scoreList[i]}");
+            // Debug.Log($"{i} : {scoreList[i]}");
         }
 
         // 환자차트 UI
@@ -428,8 +428,18 @@ public class InjectionMgr : MonoBehaviour
 
         rankingCtrl.ChangeCanvas();
 
+        StartCoroutine(nameof(CheckRanking), score);
+    }
+
+    IEnumerator CheckRanking(int score)
+    {
+        yield return new WaitUntil(() => fb.isLoad);
+        fb.isLoad = false;
+
         // 랭킹 안에 들었는지 확인
         myScore = ConvertScore(score);
+        Debug.Log($"lastRankerScore : {fb.lastRankerScore}");
+        Debug.Log($"myScore : {myScore}");
         if (fb.lastRankerScore <= myScore)
         {
             // 랭킹 안에 들었으면 키보드 UI on
@@ -438,15 +448,19 @@ public class InjectionMgr : MonoBehaviour
         else
         {
             // 랭킹 안에 들지 못했으면
-            ActiveRanking();
+            StartCoroutine(nameof(ActiveRanking));
+            // ActiveRanking();
         }
 
     }
 
-    void ActiveRanking()
+    IEnumerator ActiveRanking()
     {
         // 랭킹 불러오기
         fb.LoadAllData("Injection");
+
+        yield return new WaitUntil(() => fb.isLoad);
+        fb.isLoad = false;
 
         // UI 변경
         int _rankNum = fb.rankNum;
@@ -455,7 +469,10 @@ public class InjectionMgr : MonoBehaviour
             names[i].text = fb.rankersName[i];
             scores[i].text = $"{fb.rankersScore[i]}";
             times[i].text = $"{fb.rankersMin[i]}:{fb.rankersSec[i]}";
+
+            Debug.Log($"____{names[i].text} / {scores[i].text} / {times[i].text}");
         }
+        Debug.Log("텍스트 변경 완료");
 
         // UI 활성화
         rankingCtrl.ActiveNickname();
@@ -477,8 +494,10 @@ public class InjectionMgr : MonoBehaviour
 
     public void InsertData(string nickname)
     {
+        Debug.Log("MGR - InsertData");
         fb.InsertData("Injection", nickname, myScore);
-        ActiveRanking();
+        // ActiveRanking();
+        StartCoroutine(nameof(ActiveRanking));
     }
 
 
@@ -511,7 +530,7 @@ public class InjectionMgr : MonoBehaviour
         _sapType = type[_sapTypeidx];
 
         _sapSpeed = speed[Random.Range(0, speed.Length)];
-        Debug.Log($"sap speed : {_sapSpeed}");
+        // Debug.Log($"sap speed : {_sapSpeed}");
     }
 
     // 화살표 On

@@ -25,7 +25,7 @@ public class FirebaseManager : MonoBehaviour
     private DatabaseReference reference;
     private readonly string uri = "https://be-ok-6591b-default-rtdb.firebaseio.com/";
 
-    private bool isLoad = false;
+    public bool isLoad = false;
     private Query playerNameQuery;
     [HideInInspector]
     public int rankNum = 7;
@@ -91,27 +91,36 @@ public class FirebaseManager : MonoBehaviour
 
                 Debug.Log($"데이터 레코드 갯수 : {snapshot.ChildrenCount}");
                 int cnt = (int)snapshot.ChildrenCount;
-
+                bool isLast = true;
                 foreach (DataSnapshot data in snapshot.Children)
                 {
                     IDictionary _data = (IDictionary)data.Value;
 
                     string _name = _data["playerName"].ToString();
-                    lastRankerScore = int.Parse(_data["score"].ToString());
+                    int _score = int.Parse(_data["score"].ToString());
 
-                    int[] datas = processData(lastRankerScore);
+                    int[] datas = processData(_score);
 
                     rankersName[cnt - 1] = _name;
                     rankersScore[cnt - 1] = datas[0];
                     rankersMin[cnt - 1] = datas[1];
                     rankersSec[cnt - 1] = datas[2];
 
+                    // Debug.Log($"{rankersName[cnt - 1]} - {rankersScore[cnt - 1]} / {rankersMin[cnt - 1]}:{rankersSec[cnt - 1]}");
+                    if (isLast)
+                    {
+                        isLast = false;
+                        lastRankerScore = _score;
+                    }
+
+
                     cnt--;
                 }
                 isLoad = true;
+                Debug.Log("-------------------------isLoad - true 1");
             }
         });
-        StartCoroutine(UpdateAllData());
+        // StartCoroutine(UpdateAllData());
     }
 
     // UI변경
