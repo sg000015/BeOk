@@ -14,6 +14,8 @@ public class KHG_Snap_Draw : MonoBehaviour
         Needle,
         Tourniquet,
         Syringe,
+        Shake,
+        VaccumTube,
 
         IVPole,
         Sap,
@@ -37,6 +39,7 @@ public class KHG_Snap_Draw : MonoBehaviour
     Transform back;
     Transform point;
     Transform tempTr;
+    public Transform vaccum;
 
     Vector3 rot;
     Vector3 reset;
@@ -49,7 +52,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     int minusNum = 0;
     int minusNum2 = 0;
-    int airCount;
+    int airCount = 0;
 
     bool airCheck;
     bool isFirst = false;
@@ -75,6 +78,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                     //! 팔에 알콜솜 스냅될것
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodSafety();
+                    functionState[5] = false;
                 }
 
             }
@@ -117,7 +121,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 syringe = transform.parent.parent;
                 syringe.GetComponent<Rigidbody>().isKinematic = true;
-                syringe.tag = "Untagged";
+                // syringe.tag = "Untagged";
                 pos = syringe.position;
                 rot = syringe.eulerAngles;
                 functionState[2] = true;
@@ -127,18 +131,42 @@ public class KHG_Snap_Draw : MonoBehaviour
 
 
             }
-        }
-        else if (_objectType == ObjectType.Syringe)
-        {
-            if (!isDo && coll.name == "Vaccum_Snap")
+            else if (isDo && coll.name == "Vaccum_Snap")
             {
                 if (functionState[6])
                 {
                     //!주사기 스냅 되었을시
+                    vaccum = coll.transform;
                     soundManager.Sound(4);
+                    functionState[6] = false;
                     functionState[7] = true;
 
                 }
+            }
+        }
+        else if (_objectType == ObjectType.Shake)
+        {
+            if (coll.name == "Plane")
+            {
+                airCount++;
+                soundManager.Sound(3);
+                Debug.Log("Floor check");
+                if (airCount > 5)
+                {
+                    soundManager.Sound(4);
+                    DrawingMgr.drawing.BloodShake();
+                }
+            }
+        }
+        else if (_objectType == ObjectType.VaccumTube)
+        {
+            if (coll.name == "VialRack")
+            {
+                //!진공튜브꽂기
+                // transform.position = 
+                // transform.rotation = 
+                soundManager.Sound(4);
+                DrawingMgr.drawing.Finish();
             }
         }
 
@@ -237,15 +265,26 @@ public class KHG_Snap_Draw : MonoBehaviour
         syringe = transform.parent.parent;
         syringe.GetComponent<Rigidbody>().isKinematic = true;
         syringe.tag = "GrabObject";
+        rot = Vector3.right * 180.0f;
+        pos = Vector3.up * 10f;
+        minusNum = 0;
+        minusNum2 = 0;
+
         functionState[2] = false;
         functionState[6] = true;
+
+        //!테스트
+        // functionState[7] = true;
     }
 
     public void ShakingStart()
     {
-        functionState[8] = true;
+        tag = "GrabObject";
+        GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+        transform.Find("Shake_Snap").GetComponent<BoxCollider>().enabled = true;
 
     }
+
     #endregion
 
 
@@ -293,15 +332,15 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 dis = Vector3.Distance(back.position, transform.position);
 
-                back.localPosition = backReset - Vector3.up * 3 * (-0.2f + Mathf.Abs(dis));
+                back.localPosition = backReset - Vector3.up * 8 * (-0.1f + Mathf.Abs(dis));
 
-                if (!airCheck && dis > 0.4f)
+                if (!airCheck && dis > 0.3f)
                 {
                     airCheck = true;
                     airCount++;
                     soundManager.Sound(0);
                 }
-                else if (airCheck && dis < 0.3f)
+                else if (airCheck && dis < 0.2f)
                 {
                     airCheck = false;
                 }
@@ -340,7 +379,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             }
 
             float dis = Vector3.Distance(transform.position, front.position);
-            if (syringe.parent != null && transform.parent != null && dis > 0.3f)
+            if (syringe.parent != null && transform.parent != null && dis > 0.15f)
             {
                 DrawingMgr.drawing.SyringeSafeCap();
                 soundManager.Sound(4);
@@ -426,10 +465,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                 isFirst = false;
                 lastDis = dis;
 
-                back.localPosition = backReset - Vector3.up * 15 * (-0.2f + Mathf.Abs(dis));
+                back.localPosition = backReset - Vector3.up * 15 * (-0.1f + Mathf.Abs(dis));
                 //!피 채우기(dis를 이용)
 
-                if (dis > 0.35f)
+                if (dis > 0.25f)
                 {
                     soundManager.Sound(4);
                     functionState[3] = false;
@@ -463,11 +502,53 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void VaccumInsert()
     {
-        if (true)
+
+        tempTr = syringe.parent;
+        syringe.parent = vaccum;
+        syringe.localPosition = pos;
+        syringe.localEulerAngles = rot;
+        syringe.parent = tempTr;
+
+
+        if (syringe.parent != null)
         {
+
+            if (tempTr.name == "CustomHandRight")
+            {
+                bool value1 = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch);
+                bool value2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
+                bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.RTouch);
+                if (value1 || value2 || value3)
+                {
+                    minusNum++;
+                }
+            }
+            else if (tempTr.name == "CustomHandLeft")
+            {
+                bool value1 = OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch);
+                bool value2 = OVRInput.Get(OVRInput.Button.Four, OVRInput.Controller.Touch);
+                bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch);
+                if (value1 || value2 || value3)
+                {
+                    minusNum++;
+                }
+
+            }
+
+        }
+
+        if (minusNum > 10 && minusNum2 < 5)
+        {
+            soundManager.Sound(0);
+            soundManager.Sound(0);
+            minusNum -= 50;
+            minusNum2++;
+        }
+        else if (minusNum > 10 && minusNum2 == 5)
+        {
+            soundManager.Sound(4);
             DrawingMgr.drawing.VaccumTube();
             functionState[7] = false;
-
         }
     }
 

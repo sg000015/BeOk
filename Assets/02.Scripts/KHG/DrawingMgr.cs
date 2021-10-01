@@ -94,7 +94,7 @@ public class DrawingMgr : MonoBehaviour
     {
         //!다 담은 뒤, 주사기 다시잡으면 분리가능
         //! 분리후에 흔들 것 
-        GameObject.Find("Vaccum").GetComponent<KHG_Snap_Draw>().ShakingStart();
+        GameObject.Find("Vial").GetComponent<KHG_Snap_Draw>().ShakingStart();
 
     }
 
@@ -102,7 +102,14 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("8. 혈액 흔들기")]
     public void BloodShake()
     {
-        //!완료
+        //!진공튜브 꽂는곳 활성화 하기
     }
+    //평가
+    [ContextMenu("9. 점수 표기")]
+    public void Finish()
+    {
+        //!점수
+    }
+
 
 }
