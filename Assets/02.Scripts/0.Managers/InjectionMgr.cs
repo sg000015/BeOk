@@ -391,6 +391,7 @@ public class InjectionMgr : MonoBehaviour
             StartCoroutine(nameof(PlayPatientSound), 3);
         }
 
+        yield return new WaitForSeconds(4);
         // 랭킹 UI
         Ranking(score);
     }
