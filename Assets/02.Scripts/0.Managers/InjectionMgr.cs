@@ -21,6 +21,7 @@ public class InjectionMgr : MonoBehaviour
 
     // UI
     [Header("UI")]
+    public RankingCtrl rankingCtrl;
     public TMP_Text infoTxt;
     public TMP_Text patientTxt;
     public Timer timer;
@@ -424,12 +425,14 @@ public class InjectionMgr : MonoBehaviour
         // 랭킹 불러오기
         fb.LoadAllData("Injection");
 
+        rankingCtrl.ChangeCanvas();
+
         // 랭킹 안에 들었는지 확인
         myScore = ConvertScore(score);
         if (fb.lastRankerScore <= myScore)
         {
-            // 랭킹 안에 들었으면
-            //TODO 키보드 UI on
+            // 랭킹 안에 들었으면 키보드 UI on
+            rankingCtrl.ActiveNickname();
         }
         else
         {
@@ -453,7 +456,8 @@ public class InjectionMgr : MonoBehaviour
             times[i].text = $"{fb.rankersMin[i]}:{fb.rankersSec[i]}";
         }
 
-        //TODO UI 활성화
+        // UI 활성화
+        rankingCtrl.ActiveNickname();
 
     }
 

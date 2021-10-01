@@ -5,11 +5,15 @@ using TMPro;
 
 public class RankingCtrl : MonoBehaviour
 {
+    public GameObject basicCanvas;
+    public GameObject rankingCanvas;
     public GameObject NickNamePanel;
     public GameObject RankingPanel;
     public TMP_Text text;
     GameObject prevPanel;
     GameObject curPanel;
+
+
 
     public void OnClickKey(string str)
     {
@@ -60,18 +64,34 @@ public class RankingCtrl : MonoBehaviour
 
     public void OnClickEnterBtn()
     {
-        //! Jumi
+
+        // prevPanel = NickNamePanel;
+        // curPanel = RankingPanel;
+        // ShowAndHideUI();
+
+        NickNamePanel.SetActive(false);
         InjectionMgr.injection.InsertData(text.text);
-
-        prevPanel = NickNamePanel;
-        curPanel = RankingPanel;
-        ShowAndHideUI();
-
     }
 
     public void ShowAndHideUI(bool direction = true)
     {
         prevPanel.SetActive(!direction);
         curPanel.SetActive(direction);
+    }
+
+    public void ChangeCanvas()
+    {
+        basicCanvas.SetActive(false);
+        rankingCanvas.SetActive(true);
+    }
+
+    public void ActiveNickname()
+    {
+        NickNamePanel.SetActive(true);
+    }
+
+    public void ActiveRanking()
+    {
+        RankingPanel.SetActive(true);
     }
 }
