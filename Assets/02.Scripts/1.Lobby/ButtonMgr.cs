@@ -64,9 +64,6 @@ public class ButtonMgr : MonoBehaviour
         curPanel = contentsPanel;
         ShowAndHideUI();
 
-        //!
-        GM.SetNickname();
-
     }
 
 
