@@ -255,7 +255,7 @@ public class InjectionMgr : MonoBehaviour
     {
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 8;
-        infoTxt.text = "수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
+        infoTxt.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
 
         // 화살표
         ActiveArrow(tourniquet);

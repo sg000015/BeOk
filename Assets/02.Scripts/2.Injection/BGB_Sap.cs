@@ -61,6 +61,8 @@ public class BGB_Sap : MonoBehaviour
         }
 
         curSpeed += num;
+        //KHG
+        if (curSpeed < 0) curSpeed = 0;
 
         // UI 표시
         sapText.text = curSpeed.ToString();
