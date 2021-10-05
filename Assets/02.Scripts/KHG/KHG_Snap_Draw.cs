@@ -634,10 +634,9 @@ public class KHG_Snap_Draw : MonoBehaviour
 
             if (tempTr.name == "CustomHandRight")
             {
-                bool value1 = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch);
                 bool value2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
                 bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.RTouch);
-                if (value1 || value2 || value3)
+                if (value2 || value3)
                 {
                     minusNum++;
                     front.localPosition = front.localPosition + Vector3.up * +0.0035f;
