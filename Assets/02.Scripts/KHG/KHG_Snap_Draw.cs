@@ -78,7 +78,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                     //! 팔에 알콜솜 스냅될것
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodSafety();
-                    functionState[5] = false;
+                    isDo = true;
                 }
 
             }
@@ -94,10 +94,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
-                transform.SetParent(coll.gameObject.transform.parent);
+                transform.SetParent(coll.transform.parent);
 
-                transform.localPosition = new Vector3(-3.04f, -2.507f, 0.322f);
-                transform.localEulerAngles = new Vector3(-90f, 0, -10f);
+                transform.localPosition = new Vector3(0.1123f, -0.339f, -0.1777f);
+                transform.localEulerAngles = new Vector3(43.6f, 234.04f, 40.4f);
+                transform.localScale = new Vector3(0.8174f, -0.8f, -1.09f);
 
 
                 // mat = DrawingMgr.drawing.patient.GetComponent<SkinnedMeshRenderer>().materials[1];
@@ -114,10 +115,16 @@ public class KHG_Snap_Draw : MonoBehaviour
         {
             if (!isDo && coll.name == "Needle_Snap")
             {
-                Debug.Log("DegreeX: " + transform.eulerAngles.x);
-                Debug.Log("DegreeY: " + transform.eulerAngles.y);
-                Debug.Log("DegreeZ: " + transform.eulerAngles.z);
-                //!각도체크
+                Vector3 needleAngle = transform.eulerAngles;
+                Debug.Log("DegreeX: " + needleAngle.x);
+                Debug.Log("DegreeY: " + needleAngle.y);
+                // Debug.Log("DegreeZ: " + needleAngle.z);
+
+                //!각도체크 감점
+                if (needleAngle.x > 350f || needleAngle.x < 320 || needleAngle.y < 160 || needleAngle.y > 200)
+                {
+                    Debug.Log("감점요인\nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                }
 
                 syringe = transform.parent.parent;
                 syringe.GetComponent<Rigidbody>().isKinematic = true;
@@ -166,19 +173,36 @@ public class KHG_Snap_Draw : MonoBehaviour
                 }
             }
         }
-        else if (_objectType == ObjectType.VaccumTube)
+        else if (!isDo && _objectType == ObjectType.VaccumTube)
         {
-            if (coll.name == "VialRack")
+            if (functionState[8] && coll.name == "Vial_Snap")
             {
-                //!진공튜브꽂기
                 // transform.position = 
                 // transform.rotation = 
+                transform.parent = null;
+                tag = "Untagged";
+                GetComponent<Rigidbody>().isKinematic = true;
+                transform.position = new Vector3(-0.365f, 0.8f, -0.53f);
+                transform.eulerAngles = Vector3.zero;
+
+                isDo = true;
                 soundManager.Sound(4);
+                functionState[8] = false;
                 DrawingMgr.drawing.Finish();
             }
         }
 
     }
+
+    [ContextMenu("Degree Check")]
+    void DegreeCheck()
+    {
+        Vector3 needleAngle = transform.eulerAngles;
+        Debug.Log(needleAngle.x);
+        Debug.Log(needleAngle.y);
+    }
+
+
 
     void Start()
     {
@@ -192,11 +216,27 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (functionState[2]) SyringeSnap();
         if (functionState[3]) Drawing();
         if (functionState[4]) TorniquetRestore();
+        if (functionState[5]) AlcoholCottonActive();
         if (functionState[7]) VaccumInsert();
+
+
     }
 
 
     #region start
+
+    public void AlcoholCottonReset()
+    {
+
+        if (_objectType == ObjectType.AlcoholCotton)
+        {
+            transform.parent = null;
+            transform.position = new Vector3(0.4731f, 0.69f, -1.192f);
+            transform.eulerAngles = Vector3.right * -84.77f;
+            GetComponent<Rigidbody>().isKinematic = false;
+
+        }
+    }
 
     public void AirOffStart()
     {
@@ -249,7 +289,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         }
     }
 
-    public void TorniquetRestoreStart()
+    public void TorniquetRestoreStart(Transform _syringe)
     {
         if (_objectType == ObjectType.Tourniquet)
         {
@@ -258,13 +298,19 @@ public class KHG_Snap_Draw : MonoBehaviour
             gameObject.GetComponent<Rigidbody>().useGravity = true;
             gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
 
+            syringe = _syringe;
+            minusNum = 100;
             functionState[4] = true;
         }
 
     }
 
-    public void AlcoholCottonActiveStart()
+    public void AlcoholCottonActiveStart(Transform _syringe, Transform _arm)
     {
+
+        syringe = _syringe;
+        tempTr = _arm;
+        minusNum = 100;
         functionState[5] = true;
     }
 
@@ -291,6 +337,11 @@ public class KHG_Snap_Draw : MonoBehaviour
         GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
         transform.Find("Shake_Snap").GetComponent<BoxCollider>().enabled = true;
 
+    }
+
+    public void VialSnapStart()
+    {
+        functionState[8] = true;
     }
 
     #endregion
@@ -346,6 +397,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 {
                     airCheck = true;
                     airCount++;
+                    soundManager.Sound(0);
+                    soundManager.Sound(0);
                     soundManager.Sound(0);
                 }
                 else if (airCheck && dis < 0.2f)
@@ -405,8 +458,6 @@ public class KHG_Snap_Draw : MonoBehaviour
         syringe.eulerAngles = rot;
     }
 
-    public float testInt = 7.3f;
-
     void Drawing()
     {
 
@@ -458,7 +509,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 // Debug.Log("First dis" + dis);
                 Debug.Log((dis - lastDis) * 1000);
-                //! 이동거리 차이에 따라 감점(속도)
+
                 if ((dis - lastDis) * 1000 > 5)
                 {
                     if (!isFirst)
@@ -468,6 +519,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                             soundManager.Sound(1);
                             soundManager.Sound(1);
                             soundManager.Sound(1);
+                            //! 환자 Sound, 감점
                             soundManager.Sound(9);
                             Debug.Log("주사기 속도 감점");
                         }
@@ -479,10 +531,9 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log(fixdis);
                 back.localPosition = backReset - Vector3.up * 15 * (-0.1f + fixdis);
 
-                //!피 채우기(dis를 이용)
                 Transform blood = syringe.Find("Blood");
-                blood.localPosition = Vector3.up * (1.8f + -testInt * (fixdis - 0.1f));
-                blood.localScale = new Vector3(0.5f, testInt * (fixdis - 0.1f), 0.5f);
+                blood.localPosition = Vector3.up * (1.8f + -7.3f * (fixdis - 0.1f));
+                blood.localScale = new Vector3(0.5f, 7.3f * (fixdis - 0.1f), 0.5f);
 
                 if (dis > 0.25f)
                 {
@@ -507,12 +558,64 @@ public class KHG_Snap_Draw : MonoBehaviour
     {
         if (_objectType == ObjectType.Tourniquet)
         {
+
+            if (syringe.parent == null)
+            {
+                minusNum--;
+                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+                if (minusNum < 1)
+                {
+                    minusNum = 300;
+                    soundManager.Sound(2);
+                    soundManager.Sound(2);
+                    soundManager.Sound(2);
+                    soundManager.Sound(10);
+                    Debug.Log("주사기 들기 감점");
+                }
+
+            }
             if (transform.parent == null)
             {
                 soundManager.Sound(4);
                 DrawingMgr.drawing.TourniquetOff();
                 functionState[4] = false;
             }
+        }
+    }
+
+    void AlcoholCottonActive()
+    {
+        if (_objectType == ObjectType.AlcoholCotton)
+        {
+
+            if (syringe.parent == null)
+            {
+                minusNum--;
+                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+                if (minusNum < 1)
+                {
+                    minusNum = 300;
+                    soundManager.Sound(2);
+                    soundManager.Sound(2);
+                    soundManager.Sound(2);
+                    soundManager.Sound(10);
+                    Debug.Log("주사기 들기 감점");
+                }
+
+            }
+
+            if (isDo)
+            {
+                tag = "Untagged";
+                GetComponent<Rigidbody>().isKinematic = true;
+                transform.SetParent(tempTr);
+                transform.localPosition = new Vector3(0.028f, -0.13f, 0.026f);
+                transform.localEulerAngles = new Vector3(174.3f, 60f, 0.2f);
+                transform.localScale = Vector3.one * 2.0f;
+                functionState[5] = false;
+
+            }
+
         }
     }
 

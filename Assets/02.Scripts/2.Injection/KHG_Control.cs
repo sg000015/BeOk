@@ -15,7 +15,7 @@ public class KHG_Control : MonoBehaviour
     private List<GameObject> grabbedGameObjects;
 
     bool isTouched = false;
-    bool isGrabbed = false;
+    public bool isGrabbed = false;
 
     float grabBegin = 0.5f; // bigger than 0.2
 
@@ -221,6 +221,7 @@ public class KHG_Control : MonoBehaviour
             isGrabbed = false;
             currentGrabbedObject = null;
             //!
+            grabCount = 0;
             grabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
 
         }
