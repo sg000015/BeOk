@@ -1,0 +1,281 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
+public class UIManager_blood : MonoBehaviour
+{
+    [Range(0, 11)]
+    public int NUM;
+
+    public SoundManager soundManager;
+    public FirebaseManager fb;
+    public RankingCtrl rankingCtrl;
+
+    [Header("UI")]
+    public Image progress;
+    public TMP_Text infoText;
+    public Timer timer;
+
+    [Header("Ranking UI")]
+    public TMP_Text[] names;
+    public TMP_Text[] scores;
+    public TMP_Text[] times;
+
+    void Start()
+    {
+        UpdateUI(0);
+    }
+
+    void Update()
+    {
+        //! Test용
+        switch (NUM)
+        {
+            case 0:
+                infoText.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
+                break;
+            case 1:
+                infoText.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
+                break;
+            case 2:
+                infoText.text = "주사기 내에 공기가 남아있지 않도록 플런저를 움직여주세요.\n(주사기 잡은 채로 뒷부분을 앞뒤로 3회 움직여주세요.)";
+                break;
+            case 3:
+                infoText.text = "주사기 바늘의 커버를 분리해주세요.";
+                break;
+            case 4:
+                infoText.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
+                break;
+            case 5:
+                infoText.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
+                break;
+            case 6:
+                infoText.text = "토니켓을 풀어주세요.";
+                break;
+            case 7:
+                infoText.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
+                break;
+            case 8:
+                infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                break;
+            case 9:
+                infoText.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
+                break;
+            case 10:
+                infoText.text = "튜브를 꽂아주세요.";
+                break;
+        }
+        progress.fillAmount = NUM / 11.0f;
+
+    }
+
+
+    public void UpdateUI(int num)
+    {
+        switch (num)
+        {
+            case 0:
+                infoText.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
+                break;
+            case 1:
+                infoText.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
+                break;
+            case 2:
+                infoText.text = "주사기 내에 공기가 남아있지 않도록 플런저를 움직여주세요.\n(주사기 잡은 채로 뒷부분을 앞뒤로 3회 움직여주세요.)";
+                break;
+            case 3:
+                infoText.text = "주사기 바늘의 커버를 분리해주세요.";
+                break;
+            case 4:
+                infoText.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
+                break;
+            case 5:
+                infoText.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
+                break;
+            case 6:
+                infoText.text = "토니켓을 풀어주세요.";
+                break;
+            case 7:
+                infoText.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
+                break;
+            case 8:
+                infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                break;
+            case 9:
+                infoText.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
+                break;
+            case 10:
+                infoText.text = "튜브를 꽂아주세요.";
+                break;
+            case 11:
+                //todo 점수 UI on
+                break;
+        }
+        progress.fillAmount = num / 11.0f;
+    }
+
+    IEnumerator ShowScore(int[] scoreList)
+    {
+        soundManager.SoundStop();
+        float time = 1.0f;
+        int score = 0;
+
+        // 점수 총합
+        foreach (int i in scoreList)
+        {
+            score += i;
+        }
+
+        // 수액종류, 수액속도, 주사위치, 주사각도, 시간
+        infoText.text = $"수액 종류 : {scoreList[0]}";
+        soundManager.Sound(3);
+
+        yield return new WaitForSeconds(time);
+        infoText.text += $"\n수액 속도 : {scoreList[1]}";
+        soundManager.Sound(3);
+
+        yield return new WaitForSeconds(time);
+        infoText.text += $"\n주사 위치 : {scoreList[2]}";
+        soundManager.Sound(3);
+
+        yield return new WaitForSeconds(time);
+        infoText.text += $"\n주사 각도 : {scoreList[3]}";
+        soundManager.Sound(3);
+
+        yield return new WaitForSeconds(time);
+        infoText.text += $"\n시간 : {scoreList[4]}";
+        soundManager.Sound(3);
+
+        yield return new WaitForSeconds(time);
+        infoText.text += $"\n\n<b>총합 : {score}</b>";
+
+        // Background Sound
+        // 50점 초과 && 수액 종류 맞음
+        if (score > 50 && scoreList[0] != 0)
+        {
+            // 4초
+            soundManager.Sound(6);
+            soundManager.Sound(6);
+            soundManager.Sound(6);
+            soundManager.Sound(6);
+
+            // Patient Sound
+            if (score >= 70)
+            {
+                // 환자 anim
+                // sapScript.WrongSapType(false);
+
+                // StartCoroutine(nameof(PlayPatientSound), 4);
+            }
+            else
+            {
+                // StartCoroutine(nameof(PlayPatientSound), 5);
+            }
+        }
+        else
+        {
+            // 2초
+            soundManager.Sound(5);
+            soundManager.Sound(5);
+            soundManager.Sound(5);
+            soundManager.Sound(5);
+
+            // 환자 색 anim
+            // sapScript.WrongSapType(true);
+
+            // Patient Sound
+            // StartCoroutine(nameof(PlayPatientSound), 3);
+        }
+
+        yield return new WaitForSeconds(4);
+
+        // 랭킹 UI
+        Ranking(score);
+    }
+
+
+    private int myScore = 0;
+    void Ranking(int score)
+    {
+        // 랭킹 불러오기
+        fb.LoadAllData("Injection");
+
+        rankingCtrl.ChangeCanvas();
+
+        StartCoroutine(nameof(CheckRanking), score);
+    }
+
+    IEnumerator CheckRanking(int score)
+    {
+        yield return new WaitUntil(() => fb.isLoad);
+        fb.isLoad = false;
+
+        // 랭킹 안에 들었는지 확인
+        myScore = ConvertScore(score);
+        Debug.Log($"lastRankerScore : {fb.lastRankerScore}");
+        Debug.Log($"myScore : {myScore}");
+        if (fb.lastRankerScore <= myScore)
+        {
+            // 랭킹 안에 들었으면 키보드 UI on
+            rankingCtrl.ActiveNickname();
+        }
+        else
+        {
+            // 랭킹 안에 들지 못했으면
+            StartCoroutine(nameof(ActiveRanking));
+            // ActiveRanking();
+        }
+
+    }
+
+    IEnumerator ActiveRanking()
+    {
+        // 랭킹 불러오기
+        fb.LoadAllData("Injection");
+
+        yield return new WaitUntil(() => fb.isLoad);
+        fb.isLoad = false;
+
+        // UI 변경
+        int _rankNum = fb.rankNum;
+        for (int i = 0; i < _rankNum; i++)
+        {
+            names[i].text = fb.rankersName[i];
+            scores[i].text = $"{fb.rankersScore[i]}";
+            times[i].text = $"{fb.rankersMin[i]}:{fb.rankersSec[i]}";
+
+            Debug.Log($"____{names[i].text} / {scores[i].text} / {times[i].text}");
+        }
+        Debug.Log("텍스트 변경 완료");
+
+        // UI 활성화
+        rankingCtrl.ActiveRankingUI();
+
+    }
+
+    int ConvertScore(int score)
+    {
+        int[] times = timer.GetTime();
+        int _score = score * 10000;
+        int min = 60 - times[0];
+        int sec = 60 - times[1];
+
+        _score += min * 100;
+        _score += sec;
+
+        return _score;
+    }
+
+    public void InsertData(string nickname)
+    {
+        Debug.Log("MGR - InsertData");
+        fb.InsertData("Injection", nickname, myScore);
+        // ActiveRanking();
+        StartCoroutine(nameof(ActiveRanking));
+    }
+
+
+
+}
