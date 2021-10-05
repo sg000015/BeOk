@@ -15,7 +15,7 @@ public class KHG_Control : MonoBehaviour
     private List<GameObject> grabbedGameObjects;
 
     bool isTouched = false;
-    bool isGrabbed = false;
+    public bool isGrabbed = false;
 
     float grabBegin = 0.5f; // bigger than 0.2
 
@@ -221,6 +221,7 @@ public class KHG_Control : MonoBehaviour
             isGrabbed = false;
             currentGrabbedObject = null;
             //!
+            grabCount = 0;
             grabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
 
         }
@@ -243,8 +244,12 @@ public class KHG_Control : MonoBehaviour
             if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
             {
                 //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-                mat.color *= 1.2f;
+                try
+                {
+                    Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                    mat.color *= 1.2f;
+                }
+                catch { }
             }
 
         }
@@ -270,9 +275,15 @@ public class KHG_Control : MonoBehaviour
         {
             if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
             {
-                //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
-                Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
-                mat.color /= 1.2f;
+                try
+                {
+                    //coll.gameObject.GetComponent<MeshRenderer>().material.color *= 1.3f;
+                    Material mat = coll.gameObject.GetComponent<MeshRenderer>()?.material;
+                    mat.color /= 1.2f;
+                }
+                catch { }
+
+
             }
 
         }
