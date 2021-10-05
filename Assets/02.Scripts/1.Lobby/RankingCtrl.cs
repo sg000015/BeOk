@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class RankingCtrl : MonoBehaviour
 {
     public GameObject basicCanvas;
     public GameObject rankingCanvas;
+    public GameObject LaserPoint;
     public GameObject NickNamePanel;
     public GameObject RankingPanel;
     public TMP_Text text;
@@ -62,6 +64,7 @@ public class RankingCtrl : MonoBehaviour
         text.text += " ";
     }
 
+    [ContextMenu("엔터")]
     public void OnClickEnterBtn()
     {
 
@@ -70,11 +73,15 @@ public class RankingCtrl : MonoBehaviour
         // ShowAndHideUI();
 
         NickNamePanel.SetActive(false);
+
+        Debug.Log($"닉네임패널 액티브 유무 : {NickNamePanel.activeSelf}");
+        Debug.Log("엔터키를 누름");
         InjectionMgr.injection.InsertData(text.text);
     }
 
     public void ShowAndHideUI(bool direction = true)
     {
+        Debug.Log("//ShowAndHideUI");
         prevPanel.SetActive(!direction);
         curPanel.SetActive(direction);
     }
@@ -83,15 +90,26 @@ public class RankingCtrl : MonoBehaviour
     {
         basicCanvas.SetActive(false);
         rankingCanvas.SetActive(true);
+        LaserPoint.SetActive(true);
     }
 
     public void ActiveNickname()
     {
+        Debug.Log("//ActiveNickname");
         NickNamePanel.SetActive(true);
     }
 
-    public void ActiveRanking()
+    public void InactiveNickname()
     {
+        Debug.Log("//InactiveNickname");
+        NickNamePanel.SetActive(false);
+    }
+
+    public void ActiveRankingUI()
+    {
+        Debug.Log("//ActiveRanking");
         RankingPanel.SetActive(true);
     }
+
+
 }
