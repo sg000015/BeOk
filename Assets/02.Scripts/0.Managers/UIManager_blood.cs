@@ -23,6 +23,9 @@ public class UIManager_blood : MonoBehaviour
     public TMP_Text[] scores;
     public TMP_Text[] times;
 
+    private int[] scoreList;
+    private int myScore = 0;
+
     void Start()
     {
         UpdateUI(0);
@@ -30,44 +33,7 @@ public class UIManager_blood : MonoBehaviour
 
     void Update()
     {
-        //! Test용
-        switch (NUM)
-        {
-            case 0:
-                infoText.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
-                break;
-            case 1:
-                infoText.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
-                break;
-            case 2:
-                infoText.text = "주사기 내에 공기가 남아있지 않도록 플런저를 움직여주세요.\n(주사기 잡은 채로 뒷부분을 앞뒤로 3회 움직여주세요.)";
-                break;
-            case 3:
-                infoText.text = "주사기 바늘의 커버를 분리해주세요.";
-                break;
-            case 4:
-                infoText.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
-                break;
-            case 5:
-                infoText.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
-                break;
-            case 6:
-                infoText.text = "토니켓을 풀어주세요.";
-                break;
-            case 7:
-                infoText.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
-                break;
-            case 8:
-                infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
-                break;
-            case 9:
-                infoText.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
-                break;
-            case 10:
-                infoText.text = "튜브를 꽂아주세요.";
-                break;
-        }
-        progress.fillAmount = NUM / 11.0f;
+        UpdateUI(NUM);
 
     }
 
@@ -110,16 +76,19 @@ public class UIManager_blood : MonoBehaviour
                 infoText.text = "튜브를 꽂아주세요.";
                 break;
             case 11:
+                //todo scoreList = 
                 //todo 점수 UI on
                 break;
         }
         progress.fillAmount = num / 11.0f;
     }
 
-    IEnumerator ShowScore(int[] scoreList)
+    IEnumerator ShowScore()
     {
         soundManager.SoundStop();
+        // Delay Time
         float time = 1.0f;
+        // Total Score
         int score = 0;
 
         // 점수 총합
@@ -128,20 +97,20 @@ public class UIManager_blood : MonoBehaviour
             score += i;
         }
 
-        // 수액종류, 수액속도, 주사위치, 주사각도, 시간
-        infoText.text = $"수액 종류 : {scoreList[0]}";
+        // 주사 각도, 지혈 시간, 플런저 당기는 속도, 혈액 순서, 시간
+        infoText.text = $"주사 각도 : {scoreList[0]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
-        infoText.text += $"\n수액 속도 : {scoreList[1]}";
+        infoText.text += $"\n지혈 시간 : {scoreList[1]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
-        infoText.text += $"\n주사 위치 : {scoreList[2]}";
+        infoText.text += $"\n플런저 당기는 속도 : {scoreList[2]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
-        infoText.text += $"\n주사 각도 : {scoreList[3]}";
+        infoText.text += $"\n혈액 주입 순서 : {scoreList[3]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
@@ -152,8 +121,8 @@ public class UIManager_blood : MonoBehaviour
         infoText.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
-        // 50점 초과 && 수액 종류 맞음
-        if (score > 50 && scoreList[0] != 0)
+        // 50점 초과
+        if (score > 50)
         {
             // 4초
             soundManager.Sound(6);
@@ -164,14 +133,13 @@ public class UIManager_blood : MonoBehaviour
             // Patient Sound
             if (score >= 70)
             {
-                // 환자 anim
-                // sapScript.WrongSapType(false);
-
-                // StartCoroutine(nameof(PlayPatientSound), 4);
+                // 최고
+                StartCoroutine(nameof(PlayPatientSound), 3);
             }
             else
             {
-                // StartCoroutine(nameof(PlayPatientSound), 5);
+                // 나쁘지않네요
+                StartCoroutine(nameof(PlayPatientSound), 2);
             }
         }
         else
@@ -182,11 +150,8 @@ public class UIManager_blood : MonoBehaviour
             soundManager.Sound(5);
             soundManager.Sound(5);
 
-            // 환자 색 anim
-            // sapScript.WrongSapType(true);
-
-            // Patient Sound
-            // StartCoroutine(nameof(PlayPatientSound), 3);
+            // 최악
+            StartCoroutine(nameof(PlayPatientSound), 1);
         }
 
         yield return new WaitForSeconds(4);
@@ -195,12 +160,24 @@ public class UIManager_blood : MonoBehaviour
         Ranking(score);
     }
 
+    IEnumerator PlayPatientSound(int num)
+    {
+        if (num == 1)
+        {
+            yield return new WaitForSeconds(2f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(4f);
+        }
+        soundManager.PlayPatientSound(num);
+    }
 
-    private int myScore = 0;
+
     void Ranking(int score)
     {
         // 랭킹 불러오기
-        fb.LoadAllData("Injection");
+        fb.LoadAllData("Blood");
 
         rankingCtrl.ChangeCanvas();
 
@@ -233,7 +210,7 @@ public class UIManager_blood : MonoBehaviour
     IEnumerator ActiveRanking()
     {
         // 랭킹 불러오기
-        fb.LoadAllData("Injection");
+        fb.LoadAllData("Blood");
 
         yield return new WaitUntil(() => fb.isLoad);
         fb.isLoad = false;
@@ -270,8 +247,7 @@ public class UIManager_blood : MonoBehaviour
 
     public void InsertData(string nickname)
     {
-        Debug.Log("MGR - InsertData");
-        fb.InsertData("Injection", nickname, myScore);
+        fb.InsertData("Blood", nickname, myScore);
         // ActiveRanking();
         StartCoroutine(nameof(ActiveRanking));
     }

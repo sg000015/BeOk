@@ -7,13 +7,20 @@ public class SoundManager : MonoBehaviour
 
     public AudioClip[] audios;
     public AudioClip[] patientAudioClips;
-    // 0 : 아
-    // 1 : 아파요
-    // 2 : 아프다구요
-    // 3 : 당신은 사람을 죽였어요
-    // 4 : 최고예요
-    // 5 : 나쁘지 않아요
-    // 6 : 똑바로 하세요
+    /*
+    0 : 아
+    1 : 아파요
+    2 : 아프다구요
+    3 : 당신은 사람을 죽였어요
+    4 : 최고예요
+    5 : 나쁘지 않아요
+    6 : 똑바로 하세요
+
+    0 : 으
+    1 : 최악
+    2 : 나쁘진않네요
+    3 : 최고
+    */
 
     AudioSource audio;
     public AudioSource patientAudio;
