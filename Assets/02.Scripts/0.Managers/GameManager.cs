@@ -3,25 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
+using System;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance = null;
 
     public bool isMenu = false;
     public Timer timer;
     public GameObject ExitMenu;
+    public GameObject VrCamera;
+    public TMPro.TMP_Text logText;
 
     #region SINGLETON
     void Awake()
     {
         instance = this;
+        NetworkManager.instanceNW.InstantiatePlayer();
     }
 
     #endregion
 
     private void Start()
     {
+        StartCoroutine(nameof(PrintLog));
     }
 
     private void Update()
@@ -55,6 +61,33 @@ public class GameManager : MonoBehaviour
 
             // UI Off
             ExitMenu.SetActive(false);
+        }
+    }
+
+    IEnumerator PrintLog()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        GameObject ovrPlayer;
+
+        try
+        {
+            // try 스택 영역에서 에러가 발생하면 catch 영역으로 넘어간다.
+            ovrPlayer = GameObject.Find("ovrPlayer");
+        }
+        catch (NullReferenceException nr)
+        {
+            // 에러가 발생하면 에러 내용을 콘솔 출력한다.
+            logText.text += "플레이어 없음 1\n";
+        }
+        catch (Exception e)
+        {
+            // 에러가 발생하면 에러 내용을 콘솔 출력한다.
+            logText.text += "플레이어 없음 2\n";
+        }
+        finally
+        {
+            logText.text += "로그 찍히는 중";
         }
     }
 

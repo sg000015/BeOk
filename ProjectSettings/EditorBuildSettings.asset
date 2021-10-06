@@ -6,11 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/01.Scenes/0.Common/Phone-Lobby.unity
-    guid: e7df9fa25319bea4290c6d4e20d81ff6
+    path: Assets/01.Scenes/0.Common/Lobby.unity
+    guid: c4cbd19d84be2ec43b82adadf7d01695
   - enabled: 1
-    path: Assets/01.Scenes/BGB/BGBWard-Injection.unity
-    guid: cd267d89ab7edcc47ba704d3aa9d8ac2
+    path: Assets/01.Scenes/0.Common/Ward-Injection.unity
+    guid: 0e428654994c6e545b34d646f31dc93e
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d057bdb80aabda04596314efed5edc69, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d1ba09c6eb904d447bb5e206ceef3628, type: 2}

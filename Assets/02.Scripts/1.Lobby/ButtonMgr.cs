@@ -109,7 +109,15 @@ public class ButtonMgr : MonoBehaviour
         text.text = " ";
     }
 
+    [ContextMenu("OnClickInjection")]
     public void OnClickInjection()
+    {
+    
+        NetworkManager networkMgr = GameObject.FindObjectOfType<NetworkManager>();
+        networkMgr.OnCreateRoom();
+    }
+
+    public void SceneLoader()
     {
         SceneManager.LoadScene("Ward-Injection");
     }
