@@ -15,6 +15,9 @@ public class RankingCtrl : MonoBehaviour
     GameObject prevPanel;
     GameObject curPanel;
 
+    public enum SKILL { Injection, BloodCollection };
+    public SKILL skillName = SKILL.Injection;
+
 
 
     public void OnClickKey(string str)
@@ -76,7 +79,15 @@ public class RankingCtrl : MonoBehaviour
 
         Debug.Log($"닉네임패널 액티브 유무 : {NickNamePanel.activeSelf}");
         Debug.Log("엔터키를 누름");
-        InjectionMgr.injection.InsertData(text.text);
+        switch (skillName)
+        {
+            case SKILL.Injection:
+                InjectionMgr.injection.InsertData(text.text);
+                break;
+            case SKILL.BloodCollection:
+                GameObject.Find("UIManager").GetComponent<UIManager_blood>().InsertData(text.text);
+                break;
+        }
     }
 
     public void ShowAndHideUI(bool direction = true)
