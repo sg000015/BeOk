@@ -39,6 +39,7 @@ public class KHG_Snap_Draw : MonoBehaviour
     Transform back;
     Transform point;
     Transform tempTr;
+    Transform blood;
     public Transform vaccum;
     Transform vialSnap;
     Transform vialSnap2;
@@ -192,20 +193,67 @@ public class KHG_Snap_Draw : MonoBehaviour
         }
         else if (!isDo && _objectType == ObjectType.VaccumTube)
         {
-            if (functionState[8] && coll.name == "Vial_Snap")
+            if (functionState[8] && coll.name == "Vial_Snap1")
             {
-                // transform.position = 
-                // transform.rotation = 
-                transform.parent = null;
-                tag = "Untagged";
-                GetComponent<Rigidbody>().isKinematic = true;
-                transform.position = new Vector3(-0.365f, 0.8f, -0.53f);
-                transform.eulerAngles = Vector3.zero;
+                int number = GetComponent<VaccumTubeMgr>().a;
+                if (number <= 3)
+                {
+                    transform.parent = coll.transform.parent;
+                    tag = "Untagged";
+                    GetComponent<Rigidbody>().isKinematic = true;
+                    switch (number)
+                    {
+                        case 1:
 
-                isDo = true;
-                soundManager.Sound(4);
-                functionState[8] = false;
-                DrawingMgr.drawing.Finish();
+                            transform.localPosition = new Vector3(-0.63f, 0.18f, 0);
+                            break;
+                        case 2:
+                            transform.localPosition = new Vector3(-0.46f, 0.18f, 0);
+                            break;
+                        case 3:
+                            transform.localPosition = new Vector3(-0.29f, 0.18f, 0);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    transform.localEulerAngles = Vector3.up * 90f;
+                    isDo = true;
+                    soundManager.Sound(4);
+                    functionState[8] = false;
+                    DrawingMgr.drawing.Finish();
+                }
+
+            }
+            else if (functionState[8] && coll.name == "Vial_Snap2")
+            {
+                int number = GetComponent<VaccumTubeMgr>().a;
+                if (number > 3)
+                {
+                    transform.parent = coll.transform.parent;
+                    tag = "Untagged";
+                    GetComponent<Rigidbody>().isKinematic = true;
+                    switch (number)
+                    {
+                        case 4:
+                            transform.localPosition = new Vector3(-0.12f, 0.18f, 0);
+                            break;
+                        case 5:
+                            transform.localPosition = new Vector3(0.128f, 0.18f, 0);
+                            break;
+                        case 6:
+                            transform.localPosition = new Vector3(0.295f, 0.18f, 0);
+                            break;
+                        default:
+                            break;
+                    }
+                    transform.localEulerAngles = Vector3.up * 90f;
+                    isDo = true;
+                    soundManager.Sound(4);
+                    functionState[8] = false;
+                    DrawingMgr.drawing.Finish();
+                }
+
             }
         }
 
@@ -237,8 +285,6 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (functionState[7]) VaccumInsert();
 
 
-
-
     }
 
 
@@ -250,7 +296,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (_objectType == ObjectType.AlcoholCotton)
         {
             transform.parent = null;
-            transform.position = new Vector3(0.4731f, 0.69f, -1.192f);
+            transform.position = new Vector3(-0.206f, 0.78f, -0.587f);
             transform.eulerAngles = Vector3.right * -84.77f;
             GetComponent<Rigidbody>().isKinematic = false;
 
@@ -315,6 +361,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             reset = new Vector3(0, 0.363f, 4f);
             backReset = new Vector3(0.383f, 1.31f, 0);
             isFirst = true;
+            blood = syringe.Find("Blood");
             functionState[3] = true;
         }
     }
@@ -539,6 +586,9 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.localPosition = reset;
                 transform.localEulerAngles = Vector3.zero;
 
+                blood.localPosition = Vector3.up * 1.8f;
+                blood.localScale = new Vector3(0.5f, 0, 0.5f);
+
             }
 
             else if ((transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
@@ -573,7 +623,6 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log(fixdis);
                 back.localPosition = backReset - Vector3.up * 15 * (-0.1f + fixdis);
 
-                Transform blood = syringe.Find("Blood");
                 blood.localPosition = Vector3.up * (1.8f + -7.3f * (fixdis - 0.1f));
                 blood.localScale = new Vector3(0.5f, 7.3f * (fixdis - 0.1f), 0.5f);
 

@@ -12,16 +12,18 @@ public class DrawingMgr : MonoBehaviour
     public Transform syringe;
     public Transform playObject;
     public Transform alcoholcotton;
+    public Transform arrow;
 
 
     public bool syringeGrab = false;
+
+    bool finish = false;
 
 
 
     void Awake()
     {
         drawing = this;
-        alcoholcotton = playObject.Find("AlcoholCotton");
     }
 
     void Update()
@@ -135,7 +137,14 @@ public class DrawingMgr : MonoBehaviour
     public void Finish()
     {
         //!점수
-        Debug.Log("Finish");
+        if (!finish)
+        {
+            finish = true;
+        }
+        else if (finish)
+        {
+            //점수 출력
+        }
     }
 
 
