@@ -33,6 +33,7 @@ public class VesselColor : MonoBehaviour
                     yield return ws;
                 }
             }
+            yield return ws;
             //!조건
             if (check)
             {
