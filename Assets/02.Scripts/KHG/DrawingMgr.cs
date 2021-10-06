@@ -13,6 +13,9 @@ public class DrawingMgr : MonoBehaviour
     public Transform playObject;
     public Transform alcoholcotton;
     public Transform arrow;
+    public UIManager_blood UImanager;
+
+    public int[] scoreList = { 20, 20, 20, 20, 20 };
 
 
     public bool syringeGrab = false;
@@ -43,6 +46,7 @@ public class DrawingMgr : MonoBehaviour
     public void Hemostasis()
     {
         virusgroup.SetActive(true);
+        UImanager.UpdateUI(11);
 
     }
 
