@@ -15,6 +15,8 @@ public class DrawingMgr : MonoBehaviour
     private Transform vial;
     private Transform alcoholcotton;
 
+    public bool syringeGrab = false;
+
 
 
     void Awake()
@@ -24,13 +26,22 @@ public class DrawingMgr : MonoBehaviour
         alcoholcotton = playObject.Find("AlcoholCotton");
     }
 
+    void Update()
+    {
+        if (syringe.parent == null)
+        {
+            syringeGrab = false;
+        }
+        else if (syringe.parent.name == "CustomHandRight" || syringe.parent.name == "CustomHandLeft")
+        {
+            syringeGrab = true;
+        }
+    }
+
     //토니캣 착용시
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
-
-
-
         virusgroup.SetActive(true);
 
     }

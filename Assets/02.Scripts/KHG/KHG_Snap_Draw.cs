@@ -54,8 +54,11 @@ public class KHG_Snap_Draw : MonoBehaviour
     int minusNum2 = 0;
     int airCount = 0;
 
+    bool check = false;
     bool airCheck;
     bool isFirst = false;
+
+    // bool syringeCoverGrabCheck = false;
 
 
     void OnTriggerEnter(Collider coll)
@@ -220,6 +223,8 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (functionState[7]) VaccumInsert();
 
 
+
+
     }
 
 
@@ -253,6 +258,11 @@ public class KHG_Snap_Draw : MonoBehaviour
             reset = new Vector3(0, 0.363f, 4f);
             backReset = new Vector3(0.383f, 1.31f, 0);
 
+            // Material mat = back.Find("Group_004").GetComponent<MeshRenderer>().material;
+            Material mat = syringe.GetComponent<MeshRenderer>().material;
+            StartCoroutine("SyringePick", mat);
+
+
             Debug.Log("First" + Vector3.Distance(back.position, transform.position));
         }
     }
@@ -270,6 +280,12 @@ public class KHG_Snap_Draw : MonoBehaviour
             reset = new Vector3(0, 0.372f, -4.5f);
             backReset = new Vector3(0.383f, 1.31f, 0);
             functionState[1] = true;
+
+
+            check = false;
+            Material mat = GetComponent<MeshRenderer>().material;
+            StartCoroutine("HightedColor", mat);
+            StartCoroutine("ObjectPick", transform);
         }
     }
 
@@ -280,7 +296,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             tag = "GrabObject";
             syringe = transform.parent.parent;
             back = transform.parent;
-            minusNum = 100;
+            // minusNum = 100;
             rot = new Vector3(90, -90f, 0);
             reset = new Vector3(0, 0.363f, 4f);
             backReset = new Vector3(0.383f, 1.31f, 0);
@@ -299,7 +315,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
 
             syringe = _syringe;
-            minusNum = 100;
+            // minusNum = 100;
             functionState[4] = true;
         }
 
@@ -310,7 +326,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         syringe = _syringe;
         tempTr = _arm;
-        minusNum = 100;
+        // minusNum = 100;
         functionState[5] = true;
     }
 
@@ -354,6 +370,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     {
         if (_objectType == ObjectType.Pull)
         {
+            SyringeGrabCheck();
+
             if (transform.parent == null)
             {
                 Debug.Log("null");
@@ -417,6 +435,14 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void AirCover()
     {
+        SyringeGrabCheck();
+
+        // if (syringeCoverGrabCheck)
+        // {
+        //     syringeCoverGrabCheck = false;
+        //     StartCoroutine("HightedColor", GetComponent<MeshRenderer>().material);
+        //     StartCoroutine("ObjectPick", transform);
+        // }
 
         if (_objectType == ObjectType.NeedleCover)
         {
@@ -440,7 +466,8 @@ public class KHG_Snap_Draw : MonoBehaviour
             }
 
             float dis = Vector3.Distance(transform.position, front.position);
-            if (syringe.parent != null && transform.parent != null && dis > 0.15f)
+            Debug.Log(dis);
+            if (syringe.parent != null && transform.parent != null && dis > 0.2f)
             {
                 DrawingMgr.drawing.SyringeSafeCap();
                 soundManager.Sound(4);
@@ -464,25 +491,25 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (_objectType == ObjectType.Pull)
         {
             minusNum2--;
-            if (syringe.parent == null)
-            {
-                minusNum--;
-                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
-                if (minusNum < 1)
-                {
-                    minusNum = 300;
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(10);
-                    Debug.Log("주사기 들기 감점");
-                }
+            // if (syringe.parent == null)
+            // {
+            //     minusNum--;
+            //     //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+            //     if (minusNum < 1)
+            //     {
+            //         minusNum = 300;
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(10);
+            //         Debug.Log("주사기 들기 감점");
+            //     }
 
-            }
-            else
-            {
-                minusNum = 100;
-            }
+            // }
+            // else
+            // {
+            //     minusNum = 100;
+            // }
 
             if (transform.parent == null)
             {
@@ -499,7 +526,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.localEulerAngles = Vector3.zero;
 
             }
-            else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
+            else if ((transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
 
 
@@ -559,21 +586,21 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (_objectType == ObjectType.Tourniquet)
         {
 
-            if (syringe.parent == null)
-            {
-                minusNum--;
-                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
-                if (minusNum < 1)
-                {
-                    minusNum = 300;
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(10);
-                    Debug.Log("주사기 들기 감점");
-                }
+            // if (syringe.parent == null)
+            // {
+            //     minusNum--;
+            //     //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+            //     if (minusNum < 1)
+            //     {
+            //         minusNum = 300;
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(10);
+            //         Debug.Log("주사기 들기 감점");
+            //     }
 
-            }
+            // }
             if (transform.parent == null)
             {
                 soundManager.Sound(4);
@@ -588,21 +615,21 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (_objectType == ObjectType.AlcoholCotton)
         {
 
-            if (syringe.parent == null)
-            {
-                minusNum--;
-                //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
-                if (minusNum < 1)
-                {
-                    minusNum = 300;
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(2);
-                    soundManager.Sound(10);
-                    Debug.Log("주사기 들기 감점");
-                }
+            // if (syringe.parent == null)
+            // {
+            //     minusNum--;
+            //     //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
+            //     if (minusNum < 1)
+            //     {
+            //         minusNum = 300;
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(2);
+            //         soundManager.Sound(10);
+            //         Debug.Log("주사기 들기 감점");
+            //     }
 
-            }
+            // }
 
             if (isDo)
             {
@@ -682,6 +709,126 @@ public class KHG_Snap_Draw : MonoBehaviour
     #endregion
 
 
+    #region Coroutine
+
+    void SyringeGrabCheck()
+    {
+        if (_objectType == ObjectType.Pull)
+        {
+            if (DrawingMgr.drawing.syringeGrab)
+            {
+                GetComponent<BoxCollider>().enabled = true;
+            }
+            else
+            {
+                GetComponent<BoxCollider>().enabled = false;
+            }
+        }
+
+
+        if (_objectType == ObjectType.NeedleCover)
+        {
+            if (DrawingMgr.drawing.syringeGrab)
+            {
+                GetComponent<BoxCollider>().enabled = true;
+            }
+            else
+            {
+                GetComponent<BoxCollider>().enabled = false;
+            }
+        }
+
+    }
+
+
+
+    IEnumerator SyringePick(Material _mat)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.05f);
+        Color _color = _mat.color;
+        while (true)
+        {
+            if (!DrawingMgr.drawing.syringeGrab)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    _mat.color = new Color(0.8f, 0.8f - 0.2f * i, 0.8f - 0.1f * i);
+                    yield return ws;
+                }
+                for (int i = 0; i < 5; i++)
+                {
+                    _mat.color = new Color(0.8f, 0.2f * i, 0.4f + 0.1f * i);
+                    yield return ws;
+                }
+            }
+            else
+            {
+                _mat.color = _color;
+                Material mat = back.Find("Group_004").GetComponent<MeshRenderer>().material;
+                StartCoroutine("HightedColor", mat);
+                StartCoroutine("ObjectPick", transform);
+                // syringeCoverGrabCheck = true;
+                StopCoroutine("SyringePick");
+                break;
+            }
+
+        }
+
+    }
+
+    IEnumerator HightedColor(Material _mat)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.03f);
+        Color _color = _mat.color;
+        while (true)
+        {
+
+            for (int i = 0; i < 5; i++)
+            {
+                _mat.color = new Color(0.8f, 0.8f - 0.2f * i, 0.8f - 0.1f * i);
+                yield return ws;
+            }
+            for (int i = 1; i < 5; i++)
+            {
+                _mat.color = new Color(0.8f, 0.2f * i, 0.4f + 0.1f * i);
+                yield return ws;
+            }
+
+            //!조건
+            if (check)
+            {
+                _mat.color = _color;
+                Debug.Log("Stop");
+                StopCoroutine("HightedColor");
+                break;
+            }
+        }
+    }
+
+
+
+    IEnumerator ObjectPick(Transform _tr)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.05f);
+        while (true)
+        {
+            if (_tr.parent == null)
+            {
+
+            }
+            else if (_tr.parent.name == "CustomHandRight" || _tr.parent.name == "CustomHandLeft")
+            {
+                check = true;
+                StopCoroutine("ObjectPick");
+            }
+            yield return ws;
+
+        }
+
+    }
+
+
+    #endregion
 
 
 }
