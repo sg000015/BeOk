@@ -108,6 +108,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 transform.localScale = new Vector3(0.8174f, -0.8f, -1.09f);
 
 
+
                 // mat = DrawingMgr.drawing.patient.GetComponent<SkinnedMeshRenderer>().materials[1];
                 // StartCoroutine("SetBloodLineAlpha");
 
@@ -140,6 +141,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 rot = syringe.eulerAngles;
                 functionState[2] = true;
                 syringe.parent = null;
+                coll.GetComponent<VesselColor>().check = true;
                 DrawingMgr.drawing.SyringeArea();
                 soundManager.Sound(4);
                 isDo = true;
