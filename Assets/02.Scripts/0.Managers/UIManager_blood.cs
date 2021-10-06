@@ -33,7 +33,7 @@ public class UIManager_blood : MonoBehaviour
 
     void Update()
     {
-        UpdateUI(NUM);
+        // UpdateUI(NUM);
 
     }
 
@@ -76,8 +76,9 @@ public class UIManager_blood : MonoBehaviour
                 infoText.text = "튜브를 꽂아주세요.";
                 break;
             case 11:
-                //todo scoreList = 
-                //todo 점수 UI on
+                scoreList = DrawingMgr.drawing.scoreList;
+                // 점수 UI on
+                StartCoroutine(nameof(ShowScore));
                 break;
         }
         progress.fillAmount = num / 11.0f;

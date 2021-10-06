@@ -856,9 +856,6 @@ MonoBehaviour:
   rankersMin: 
   rankersSec: 
   lastRankerScore: 0
-  rankingEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &115811336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,7 +1728,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &202232670
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4312,6 +4309,11 @@ MonoBehaviour:
   virusgroup: {fileID: 690034099}
   syringe: {fileID: 1053897590}
   playObject: {fileID: 1466449245}
+  alcoholcotton: {fileID: 0}
+  arrow: {fileID: 0}
+  UImanager: {fileID: 855275195}
+  scoreList: 1400000014000000140000001400000014000000
+  syringeGrab: 0
 --- !u!1 &477339344
 GameObject:
   m_ObjectHideFlags: 0
@@ -9046,9 +9048,30 @@ MonoBehaviour:
   progress: {fileID: 4874929527553989008}
   infoText: {fileID: 4874929527570773055}
   timer: {fileID: 4874929528543506696}
-  names: []
-  scores: []
-  times: []
+  names:
+  - {fileID: 848234173}
+  - {fileID: 1357551657}
+  - {fileID: 1038495327}
+  - {fileID: 943345468}
+  - {fileID: 1064167654}
+  - {fileID: 754155290}
+  - {fileID: 152298651}
+  scores:
+  - {fileID: 1752728637}
+  - {fileID: 703245450}
+  - {fileID: 1991990363}
+  - {fileID: 828321760}
+  - {fileID: 1150468464}
+  - {fileID: 1225426449}
+  - {fileID: 1451768120}
+  times:
+  - {fileID: 277601867}
+  - {fileID: 1724089222}
+  - {fileID: 1391237355}
+  - {fileID: 937381187}
+  - {fileID: 366491257}
+  - {fileID: 1418422940}
+  - {fileID: 586444900}
 --- !u!114 &855275196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20074,7 +20097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 189006, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11425648, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: angle
@@ -20126,27 +20149,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3299
+      value: 1.17
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.70710224
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70711136
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -3.532
+      value: -1.53
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -20158,7 +20181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -269.999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22493858, guid: 132e7f65a3fd16f48bb0cfcc88ef5e27, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -23804,9 +23827,6 @@ MonoBehaviour:
   worldSpaceMouseSensitivity: 1
   usedHand: 1
   pointerTransformOverride: {fileID: 0}
-  TouchControllerTransform: {fileID: 0}
-  InteractionButton: 8192
-  oculusCameraRig: {fileID: 1523001380}
 --- !u!1 &1916222838
 GameObject:
   m_ObjectHideFlags: 0
