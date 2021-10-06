@@ -40,6 +40,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     Transform point;
     Transform tempTr;
     public Transform vaccum;
+    Transform vialSnap;
+    Transform vialSnap2;
 
     Vector3 rot;
     Vector3 reset;
@@ -53,6 +55,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     int minusNum = 0;
     int minusNum2 = 0;
     int airCount = 0;
+
+
 
     bool check = false;
     bool airCheck;
@@ -78,7 +82,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 if (coll.name == "Needle_Point")
                 {
-                    //! 팔에 알콜솜 스냅될것
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodSafety();
                     isDo = true;
@@ -135,6 +138,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 pos = syringe.position;
                 rot = syringe.eulerAngles;
                 functionState[2] = true;
+                syringe.parent = null;
                 DrawingMgr.drawing.SyringeArea();
                 soundManager.Sound(4);
                 isDo = true;
@@ -152,6 +156,16 @@ public class KHG_Snap_Draw : MonoBehaviour
                     soundManager.Sound(4);
                     minusNum = 0;
                     minusNum2 = 0;
+                    if (vialSnap == null)
+                    {
+                        vialSnap = coll.transform;
+                        Debug.Log("CHECK:" + vialSnap);
+                    }
+                    else
+                    {
+                        vialSnap2 = coll.transform;
+                        Debug.Log("CHECK:" + vialSnap2);
+                    }
                     functionState[6] = false;
                     functionState[7] = true;
 
@@ -170,7 +184,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (airCount > 8)
                 {
                     soundManager.Sound(4);
-                    DrawingMgr.drawing.BloodShake();
+                    DrawingMgr.drawing.BloodShake(transform.parent);
                     Debug.Log("Shaking Finish");
                     GetComponent<BoxCollider>().enabled = false;
                 }
@@ -333,6 +347,9 @@ public class KHG_Snap_Draw : MonoBehaviour
     public void SyringeOffStart()
     {
         syringe = transform.parent.parent;
+        syringe.GetComponent<BoxCollider>().enabled = true;
+        syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+
         syringe.GetComponent<Rigidbody>().isKinematic = true;
         syringe.tag = "GrabObject";
         rot = Vector3.right * 180.0f;
@@ -342,15 +359,10 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         functionState[2] = false;
         functionState[6] = true;
-
-        //!테스트
-        // functionState[7] = true;
     }
 
     public void ShakingStart()
     {
-        tag = "GrabObject";
-        GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
         transform.Find("Shake_Snap").GetComponent<BoxCollider>().enabled = true;
 
     }
@@ -487,6 +499,8 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void Drawing()
     {
+        syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+        syringe.GetComponent<BoxCollider>().enabled = false;
 
         if (_objectType == ObjectType.Pull)
         {
@@ -521,16 +535,16 @@ public class KHG_Snap_Draw : MonoBehaviour
                 back.localPosition = backReset;
                 back.localEulerAngles = rot;
 
-                dis = Vector3.Distance(back.position, transform.position);
+                // dis = Vector3.Distance(back.position, transform.position);
                 transform.localPosition = reset;
                 transform.localEulerAngles = Vector3.zero;
 
             }
+
             else if ((transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
 
-
-                tempTr = transform.parent;
+                // tempTr = transform.parent;
 
                 dis = Vector3.Magnitude(back.position - transform.position);
 
@@ -554,6 +568,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 isFirst = false;
                 lastDis = dis;
 
+
                 float fixdis = Mathf.Abs(dis);
                 Debug.Log(fixdis);
                 back.localPosition = backReset - Vector3.up * 15 * (-0.1f + fixdis);
@@ -564,6 +579,11 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 if (dis > 0.25f)
                 {
+
+                    transform.parent = back;
+                    transform.GetComponent<Rigidbody>().isKinematic = true;
+                    transform.GetComponent<Rigidbody>().useGravity = false;
+
                     soundManager.Sound(4);
                     functionState[3] = false;
                     tag = "Untagged";
@@ -571,7 +591,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 }
 
-                transform.parent = tempTr;
+                // transform.parent = tempTr;
 
 
 
@@ -666,8 +686,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (value2 || value3)
                 {
                     minusNum++;
-                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
-                    front.localScale = front.localScale + Vector3.up * -0.0035f;
+                    front.localPosition = front.localPosition + Vector3.up * +0.00175f;
+                    front.localScale = front.localScale + Vector3.up * -0.00175f;
                     back.localPosition = back.localPosition + Vector3.up * 0.00075f;
                     back.localScale = back.localScale + Vector3.up * 0.00075f;
 
@@ -681,8 +701,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (value1 || value2 || value3)
                 {
                     minusNum++;
-                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
-                    front.localScale = front.localScale + Vector3.up * -0.0035f;
+                    front.localPosition = front.localPosition + Vector3.up * +0.00175f;
+                    front.localScale = front.localScale + Vector3.up * -0.00175f;
                     back.localPosition = back.localPosition + Vector3.up * 0.00075f;
                     back.localScale = back.localScale + Vector3.up * 0.00075f;
                 }
@@ -691,18 +711,41 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         }
 
-        if (minusNum > 50 && minusNum2 < 5)
+        if (vialSnap2 == null)
         {
-            soundManager.Sound(0);
-            soundManager.Sound(0);
-            minusNum -= 50;
-            minusNum2++;
+            if (minusNum > 50 && minusNum2 < 5)
+            {
+                soundManager.Sound(0);
+                soundManager.Sound(0);
+                minusNum -= 50;
+                minusNum2++;
+            }
+            else if (minusNum > 50 && minusNum2 == 5)
+            {
+                soundManager.Sound(4);
+                vialSnap.GetComponent<BoxCollider>().enabled = false;
+                functionState[7] = false;
+                functionState[6] = true;
+                DrawingMgr.drawing.VaccumTube(vialSnap.parent);
+            }
         }
-        else if (minusNum > 50 && minusNum2 == 5)
+        else if (vialSnap2 != null)
         {
-            soundManager.Sound(4);
-            DrawingMgr.drawing.VaccumTube();
-            functionState[7] = false;
+            if (minusNum > 50 && minusNum2 < 5)
+            {
+                soundManager.Sound(0);
+                soundManager.Sound(0);
+                minusNum -= 50;
+                minusNum2++;
+            }
+            else if (minusNum > 50 && minusNum2 == 5)
+            {
+                soundManager.Sound(4);
+                vialSnap2.GetComponent<BoxCollider>().enabled = false;
+                functionState[7] = false;
+
+                DrawingMgr.drawing.VaccumTube(vialSnap2.parent);
+            }
         }
     }
 
@@ -724,7 +767,6 @@ public class KHG_Snap_Draw : MonoBehaviour
                 GetComponent<BoxCollider>().enabled = false;
             }
         }
-
 
         if (_objectType == ObjectType.NeedleCover)
         {
@@ -804,8 +846,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             }
         }
     }
-
-
 
     IEnumerator ObjectPick(Transform _tr)
     {

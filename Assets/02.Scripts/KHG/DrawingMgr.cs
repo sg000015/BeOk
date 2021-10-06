@@ -11,9 +11,8 @@ public class DrawingMgr : MonoBehaviour
     public GameObject virusgroup;
     public Transform syringe;
     public Transform playObject;
+    public Transform alcoholcotton;
 
-    private Transform vial;
-    private Transform alcoholcotton;
 
     public bool syringeGrab = false;
 
@@ -22,7 +21,6 @@ public class DrawingMgr : MonoBehaviour
     void Awake()
     {
         drawing = this;
-        vial = playObject.Find("Vial");
         alcoholcotton = playObject.Find("AlcoholCotton");
     }
 
@@ -116,20 +114,20 @@ public class DrawingMgr : MonoBehaviour
 
     //혈액 보관완료 한 뒤
     [ContextMenu("7. 진공튜브")]
-    public void VaccumTube()
+    public void VaccumTube(Transform _transform)
     {
         //다 담은 뒤, 주사기 다시잡으면 분리가능
         // 분리후에 흔들 것 
-        vial.GetComponent<KHG_Snap_Draw>().ShakingStart();
+        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
 
     }
 
     //혈액 흔들기
     [ContextMenu("8. 혈액 흔들기")]
-    public void BloodShake()
+    public void BloodShake(Transform _transform)
     {
         //!진공튜브 꽂는곳 활성화 하기
-        vial.GetComponent<KHG_Snap_Draw>().VialSnapStart();
+        _transform.GetComponent<KHG_Snap_Draw>().VialSnapStart();
 
     }
     //평가
