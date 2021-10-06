@@ -224,9 +224,9 @@ public class UIManager_blood : MonoBehaviour
             scores[i].text = $"{fb.rankersScore[i]}";
             times[i].text = $"{fb.rankersMin[i]}:{fb.rankersSec[i]}";
 
-            Debug.Log($"____{names[i].text} / {scores[i].text} / {times[i].text}");
+            // Debug.Log($"____{names[i].text} / {scores[i].text} / {times[i].text}");
         }
-        Debug.Log("텍스트 변경 완료");
+        // Debug.Log("텍스트 변경 완료");
 
         // UI 활성화
         rankingCtrl.ActiveRankingUI();

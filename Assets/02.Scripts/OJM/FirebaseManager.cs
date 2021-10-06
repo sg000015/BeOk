@@ -91,7 +91,7 @@ public class FirebaseManager : MonoBehaviour
 
                 Debug.Log($"데이터 레코드 갯수 : {snapshot.ChildrenCount}");
                 int cnt = (int)snapshot.ChildrenCount;
-                bool isLast = true;
+                // bool isLast = true;
                 foreach (DataSnapshot data in snapshot.Children)
                 {
                     IDictionary _data = (IDictionary)data.Value;
@@ -106,18 +106,19 @@ public class FirebaseManager : MonoBehaviour
                     rankersMin[cnt - 1] = datas[1];
                     rankersSec[cnt - 1] = datas[2];
 
-                    Debug.Log($"{rankersName[cnt - 1]} - {rankersScore[cnt - 1]} / {rankersMin[cnt - 1]}:{rankersSec[cnt - 1]}");
-                    if (isLast)
-                    {
-                        isLast = false;
-                        lastRankerScore = _score;
-                    }
+                    // Debug.Log($"{rankersName[cnt - 1]} - {rankersScore[cnt - 1]} / {rankersMin[cnt - 1]}:{rankersSec[cnt - 1]}");
+                    // if (isLast)
+                    // {
+                    //     isLast = false;
+                    //     lastRankerScore = _score;
+                    // }
 
 
                     cnt--;
                 }
+                lastRankerScore = rankersScore[rankNum - 1];
                 isLoad = true;
-                Debug.Log("-------------------------isLoad - true 1");
+                // Debug.Log("-------------------------isLoad - true 1");
             }
         });
         // StartCoroutine(UpdateAllData());

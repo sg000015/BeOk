@@ -16,6 +16,7 @@ public class DrawingMgr : MonoBehaviour
     public UIManager_blood UImanager;
 
     public int[] scoreList = { 20, 20, 20, 20, 20 };
+    public Timer timer;
 
 
     public bool syringeGrab = false;
@@ -140,6 +141,10 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
+        // Timer Off
+        timer.timerOn = false;
+
+
         //!점수
         if (!finish)
         {
