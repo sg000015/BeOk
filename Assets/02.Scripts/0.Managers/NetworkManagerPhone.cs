@@ -11,20 +11,17 @@ public class NetworkManagerPhone : MonoBehaviourPunCallbacks
     public TMP_InputField roomNumber;
     public TMP_Text info;
 
-    // void Start() => Connect();
-    // public void Connect() => PhotonNetwork.ConnectUsingSettings();
+    void Start() => Connect();
+    public void Connect() => PhotonNetwork.ConnectUsingSettings();
 
     public void OnClickEnter()
     {
-        PhotonNetwork.ConnectUsingSettings();
         info.text = roomNumber.text +"방에 입장 중입니다.";
-        Invoke("TryJoinRoom", 1f);
-    }
-    void TryJoinRoom()
-    {
-        PhotonNetwork.JoinRoom(roomNumber.text);
-        // PhotonNetwork.JoinOrCreateRoom(roomNumber.text, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
-
+        if (PhotonNetwork.IsConnected)
+        {
+            // PhotonNetwork.JoinRoom(roomNumber.text);
+            PhotonNetwork.JoinOrCreateRoom(roomNumber.text, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
+        }
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -35,11 +32,12 @@ public class NetworkManagerPhone : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         info.text = "방 입장에 성공하였습니다";
-        Invoke("SceneLoader", 1.5f);
+        
+        SceneManager.LoadScene("Ward-Injection");
     }
 
+    [ContextMenu("SceneLoader")]
     void SceneLoader()
     {
-        SceneManager.LoadScene("BGBWard-Injection");
     }
 }

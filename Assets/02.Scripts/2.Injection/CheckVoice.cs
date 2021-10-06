@@ -18,9 +18,10 @@ public class CheckVoice : MonoBehaviour
 
     void Check()
     {
-        text.text = recorder.MicrophoneDevice.ToString() + "\n";
-        text.text += recorder.MicrophoneType.ToString() + "\n";
-        text.text += Microphone.devices.ToString();
+        // text.text = recorder.MicrophoneDevice.ToString() + "\n";
+        // text.text += recorder.MicrophoneType.ToString() + "\n";
+        // text.text += Microphone.devices.ToString();
+        text.text = PlayerPrefs.GetString("Device");
 
     }
     // Update is called once per frame

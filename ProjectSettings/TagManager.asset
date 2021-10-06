@@ -8,6 +8,9 @@ TagManager:
   - Patient
   - FilmDressimg
   - SoundManager
+  - Bullet
+  - EventSystem
+  - LobbyInput
   layers:
   - Default
   - TransparentFX

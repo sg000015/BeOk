@@ -17,6 +17,7 @@ public class GameManager_Lobby : MonoBehaviour
 
     void Start()
     {
+        PlayerPrefs.SetString("Device","Oculus");
         fb = this.GetComponent<FirebaseManager>();
         // fb.rankingEvent.AddListener(() => UpdateRanking());
 
