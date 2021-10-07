@@ -677,21 +677,25 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
 
                 StopCoroutine("TimeCheck");
-                if (timecheck > 120)
+                if (timecheck < 60)
                 {
-                    DrawingMgr.drawing.scoreList[1] -= 20;
+
+                }
+                else if (timecheck < 80)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 5;
                 }
                 else if (timecheck < 100)
                 {
-                    DrawingMgr.drawing.scoreList[1] -= 15;
-                }
-                else if (timecheck < 800)
-                {
                     DrawingMgr.drawing.scoreList[1] -= 10;
                 }
-                else if (timecheck < 60)
+                else if (timecheck < 120)
                 {
-                    DrawingMgr.drawing.scoreList[1] -= 5;
+                    DrawingMgr.drawing.scoreList[1] -= 15;
+                }
+                else
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 20;
                 }
                 Debug.Log("지혈대 시간:" + timecheck);
 
