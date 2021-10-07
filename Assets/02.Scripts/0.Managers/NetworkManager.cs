@@ -12,6 +12,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     string roomNum = "1";
     bool isOculus = false;
     public TMP_InputField inputRoomNum;
+    public TMP_Text text;
 
     void Awake()
     {
@@ -40,7 +41,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             isOculus = true;
             Debug.Log("오큘러스로 접속");
-            GameObject.Find("Canvas-Phone").SetActive(false);
+            // GameObject.Find("Canvas-Phone").SetActive(false);
 
         }
         else
@@ -67,23 +68,36 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (isOculus)
             {
                 roomNum = "1";
+                PhotonNetwork.CreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
+
             }
             else
             {
                 roomNum =  GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
+                text.text = roomNum + "방에 입장을 시도합니다.";
+
+                PhotonNetwork.JoinRoom(roomNum);
+
             }
-            PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
         }
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("방생성 실패");
+        
+    }
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        text.text = roomNum + "존재하지 않거나, 입장할 수 없는 방입니다.";
     }
     public override void OnJoinedRoom()
     {
         Debug.Log(roomNum + "번 방 입장 완료");
         PhotonNetwork.LoadLevel("Ward-Injection");
     }
+
+   
+
 
     public void InstantiatePlayer()
     {
@@ -97,9 +111,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             GameObject CCTV = PhotonNetwork.Instantiate("CCTV",Vector3.zero, Quaternion.identity,0);
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
-
         }
     }
+
+
+
 
     
 

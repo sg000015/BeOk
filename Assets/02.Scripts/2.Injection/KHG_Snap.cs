@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class KHG_Snap : MonoBehaviour
 {
@@ -33,13 +35,14 @@ public class KHG_Snap : MonoBehaviour
 
     SoundManager soundManager;
 
-
+    PhotonView pv;
 
 
     int animCount = -1;
 
     void Start()
     {
+        pv = this.gameObject.GetPhotonView();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         anim = GameObject.FindGameObjectWithTag("Patient").GetComponent<Animator>();
@@ -208,7 +211,7 @@ public class KHG_Snap : MonoBehaviour
 
                 transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
                 GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
-                InjectionMgr.injection.curruntSap = this.gameObject;
+                pv.RPC("SetCurrentSapRPC", RpcTarget.AllViaServer);
 
                 isDo = true;
 
@@ -257,6 +260,12 @@ public class KHG_Snap : MonoBehaviour
 
             }
         }
+    }
+
+    [PunRPC]
+    void SetCurrentSapRPC()
+    {
+        InjectionMgr.injection.curruntSap = this.gameObject;
     }
 
     void OnTriggerExit()

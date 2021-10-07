@@ -53,6 +53,9 @@ MonoBehaviour:
   - SeparateCatheterRPC
   - UntieTourniquetRPC
   - SetSapRPC
+  - DeleteRoom
+  - StartUI
+  - SetCurrentSapRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
