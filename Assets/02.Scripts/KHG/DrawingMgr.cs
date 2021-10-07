@@ -39,11 +39,10 @@ public class DrawingMgr : MonoBehaviour
     }
 
 
-    // void Start()
-    // {
-    //     vaccumList[0] = Random.Range(0, 3);
-    //     vaccumList[1] = Random.Range(3, 6);
-    // }
+    void Start()
+    {
+        StartCoroutine("ArrowActive", torniquet);
+    }
 
     void Update()
     {
@@ -67,6 +66,7 @@ public class DrawingMgr : MonoBehaviour
 
         arrow.gameObject.SetActive(true);
         arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", alcoholcotton);
 
     }
 
@@ -81,6 +81,7 @@ public class DrawingMgr : MonoBehaviour
 
         arrow.gameObject.SetActive(true);
         arrow.position = syringe.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", syringe);
     }
 
     //주사 공기 뻇을시
@@ -105,6 +106,7 @@ public class DrawingMgr : MonoBehaviour
 
         arrow.gameObject.SetActive(true);
         arrow.position = needleSnap.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", needleSnap);
 
     }
 
@@ -129,6 +131,7 @@ public class DrawingMgr : MonoBehaviour
 
         //!위치 조정 필요
         arrow2.gameObject.SetActive(true);
+        StartCoroutine("Arrow2Active", torniquet);
 
     }
 
@@ -142,6 +145,7 @@ public class DrawingMgr : MonoBehaviour
 
         arrow.gameObject.SetActive(true);
         arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", alcoholcotton);
     }
 
     //혈액 지압했을 경우
@@ -157,6 +161,8 @@ public class DrawingMgr : MonoBehaviour
         arrow2.gameObject.SetActive(true);
         arrow.position = vaccum1.position + Vector3.up * 0.1f;
         arrow2.position = vaccum2.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", vaccum1);
+        StartCoroutine("Arrow2Active", vaccum2);
 
 
 
@@ -183,6 +189,7 @@ public class DrawingMgr : MonoBehaviour
         UImanager.UpdateUI(10);
         arrow.gameObject.SetActive(true);
         arrow.position = vaccumRack.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", vaccumRack);
 
     }
     //평가
@@ -204,6 +211,44 @@ public class DrawingMgr : MonoBehaviour
             UImanager.UpdateUI(11);
         }
     }
+
+
+    //Tramsform 잡으면 SetActive(false)
+    IEnumerator ArrowActive(Transform _tr)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
+        while (true)
+        {
+            if (_tr.parent != null)
+            {
+                if (_tr.parent.name == "CustomHandRight" || _tr.parent.name == "CustomHandLeft")
+                {
+                    arrow.gameObject.SetActive(false);
+                    StopCoroutine("ArrowActive");
+                }
+            }
+            yield return ws;
+        }
+    }
+
+
+    IEnumerator Arrow2Active(Transform _tr)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
+        while (true)
+        {
+            if (_tr.parent != null)
+            {
+                if (_tr.parent.name == "CustomHandRight" || _tr.parent.name == "CustomHandLeft")
+                {
+                    arrow2.gameObject.SetActive(false);
+                    StopCoroutine("Arrow2Active");
+                }
+            }
+            yield return ws;
+        }
+    }
+
 
 
 }
