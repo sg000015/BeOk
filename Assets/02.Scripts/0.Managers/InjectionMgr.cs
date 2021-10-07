@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class InjectionMgr : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class InjectionMgr : MonoBehaviour
     public GameObject catheterPref;
     SoundManager soundManager;
 
-
+    PhotonView pv;
 
     Animator animator;
 
@@ -68,10 +69,32 @@ public class InjectionMgr : MonoBehaviour
 
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
+        pv = gameObject.GetComponent<PhotonView>();
         InitInjection();
 
     }
+    
+    [ContextMenu("OnclcikStart")]
+    public void OnClickStart()
+    {
 
+        int index = Random.Range(0, type.Length);
+        string sapType = type[index];
+
+        int sapSpeed = speed[Random.Range(0, speed.Length)];
+
+        pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
+    }
+    
+
+    [PunRPC]
+    void SetSapRPC(int idx, string sapType, int sapSpeed)
+    {
+        _sapTypeidx = idx;
+        _sapType = sapType;
+        _sapSpeed = sapSpeed;
+        SapType();
+    }
     void Start()
     {
     }
@@ -93,8 +116,6 @@ public class InjectionMgr : MonoBehaviour
         // 타이머 초기화
         timer.totalTime = 0.0f;
 
-        // 수액 초기화
-        SetSap();
 
         // 점수 초기화
         for (int i = 0; i < scoreList.Length; i++)
@@ -109,8 +130,6 @@ public class InjectionMgr : MonoBehaviour
         // 애니메이션
         animator.SetTrigger("Idle");
 
-        // 수액 종류 시작
-        SapType();
     }
 
     public void CreateCatheter()
@@ -121,7 +140,14 @@ public class InjectionMgr : MonoBehaviour
     #region 술기
     // 0.수액 종류
     [ContextMenu("0.수액 종류")]
+    
     public void SapType()
+    {
+        pv.RPC(nameof(SapTypeRPC), RpcTarget.AllViaServer);
+        // GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
+    }
+    [PunRPC]
+    void SapTypeRPC()
     {
         state = STATE.SapType;
         progress.fillAmount = progressNum * 0;
@@ -129,13 +155,17 @@ public class InjectionMgr : MonoBehaviour
 
         // 타이머 시작
         timer.timerOn = true;
-
-        // GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
     }
 
     // 1.지혈
     [ContextMenu("1.지혈")]
     public void Hemostasis()
+    {
+       pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void HemostasisRPC()
     {
         soundManager.Sound(4);
         state = STATE.Hemostasis;
@@ -146,18 +176,21 @@ public class InjectionMgr : MonoBehaviour
         tourniquet.GetComponent<KHG_Snap>().isDo = false;
 
         // 화살표
-        GameObject.Find("Arrow_Sap").SetActive(false);
+        GameObject.Find("Arrow_Sap")?.SetActive(false);
         ActiveArrow(tourniquet);
 
         // 애니메이션
         animator.SetTrigger("IdleToInjection");
-
-
     }
-
     // 2.소독
     [ContextMenu("2.소독")]
     public void Disinfect()
+    {
+       pv.RPC(nameof(DisinfectRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void DisinfectRPC()
     {
         soundManager.Sound(4);
         state = STATE.Disinfect;
@@ -169,12 +202,17 @@ public class InjectionMgr : MonoBehaviour
 
         // 화살표
         ActiveArrow(alcoholCotton);
-
     }
 
     // 3.주사 위치
     [ContextMenu("3.주사 위치")]
     public void InjectArea()
+    {
+        pv.RPC(nameof(InjectAreaRPC), RpcTarget.AllViaServer);
+    }
+    [ContextMenu("3.주사 위치")]
+    [PunRPC]
+    public void InjectAreaRPC()
     {
         state = STATE.InjectArea;
         progress.fillAmount = progressNum * 3;
@@ -192,6 +230,11 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("4.주사 각도")]
     public void InjectAngle()
     {
+        pv.RPC(nameof(InjectAngleRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void InjectAngleRPC()
+    {
         soundManager.Sound(4);
         state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 4;
@@ -202,6 +245,11 @@ public class InjectionMgr : MonoBehaviour
     // 5.주사 각도
     [ContextMenu("5.카테터 분리")]
     public void SeparateCatheter()
+    {
+        pv.RPC(nameof(SeparateCatheterRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void SeparateCatheterRPC()
     {
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 5;
@@ -216,6 +264,12 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("6.고무관 연결")]
     public void ConnectRubber()
     {
+        pv.RPC(nameof(ConnectRubberRPC), RpcTarget.AllViaServer);
+        
+    }
+    [PunRPC]
+    public void ConnectRubberRPC()
+    {
         soundManager.Sound(4);
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 6;
@@ -224,12 +278,17 @@ public class InjectionMgr : MonoBehaviour
         // 화살표
         GameObject rubberPivot = rubber.transform.Find("RubberArrowPivot").gameObject;
         ActiveArrow(rubberPivot);
-
     }
 
     // 7.수액 속도
     [ContextMenu("7.수액 속도")]
     public void SapSpeed()
+    {
+        pv.RPC(nameof(SapSpeedRPC), RpcTarget.AllViaServer);
+        
+    }
+    [PunRPC]
+    public void SapSpeedRPC()
     {
         soundManager.Sound(4);
         state = STATE.SapSpeed;
@@ -246,12 +305,16 @@ public class InjectionMgr : MonoBehaviour
 
         // 수액 속도 조절하는 콜라이더 On
         curruntSap.transform.Find("IVPole_Snap").gameObject.SetActive(true);
-
     }
 
     // 8.수액 속도
     [ContextMenu("8.토니켓 분리")]
     public void UntieTourniquet()
+    {
+        pv.RPC(nameof(UntieTourniquetRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void UntieTourniquetRPC()
     {
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 8;
@@ -264,8 +327,13 @@ public class InjectionMgr : MonoBehaviour
     #endregion
 
     //! ANCHOR 평가
-    [ContextMenu("10.평가")]
+    [ContextMenu("9.평가")]
     public void GradeInjection()
+    {
+       pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void GradeInjectionRPC()
     {
         soundManager.Sound(4);
         state = STATE.Grade;
@@ -278,12 +346,14 @@ public class InjectionMgr : MonoBehaviour
         timer.timerOn = false;
         int[] times = timer.GetTime();
 
+
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         // 0.수액종류
         string tempSapName = curruntSap.name;
         string[] tempSapNames = tempSapName.Split('_');
         string curruntSapType = tempSapNames[1];
         Debug.Log(curruntSapType);
+
 
         // 수액 종류를 틀릴 경우
         if (string.Compare(_sapType, curruntSapType, true) != 0)
@@ -297,6 +367,7 @@ public class InjectionMgr : MonoBehaviour
             Debug.Log($"{_sapType}, {curruntSapType}");
             Debug.Log("수액 종류가 같음");
         }
+
 
         // 1.수액속도
         int currentSapSpeed = (int)sapScript.curSpeed;
@@ -314,12 +385,14 @@ public class InjectionMgr : MonoBehaviour
         //! TODO : 시간별 점수처리
 
         // UI
-        StartCoroutine(nameof(ShowScore));
-
+        StartCoroutine(ShowScore());
     }
+
+  
 
     IEnumerator ShowScore()
     {
+        infoTxt.text += "ShowScore 호출";
         soundManager.SoundStop();
         float time = 1.0f;
         int score = 0;
@@ -329,6 +402,8 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
+        
+        infoTxt.text += $"\n{curruntSap.name}";
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
@@ -523,15 +598,7 @@ public class InjectionMgr : MonoBehaviour
         scoreList[3] -= 5;
     }
 
-    // 수액 랜덤값으로 설정
-    void SetSap()
-    {
-        _sapTypeidx = Random.Range(0, type.Length);
-        _sapType = type[_sapTypeidx];
-
-        _sapSpeed = speed[Random.Range(0, speed.Length)];
-        // Debug.Log($"sap speed : {_sapSpeed}");
-    }
+    
 
     // 화살표 On
     void ActiveArrow(GameObject obj)
