@@ -42,6 +42,7 @@ public class DrawingMgr : MonoBehaviour
     void Start()
     {
         StartCoroutine("ArrowActive", torniquet);
+        SetVial();
     }
 
     void Update()
@@ -264,6 +265,16 @@ public class DrawingMgr : MonoBehaviour
                 }
             }
             yield return ws;
+        }
+    }
+
+    void SetVial()
+    {
+        if (Random.Range(0, 2) == 0)
+        {
+            Vector3 temp = vaccum1.transform.position;
+            vaccum1.transform.position = vaccum2.transform.position;
+            vaccum2.transform.position = temp;
         }
     }
 
