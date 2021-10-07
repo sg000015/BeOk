@@ -169,44 +169,62 @@ public class DrawingMgr : MonoBehaviour
     }
 
 
+    bool isVaccumTube = false;
+
     //혈액 보관완료 한 뒤
     [ContextMenu("7. 진공튜브")]
     public void VaccumTube(Transform _transform)
     {
+        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
         //다 담은 뒤, 주사기 다시잡으면 분리가능
         // 분리후에 흔들 것 
-        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
-        UImanager.UpdateUI(9);
+        if (isVaccumTube)
+        {
+            UImanager.UpdateUI(9);
+        }
+        else
+        {
+            isVaccumTube = true;
+        }
 
     }
 
+    bool isBloodShake = false;
     //혈액 흔들기
     [ContextMenu("8. 혈액 흔들기")]
     public void BloodShake(Transform _transform)
     {
         //진공튜브 꽂는곳 활성화 하기
         _transform.GetComponent<KHG_Snap_Draw>().VialSnapStart();
-        UImanager.UpdateUI(10);
-        arrow.gameObject.SetActive(true);
-        arrow.position = vaccumRack.position + Vector3.up * 0.1f;
-        StartCoroutine("ArrowActive", vaccumRack);
+
+        if (isBloodShake)
+        {
+            UImanager.UpdateUI(10);
+            arrow.gameObject.SetActive(true);
+            arrow.position = vaccumRack.position + Vector3.up * 0.1f;
+        }
+        else
+        {
+            isBloodShake = true;
+        }
 
     }
     //평가
     [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
-        // Timer Off
-        timer.timerOn = false;
 
 
         //!점수
         if (!finish)
         {
             finish = true;
+            arrow.gameObject.SetActive(false);
         }
         else if (finish)
         {
+            // Timer Off
+            timer.timerOn = false;
             //점수 출력
             UImanager.UpdateUI(11);
         }

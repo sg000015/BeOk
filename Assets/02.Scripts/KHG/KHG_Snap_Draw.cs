@@ -148,6 +148,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 syringe.parent = null;
                 coll.GetComponent<VesselColor>().check = true;
                 DrawingMgr.drawing.arrow.gameObject.SetActive(false);
+                coll.gameObject.SetActive(false);
                 DrawingMgr.drawing.SyringeArea();
                 soundManager.Sound(4);
                 isDo = true;
@@ -210,14 +211,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
-                        case 1:
-
+                        case 0:
                             transform.localPosition = new Vector3(-0.63f, 0.18f, 0);
                             break;
-                        case 2:
+                        case 1:
                             transform.localPosition = new Vector3(-0.46f, 0.18f, 0);
                             break;
-                        case 3:
+                        case 2:
                             transform.localPosition = new Vector3(-0.29f, 0.18f, 0);
                             break;
                         default:
@@ -242,13 +242,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
-                        case 4:
+                        case 3:
                             transform.localPosition = new Vector3(-0.12f, 0.18f, 0);
                             break;
-                        case 5:
+                        case 4:
                             transform.localPosition = new Vector3(0.128f, 0.18f, 0);
                             break;
-                        case 6:
+                        case 5:
                             transform.localPosition = new Vector3(0.295f, 0.18f, 0);
                             break;
                         default:

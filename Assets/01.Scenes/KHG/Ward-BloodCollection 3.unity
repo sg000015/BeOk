@@ -1805,7 +1805,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3735d42bfa090b94da76c8f88417f6c8, type: 3}
   - {fileID: 8300000, guid: 7b48f2a9a0cfa3441928b8ebbefc1ec9, type: 3}
   - {fileID: 8300000, guid: d89b57a399020f549ba279ebbc6f232e, type: 3}
-  - {fileID: 8300000, guid: 9bbc0ae76ca8d9344b094b6ab8082ef5, type: 3}
+  - {fileID: 8300000, guid: bd682ea700599974e8e3cd48be63ebee, type: 3}
   - {fileID: 8300000, guid: 12f96593b58dfe947be2448305c85187, type: 3}
   patientAudioClips:
   - {fileID: 8300000, guid: bd682ea700599974e8e3cd48be63ebee, type: 3}
@@ -5352,12 +5352,12 @@ MonoBehaviour:
   torniquet: {fileID: 1266494270}
   vaccum1: {fileID: 321718567}
   vaccum2: {fileID: 1876323191}
-  vaccumRack: {fileID: 22485132}
+  vaccumRack: {fileID: 1928170399}
   arrow: {fileID: 370632995}
   arrow2: {fileID: 2019715023}
   UImanager: {fileID: 855275195}
   scoreList: 1400000014000000140000001400000014000000
-  timer: {fileID: 0}
+  timer: {fileID: 4874929528543506696}
   syringeGrab: 0
 --- !u!1 &486769403
 GameObject:
@@ -10822,7 +10822,7 @@ Transform:
   m_GameObject: {fileID: 875195105}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 8, y: 1, z: 8}
+  m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 321718567}
   m_RootOrder: 3
@@ -25898,7 +25898,7 @@ Transform:
   m_GameObject: {fileID: 1837401079}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 8, y: 1, z: 8}
+  m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 1876323191}
   m_RootOrder: 3
@@ -26089,13 +26089,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1839173395}
-  m_LocalRotation: {x: 0.017906722, y: -0.68827367, z: 0.72454774, w: -0.03145404}
-  m_LocalPosition: {x: 0.024318108, y: -0.13797323, z: 0.016888645}
-  m_LocalScale: {x: 0.0063786763, y: 0.010448001, z: -0.025144849}
+  m_LocalRotation: {x: 0.36856353, y: -0.59372336, z: 0.63118374, w: 0.33654213}
+  m_LocalPosition: {x: 0.0213, y: -0.1303, z: 0.0194}
+  m_LocalScale: {x: 0.0063786763, y: 0.010448001, z: -0.009781095}
   m_Children: []
   m_Father: {fileID: 1887480162}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 85.496, y: 141.452, z: -37.302}
+  m_LocalEulerAnglesHint: {x: 86.006, y: 70.45, z: -169.402}
 --- !u!65 &1839173397
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27108,6 +27108,36 @@ Transform:
   - {fileID: 1416630652}
   m_Father: {fileID: 671300266}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1928170398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1928170399}
+  m_Layer: 0
+  m_Name: VialRack_Position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1928170399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1928170398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.207, y: 0.616, z: -0.008}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 22485132}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942249809
 GameObject:
