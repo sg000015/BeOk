@@ -113,6 +113,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 // StartCoroutine("SetBloodLineAlpha");
 
                 // 다음 단계 완료 : 소독
+                StartCoroutine("TimeCheck");
                 DrawingMgr.drawing.Hemostasis();
                 soundManager.Sound(4);
 
@@ -128,10 +129,15 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log("DegreeY: " + needleAngle.y);
                 // Debug.Log("DegreeZ: " + needleAngle.z);
 
-                //!각도체크 감점
-                if (needleAngle.x > 350f || needleAngle.x < 320 || needleAngle.y < 160 || needleAngle.y > 200)
+                if (needleAngle.x > 355f || needleAngle.x < 305 || needleAngle.y < 155 || needleAngle.y > 205)
                 {
                     Debug.Log("감점요인\nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                    DrawingMgr.drawing.scoreList[0] -= 20;
+                }
+                else if (needleAngle.x > 350f || needleAngle.x < 320 || needleAngle.y < 160 || needleAngle.y > 200)
+                {
+                    Debug.Log("감점요인\nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                    DrawingMgr.drawing.scoreList[0] -= 10;
                 }
 
                 syringe = transform.parent.parent;
@@ -152,7 +158,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 if (functionState[6])
                 {
-                    //!주사기 스냅 되었을시
                     vaccum = coll.transform;
                     front = transform.parent.parent.Find("Blood");
                     back = coll.transform.parent.Find("Blood");
@@ -163,6 +168,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                     {
                         vialSnap = coll.transform;
                         Debug.Log("CHECK:" + vialSnap);
+                        if (coll.transform.parent.GetComponent<VaccumTubeMgr>().a > 3)
+                        {
+                            DrawingMgr.drawing.scoreList[3] -= 20;
+                        }
                     }
                     else
                     {
@@ -614,7 +623,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                             soundManager.Sound(1);
                             //! 환자 Sound, 감점
                             soundManager.Sound(9);
-                            Debug.Log("주사기 속도 감점");
+                            if (DrawingMgr.drawing.scoreList[2] >= 10)
+                            {
+                                DrawingMgr.drawing.scoreList[2] -= 10;
+                            }
                         }
                 }
                 isFirst = false;
@@ -674,6 +686,25 @@ public class KHG_Snap_Draw : MonoBehaviour
             // }
             if (transform.parent == null)
             {
+
+                StopCoroutine("TimeCheck");
+                if (timecheck > 60)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 5;
+                }
+                else if (timecheck > 80)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 10;
+                }
+                else if (timecheck > 100)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 15;
+                }
+                else if (timecheck > 120)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 20;
+                }
+
                 soundManager.Sound(4);
                 DrawingMgr.drawing.TourniquetOff();
                 functionState[4] = false;
@@ -916,6 +947,17 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         }
 
+    }
+
+    int timecheck = 0;
+    IEnumerator TimeCheck()
+    {
+        WaitForSeconds ws = new WaitForSeconds(1f);
+        while (true)
+        {
+            timecheck++;
+            yield return ws;
+        }
     }
 
 
