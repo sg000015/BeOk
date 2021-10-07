@@ -12,10 +12,18 @@ public class DrawingMgr : MonoBehaviour
     public Transform syringe;
     public Transform playObject;
     public Transform alcoholcotton;
+    public Transform torniquet;
+    public Transform vaccum1;
+    public Transform vaccum2;
+    public Transform vaccumRack;
+
+
     public Transform arrow;
+    public Transform arrow2;
     public UIManager_blood UImanager;
 
     public int[] scoreList = { 20, 20, 20, 20, 20 };
+    // public int[] vaccumList = new int[2];
     public Timer timer;
 
 
@@ -30,6 +38,13 @@ public class DrawingMgr : MonoBehaviour
         drawing = this;
     }
 
+
+    void Start()
+    {
+        StartCoroutine("ArrowActive", torniquet);
+        SetVial();
+    }
+
     void Update()
     {
         if (syringe.parent == null)
@@ -42,12 +57,17 @@ public class DrawingMgr : MonoBehaviour
         }
     }
 
+
     //토니캣 착용시
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
         virusgroup.SetActive(true);
-        UImanager.UpdateUI(11);
+        UImanager.UpdateUI(1);
+
+        arrow.gameObject.SetActive(true);
+        arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", alcoholcotton);
 
     }
 
@@ -58,6 +78,11 @@ public class DrawingMgr : MonoBehaviour
         //주사기 당기기 로직 활성화
         alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonReset();
         syringe.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().AirOffStart();
+        UImanager.UpdateUI(2);
+
+        arrow.gameObject.SetActive(true);
+        arrow.position = syringe.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", syringe);
     }
 
     //주사 공기 뻇을시
@@ -66,6 +91,7 @@ public class DrawingMgr : MonoBehaviour
     {
         //주사 커버 로직 활성화
         syringe.Find("Front").Find("Needle_Cover").GetComponent<KHG_Snap_Draw>().AirCoverStart();
+        UImanager.UpdateUI(3);
     }
 
     //주사 안전캡 제거시
@@ -76,6 +102,12 @@ public class DrawingMgr : MonoBehaviour
         Transform needleSnap = patientArm.Find("Needle_Snap");
         needleSnap.GetComponent<BoxCollider>().enabled = true;
         needleSnap.GetComponent<MeshRenderer>().enabled = true;
+        UImanager.UpdateUI(4);
+
+
+        arrow.gameObject.SetActive(true);
+        arrow.position = needleSnap.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", needleSnap);
 
     }
 
@@ -86,6 +118,7 @@ public class DrawingMgr : MonoBehaviour
         //주사기 스냅완료
         //주사뒷부분 당기기(주사기 잡은 상태로, 뒷부분 당길것)
         syringe.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().DrawingStart();
+        UImanager.UpdateUI(5);
     }
 
 
@@ -94,7 +127,13 @@ public class DrawingMgr : MonoBehaviour
     public void BloodDrawing()
     {
         //지혈대  다시 활성화
-        patientArm.Find("Tourniquet").GetComponent<KHG_Snap_Draw>().TorniquetRestoreStart(syringe);
+        torniquet.GetComponent<KHG_Snap_Draw>().TorniquetRestoreStart(syringe);
+        UImanager.UpdateUI(6);
+
+        //!위치 조정 필요
+        arrow2.gameObject.SetActive(true);
+        StartCoroutine("Arrow2Active", torniquet);
+
     }
 
     //지혈대 제거 시
@@ -103,6 +142,11 @@ public class DrawingMgr : MonoBehaviour
     {
         //알콜솜 활성화, 팔
         alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonActiveStart(syringe, patientArm);
+        UImanager.UpdateUI(7);
+
+        arrow.gameObject.SetActive(true);
+        arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", alcoholcotton);
     }
 
     //혈액 지압했을 경우
@@ -112,49 +156,128 @@ public class DrawingMgr : MonoBehaviour
         // 주사기 분리하기 (스냅 해제, 키네마틱으로 일단 고정)
         // 진공튜브에 닿으면 스냅되고, 뒷부분 다시 활성화
         syringe.transform.Find("Front").Find("Needle_Point").GetComponent<KHG_Snap_Draw>().SyringeOffStart();
+        UImanager.UpdateUI(8);
 
+        arrow.gameObject.SetActive(true);
+        arrow2.gameObject.SetActive(true);
+        arrow.position = vaccum1.position + Vector3.up * 0.1f;
+        arrow2.position = vaccum2.position + Vector3.up * 0.1f;
+        StartCoroutine("ArrowActive", vaccum1);
+        StartCoroutine("Arrow2Active", vaccum2);
 
 
 
     }
 
+
+    bool isVaccumTube = false;
 
     //혈액 보관완료 한 뒤
     [ContextMenu("7. 진공튜브")]
     public void VaccumTube(Transform _transform)
     {
+        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
         //다 담은 뒤, 주사기 다시잡으면 분리가능
         // 분리후에 흔들 것 
-        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
+        if (isVaccumTube)
+        {
+            UImanager.UpdateUI(9);
+        }
+        else
+        {
+            isVaccumTube = true;
+        }
 
     }
 
+    bool isBloodShake = false;
     //혈액 흔들기
     [ContextMenu("8. 혈액 흔들기")]
     public void BloodShake(Transform _transform)
     {
-        //!진공튜브 꽂는곳 활성화 하기
+        //진공튜브 꽂는곳 활성화 하기
         _transform.GetComponent<KHG_Snap_Draw>().VialSnapStart();
+
+        if (isBloodShake)
+        {
+            UImanager.UpdateUI(10);
+            arrow.gameObject.SetActive(true);
+            arrow.position = vaccumRack.position + Vector3.up * 0.1f;
+        }
+        else
+        {
+            isBloodShake = true;
+        }
 
     }
     //평가
     [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
-        // Timer Off
-        timer.timerOn = false;
 
 
         //!점수
         if (!finish)
         {
             finish = true;
+            arrow.gameObject.SetActive(false);
         }
         else if (finish)
         {
+            // Timer Off
+            timer.timerOn = false;
             //점수 출력
+            UImanager.UpdateUI(11);
         }
     }
+
+
+    //Tramsform 잡으면 SetActive(false)
+    IEnumerator ArrowActive(Transform _tr)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
+        while (true)
+        {
+            if (_tr.parent != null)
+            {
+                if (_tr.parent.name == "CustomHandRight" || _tr.parent.name == "CustomHandLeft")
+                {
+                    arrow.gameObject.SetActive(false);
+                    StopCoroutine("ArrowActive");
+                }
+            }
+            yield return ws;
+        }
+    }
+
+
+    IEnumerator Arrow2Active(Transform _tr)
+    {
+        WaitForSeconds ws = new WaitForSeconds(0.1f);
+        while (true)
+        {
+            if (_tr.parent != null)
+            {
+                if (_tr.parent.name == "CustomHandRight" || _tr.parent.name == "CustomHandLeft")
+                {
+                    arrow2.gameObject.SetActive(false);
+                    StopCoroutine("Arrow2Active");
+                }
+            }
+            yield return ws;
+        }
+    }
+
+    void SetVial()
+    {
+        if (Random.Range(0, 2) == 0)
+        {
+            Vector3 temp = vaccum1.transform.position;
+            vaccum1.transform.position = vaccum2.transform.position;
+            vaccum2.transform.position = temp;
+        }
+    }
+
 
 
 }

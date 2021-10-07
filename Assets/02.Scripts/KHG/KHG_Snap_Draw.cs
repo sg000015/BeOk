@@ -75,7 +75,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (coll.name == "VirusBody")
             {
                 coll.GetComponentInParent<VirusMgr>().AlcoholCottonEnter();
-                Debug.Log("check");
 
             }
 
@@ -113,6 +112,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 // StartCoroutine("SetBloodLineAlpha");
 
                 // 다음 단계 완료 : 소독
+                StartCoroutine("TimeCheck");
                 DrawingMgr.drawing.Hemostasis();
                 soundManager.Sound(4);
 
@@ -128,10 +128,15 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Debug.Log("DegreeY: " + needleAngle.y);
                 // Debug.Log("DegreeZ: " + needleAngle.z);
 
-                //!각도체크 감점
-                if (needleAngle.x > 350f || needleAngle.x < 320 || needleAngle.y < 160 || needleAngle.y > 200)
+                if (needleAngle.x > 355f || needleAngle.x < 305 || needleAngle.y < 155 || needleAngle.y > 205)
                 {
-                    Debug.Log("감점요인\nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                    Debug.Log("감점-20 \nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                    DrawingMgr.drawing.scoreList[0] -= 20;
+                }
+                else if (needleAngle.x > 350f || needleAngle.x < 320 || needleAngle.y < 160 || needleAngle.y > 200)
+                {
+                    Debug.Log("감점-10 \nDegree X : 10~40도 (350 ~ 310 사이)\nDegree Y : -20~20도 (160 ~ 200 사이)");
+                    DrawingMgr.drawing.scoreList[0] -= 10;
                 }
 
                 syringe = transform.parent.parent;
@@ -142,6 +147,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 functionState[2] = true;
                 syringe.parent = null;
                 coll.GetComponent<VesselColor>().check = true;
+                DrawingMgr.drawing.arrow.gameObject.SetActive(false);
+                coll.gameObject.SetActive(false);
                 DrawingMgr.drawing.SyringeArea();
                 soundManager.Sound(4);
                 isDo = true;
@@ -152,7 +159,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 if (functionState[6])
                 {
-                    //!주사기 스냅 되었을시
                     vaccum = coll.transform;
                     front = transform.parent.parent.Find("Blood");
                     back = coll.transform.parent.Find("Blood");
@@ -162,12 +168,14 @@ public class KHG_Snap_Draw : MonoBehaviour
                     if (vialSnap == null)
                     {
                         vialSnap = coll.transform;
-                        Debug.Log("CHECK:" + vialSnap);
+                        if (coll.transform.parent.GetComponent<VaccumTubeMgr>().a > 3)
+                        {
+                            DrawingMgr.drawing.scoreList[3] -= 20;
+                        }
                     }
                     else
                     {
                         vialSnap2 = coll.transform;
-                        Debug.Log("CHECK:" + vialSnap2);
                     }
                     functionState[6] = false;
                     functionState[7] = true;
@@ -183,12 +191,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                 soundManager.Sound(3);
                 soundManager.Sound(3);
                 soundManager.Sound(3);
-                Debug.Log("Shakeing Check = " + airCount);
                 if (airCount > 8)
                 {
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodShake(transform.parent);
-                    Debug.Log("Shaking Finish");
                     GetComponent<BoxCollider>().enabled = false;
                 }
             }
@@ -205,14 +211,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
-                        case 1:
-
+                        case 0:
                             transform.localPosition = new Vector3(-0.63f, 0.18f, 0);
                             break;
-                        case 2:
+                        case 1:
                             transform.localPosition = new Vector3(-0.46f, 0.18f, 0);
                             break;
-                        case 3:
+                        case 2:
                             transform.localPosition = new Vector3(-0.29f, 0.18f, 0);
                             break;
                         default:
@@ -237,13 +242,13 @@ public class KHG_Snap_Draw : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
-                        case 4:
+                        case 3:
                             transform.localPosition = new Vector3(-0.12f, 0.18f, 0);
                             break;
-                        case 5:
+                        case 4:
                             transform.localPosition = new Vector3(0.128f, 0.18f, 0);
                             break;
-                        case 6:
+                        case 5:
                             transform.localPosition = new Vector3(0.295f, 0.18f, 0);
                             break;
                         default:
@@ -324,8 +329,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             Material mat = syringe.GetComponent<MeshRenderer>().material;
             StartCoroutine("SyringePick", mat);
 
-
-            Debug.Log("First" + Vector3.Distance(back.position, transform.position));
         }
     }
 
@@ -435,7 +438,6 @@ public class KHG_Snap_Draw : MonoBehaviour
 
             if (transform.parent == null)
             {
-                Debug.Log("null");
                 transform.GetComponent<Rigidbody>().isKinematic = true;
                 transform.GetComponent<Rigidbody>().useGravity = false;
                 transform.parent = back;
@@ -463,7 +465,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             }
             else if (syringe.parent != null && (transform.parent.name == "CustomHandRight" || transform.parent.name == "CustomHandLeft"))
             {
-                Debug.Log(transform.parent.name);
 
                 tempTr = transform.parent;
                 transform.parent = back;
@@ -527,7 +528,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             }
 
             float dis = Vector3.Distance(transform.position, front.position);
-            Debug.Log(dis);
             if (syringe.parent != null && transform.parent != null && dis > 0.2f)
             {
                 DrawingMgr.drawing.SyringeSafeCap();
@@ -601,7 +601,6 @@ public class KHG_Snap_Draw : MonoBehaviour
                 dis = Vector3.Magnitude(back.position - transform.position);
 
                 // Debug.Log("First dis" + dis);
-                Debug.Log((dis - lastDis) * 1000);
 
                 if ((dis - lastDis) * 1000 > 5)
                 {
@@ -614,7 +613,10 @@ public class KHG_Snap_Draw : MonoBehaviour
                             soundManager.Sound(1);
                             //! 환자 Sound, 감점
                             soundManager.Sound(9);
-                            Debug.Log("주사기 속도 감점");
+                            if (DrawingMgr.drawing.scoreList[2] >= 10)
+                            {
+                                DrawingMgr.drawing.scoreList[2] -= 10;
+                            }
                         }
                 }
                 isFirst = false;
@@ -622,7 +624,6 @@ public class KHG_Snap_Draw : MonoBehaviour
 
 
                 float fixdis = Mathf.Abs(dis);
-                Debug.Log(fixdis);
                 back.localPosition = backReset - Vector3.up * 15 * (-0.1f + fixdis);
 
                 blood.localPosition = Vector3.up * (1.8f + -7.3f * (fixdis - 0.1f));
@@ -674,11 +675,36 @@ public class KHG_Snap_Draw : MonoBehaviour
             // }
             if (transform.parent == null)
             {
+
+                StopCoroutine("TimeCheck");
+                if (timecheck < 60)
+                {
+
+                }
+                else if (timecheck < 80)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 5;
+                }
+                else if (timecheck < 100)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 10;
+                }
+                else if (timecheck < 120)
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 15;
+                }
+                else
+                {
+                    DrawingMgr.drawing.scoreList[1] -= 20;
+                }
+                Debug.Log("지혈대 시간:" + timecheck);
+
                 soundManager.Sound(4);
                 DrawingMgr.drawing.TourniquetOff();
                 functionState[4] = false;
             }
         }
+
     }
 
     void AlcoholCottonActive()
@@ -843,16 +869,17 @@ public class KHG_Snap_Draw : MonoBehaviour
         {
             if (!DrawingMgr.drawing.syringeGrab)
             {
-                for (int i = 0; i < 5; i++)
-                {
-                    _mat.color = new Color(0.8f, 0.8f - 0.2f * i, 0.8f - 0.1f * i);
-                    yield return ws;
-                }
-                for (int i = 0; i < 5; i++)
-                {
-                    _mat.color = new Color(0.8f, 0.2f * i, 0.4f + 0.1f * i);
-                    yield return ws;
-                }
+                // for (int i = 0; i < 5; i++)
+                // {
+                //     _mat.color = new Color(0.8f, 0.8f - 0.2f * i, 0.8f - 0.1f * i);
+                //     yield return ws;
+                // }
+                // for (int i = 0; i < 5; i++)
+                // {
+                //     _mat.color = new Color(0.8f, 0.2f * i, 0.4f + 0.1f * i);
+                //     yield return ws;
+                // }
+                yield return ws;
             }
             else
             {
@@ -916,6 +943,17 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         }
 
+    }
+
+    int timecheck = 0;
+    IEnumerator TimeCheck()
+    {
+        WaitForSeconds ws = new WaitForSeconds(1f);
+        while (true)
+        {
+            timecheck++;
+            yield return ws;
+        }
     }
 
 
