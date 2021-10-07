@@ -15,19 +15,21 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject ExitMenu;
     public GameObject VrCamera;
     public TMPro.TMP_Text logText;
+    public PhotonView pv;
 
     #region SINGLETON
     void Awake()
     {
         instance = this;
         NetworkManager.instanceNW.InstantiatePlayer();
+        pv = this.gameObject.GetPhotonView();
     }
 
     #endregion
 
     private void Start()
     {
-        StartCoroutine(nameof(PrintLog));
+        // StartCoroutine(nameof(PrintLog));
     }
 
     private void Update()
@@ -48,7 +50,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         else if (OVRInput.GetDown(OVRInput.Button.One) && isMenu)
         {
             // Go to Lobby
-            SceneManager.LoadScene("Lobby");
+            // SceneManager.LoadScene("Lobby");
+            pv.RPC("DeleteRoom", RpcTarget.AllViaServer);
+
         }
 
         // B 버튼 누름 && 메뉴 켜져있음
@@ -64,32 +68,55 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    IEnumerator PrintLog()
+    public GameObject inDirector;
+    public GameObject StartStatePanel;
+
+     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        yield return new WaitForSeconds(2.5f);
-
-        GameObject ovrPlayer;
-
-        try
-        {
-            // try 스택 영역에서 에러가 발생하면 catch 영역으로 넘어간다.
-            ovrPlayer = GameObject.Find("ovrPlayer");
-        }
-        catch (NullReferenceException nr)
-        {
-            // 에러가 발생하면 에러 내용을 콘솔 출력한다.
-            logText.text += "플레이어 없음 1\n";
-        }
-        catch (Exception e)
-        {
-            // 에러가 발생하면 에러 내용을 콘솔 출력한다.
-            logText.text += "플레이어 없음 2\n";
-        }
-        finally
-        {
-            logText.text += "로그 찍히는 중";
-        }
+       if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
+       {
+           pv.RPC("StartUI", RpcTarget.AllViaServer);
+       }
     }
+    [PunRPC]
+    void StartUI()
+    {
+        inDirector.SetActive(true);
+        StartStatePanel.SetActive(false);
+    }
+
+    [PunRPC]
+    void DeleteRoom()
+    {
+        PhotonNetwork.LoadLevel("Lobby");
+    }
+
+    // IEnumerator PrintLog()
+    // {
+    //     yield return new WaitForSeconds(2.5f);
+
+    //     GameObject ovrPlayer;
+
+    //     try
+    //     {
+    //         // try 스택 영역에서 에러가 발생하면 catch 영역으로 넘어간다.
+    //         ovrPlayer = GameObject.Find("ovrPlayer");
+    //     }
+    //     catch (NullReferenceException nr)
+    //     {
+    //         // 에러가 발생하면 에러 내용을 콘솔 출력한다.
+    //         logText.text += "플레이어 없음 1\n";
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         // 에러가 발생하면 에러 내용을 콘솔 출력한다.
+    //         logText.text += "플레이어 없음 2\n";
+    //     }
+    //     finally
+    //     {
+    //         logText.text += "로그 찍히는 중";
+    //     }
+    // }
 
 
 
