@@ -42,6 +42,20 @@ MonoBehaviour:
   - CantHearYou
   - ChangeColour
   - HeresWhy
+  - ConnectRubberRPC
+  - DisinfectRPC
+  - GradeInjectionRPC
+  - HemostasisRPC
+  - InjectAngleRPC
+  - InjectAreaRPC
+  - SapSpeedRPC
+  - SapTypeRPC
+  - SeparateCatheterRPC
+  - UntieTourniquetRPC
+  - SetSapRPC
+  - DeleteRoom
+  - StartUI
+  - SetCurrentSapRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -254,7 +254,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -104, y: 214}
-  m_SizeDelta: {x: 510.5686, y: 50}
+  m_SizeDelta: {x: 954.1753, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &12042641
 MonoBehaviour:
@@ -795,6 +795,9 @@ MonoBehaviour:
   worldSpaceMouseSensitivity: 1
   usedHand: 0
   pointerTransformOverride: {fileID: 0}
+  TouchControllerTransform: {fileID: 0}
+  InteractionButton: 8192
+  oculusCameraRig: {fileID: 0}
 --- !u!114 &41029266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15525,9 +15528,6 @@ MonoBehaviour:
   rankersMin: 
   rankersSec: 
   lastRankerScore: 0
-  rankingEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &766690628
 Transform:
   m_ObjectHideFlags: 0
@@ -23079,6 +23079,9 @@ MonoBehaviour:
   worldSpaceMouseSensitivity: 1
   usedHand: 0
   pointerTransformOverride: {fileID: 0}
+  TouchControllerTransform: {fileID: 0}
+  InteractionButton: 8192
+  oculusCameraRig: {fileID: 6555301354516184846}
 --- !u!114 &1223472624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26408,6 +26411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputRoomNum: {fileID: 0}
+  text: {fileID: 12042641}
 --- !u!4 &1355048429
 Transform:
   m_ObjectHideFlags: 0
@@ -38336,7 +38340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1990953988
 MonoBehaviour:
   m_ObjectHideFlags: 0

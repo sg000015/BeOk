@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class InjectionMgr : MonoBehaviour
 {
@@ -23,9 +24,13 @@ public class InjectionMgr : MonoBehaviour
     [Header("UI")]
     public RankingCtrl rankingCtrl;
     public TMP_Text infoTxt;
+    public TMP_Text infoTxtPhone;
     public TMP_Text patientTxt;
+    public TMP_Text patientTxtPhone;
     public Timer timer;
     public Image progress;
+    public Image progressPhone;
+
 
     // Ranking UI
     [Header("Ranking UI")]
@@ -54,24 +59,67 @@ public class InjectionMgr : MonoBehaviour
     public GameObject catheter = null;
 
     public GameObject catheterPref;
+    public GameObject EventOculus;
+    public GameObject PhoneCanvas;
+
+    public GameObject startPanel;
     SoundManager soundManager;
 
-
+    PhotonView pv;
 
     Animator animator;
 
+
+
     void Awake()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            EventOculus.SetActive(true);
+        }
+        else
+        {
+            PhoneCanvas.SetActive(true);
+        }
         injection = this;
         animator = GameObject.FindWithTag("Patient").GetComponent<Animator>();
         sapScript = GameObject.FindWithTag("Patient").GetComponent<BGB_Sap>();
 
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
+        pv = gameObject.GetComponent<PhotonView>();
         InitInjection();
 
     }
+    
+    [ContextMenu("OnclcikStart")]
+    public void OnClickStart()
+    {
+        //더 이상 들어오지 못하게 문닫기.
+        PhotonNetwork.CurrentRoom.IsOpen = false;
 
+        int index = Random.Range(0, type.Length);
+        string sapType = type[index];
+        int sapSpeed = speed[Random.Range(0, speed.Length)];
+
+        pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
+
+    }
+    
+
+    [PunRPC]
+    void SetSapRPC(int idx, string sapType, int sapSpeed)
+    {
+        startPanel.SetActive(false);
+        _sapTypeidx = idx;
+        _sapType = sapType;
+        _sapSpeed = sapSpeed;
+        SapType();
+        
+        // 환자차트 UI
+        patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
+        patientTxtPhone.text = $"손 위생과 물품준비가 끝난 상황입니다.\n 두드러기 환자에게 {_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사 투약해주세요.";
+    }
     void Start()
     {
     }
@@ -93,8 +141,6 @@ public class InjectionMgr : MonoBehaviour
         // 타이머 초기화
         timer.totalTime = 0.0f;
 
-        // 수액 초기화
-        SetSap();
 
         // 점수 초기화
         for (int i = 0; i < scoreList.Length; i++)
@@ -103,14 +149,9 @@ public class InjectionMgr : MonoBehaviour
             // Debug.Log($"{i} : {scoreList[i]}");
         }
 
-        // 환자차트 UI
-        patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
-
         // 애니메이션
         animator.SetTrigger("Idle");
 
-        // 수액 종류 시작
-        SapType();
     }
 
     public void CreateCatheter()
@@ -121,64 +162,102 @@ public class InjectionMgr : MonoBehaviour
     #region 술기
     // 0.수액 종류
     [ContextMenu("0.수액 종류")]
+    
     public void SapType()
     {
+        // pv.RPC(nameof(SapTypeRPC), RpcTarget.AllViaServer);
         state = STATE.SapType;
         progress.fillAmount = progressNum * 0;
+        progressPhone.fillAmount = progressNum * 0;
+
         infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+        infoTxtPhone.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
 
         // 타이머 시작
         timer.timerOn = true;
-
         // GameObject sap = sapList[_sapTypeidx].transform.Find("SapArrowPivot").gameObject;
+    }
+    [PunRPC]
+    void SapTypeRPC()
+    {
+        state = STATE.SapType;
+        progress.fillAmount = progressNum * 0;
+        progressPhone.fillAmount = progressNum * 0;
+
+        infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+        infoTxtPhone.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+
+        // 타이머 시작
+        timer.timerOn = true;
     }
 
     // 1.지혈
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
+       pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void HemostasisRPC()
+    {
         soundManager.Sound(4);
         state = STATE.Hemostasis;
         progress.fillAmount = progressNum * 1;
+        progressPhone.fillAmount = progressNum * 1;
+
         infoTxt.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.\n(토니켓을 집어 팔에 가져다대세요.)";
+        infoTxtPhone.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.(토니켓을 집어 팔에 가져다대세요.)";
+
 
         // 토니켓 스냅 On
         tourniquet.GetComponent<KHG_Snap>().isDo = false;
 
         // 화살표
-        GameObject.Find("Arrow_Sap").SetActive(false);
+        GameObject.Find("Arrow_Sap")?.SetActive(false);
         ActiveArrow(tourniquet);
 
         // 애니메이션
         animator.SetTrigger("IdleToInjection");
-
-
     }
-
     // 2.소독
     [ContextMenu("2.소독")]
     public void Disinfect()
     {
+       pv.RPC(nameof(DisinfectRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    public void DisinfectRPC()
+    {
         soundManager.Sound(4);
         state = STATE.Disinfect;
         progress.fillAmount = progressNum * 2;
+        progressPhone.fillAmount = progressNum * 2;
         infoTxt.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
+        infoTxtPhone.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
 
         // 바이러스 활성화
         GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>().StartDisinfect();
 
         // 화살표
         ActiveArrow(alcoholCotton);
-
     }
 
     // 3.주사 위치
     [ContextMenu("3.주사 위치")]
     public void InjectArea()
     {
+        pv.RPC(nameof(InjectAreaRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void InjectAreaRPC()
+    {
         state = STATE.InjectArea;
         progress.fillAmount = progressNum * 3;
+        progressPhone.fillAmount = progressNum * 3;
         infoTxt.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
+        infoTxtPhone.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
 
         // BloodLine 활성화
         bloodLine.SetActive(true);
@@ -192,10 +271,17 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("4.주사 각도")]
     public void InjectAngle()
     {
+        pv.RPC(nameof(InjectAngleRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void InjectAngleRPC()
+    {
         soundManager.Sound(4);
         state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 4;
+        progressPhone.fillAmount = progressNum * 4;
         infoTxt.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
+        infoTxtPhone.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
 
     }
 
@@ -203,9 +289,16 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("5.카테터 분리")]
     public void SeparateCatheter()
     {
+        pv.RPC(nameof(SeparateCatheterRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void SeparateCatheterRPC()
+    {
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 5;
+        progressPhone.fillAmount = progressNum * 5;
         infoTxt.text = "카테터 뒷부분을 분리해주세요.";
+        infoTxtPhone.text = "카테터 뒷부분을 분리해주세요.";
 
         // 화살표
         GameObject needlePivot = catheter.transform.Find("NeedleArrowPivot").gameObject;
@@ -216,24 +309,38 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("6.고무관 연결")]
     public void ConnectRubber()
     {
+        pv.RPC(nameof(ConnectRubberRPC), RpcTarget.AllViaServer);
+        
+    }
+    [PunRPC]
+    public void ConnectRubberRPC()
+    {
         soundManager.Sound(4);
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 6;
+        progressPhone.fillAmount = progressNum * 6;
         infoTxt.text = "고무관을 카테터 본체에 연결해주세요.";
+        infoTxtPhone.text = "고무관을 카테터 본체에 연결해주세요.";
 
         // 화살표
         GameObject rubberPivot = rubber.transform.Find("RubberArrowPivot").gameObject;
         ActiveArrow(rubberPivot);
-
     }
 
     // 7.수액 속도
     [ContextMenu("7.수액 속도")]
     public void SapSpeed()
     {
+        pv.RPC(nameof(SapSpeedRPC), RpcTarget.AllViaServer);
+        
+    }
+    [PunRPC]
+    public void SapSpeedRPC()
+    {
         soundManager.Sound(4);
         state = STATE.SapSpeed;
         progress.fillAmount = progressNum * 7;
+        progressPhone.fillAmount = progressNum * 7;
 
         // 화살표
         Vector3 pos = GameObject.Find("SapSpeedArrowPivot").transform.position;
@@ -243,19 +350,26 @@ public class InjectionMgr : MonoBehaviour
         arrow.SetActive(true);
 
         infoTxt.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
+        infoTxtPhone.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
 
         // 수액 속도 조절하는 콜라이더 On
         curruntSap.transform.Find("IVPole_Snap").gameObject.SetActive(true);
-
     }
 
     // 8.수액 속도
     [ContextMenu("8.토니켓 분리")]
     public void UntieTourniquet()
     {
+        pv.RPC(nameof(UntieTourniquetRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void UntieTourniquetRPC()
+    {
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 8;
+        progressPhone.fillAmount = progressNum * 8;
         infoTxt.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
+        infoTxtPhone.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
 
         // 화살표
         ActiveArrow(tourniquet);
@@ -264,12 +378,18 @@ public class InjectionMgr : MonoBehaviour
     #endregion
 
     //! ANCHOR 평가
-    [ContextMenu("10.평가")]
+    [ContextMenu("9.평가")]
     public void GradeInjection()
+    {
+       pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void GradeInjectionRPC()
     {
         soundManager.Sound(4);
         state = STATE.Grade;
         progress.fillAmount = 1;
+        progressPhone.fillAmount = 1;
 
         // 화살표 비활성화
         arrow.SetActive(false);
@@ -278,12 +398,16 @@ public class InjectionMgr : MonoBehaviour
         timer.timerOn = false;
         int[] times = timer.GetTime();
 
+        infoTxtPhone.text = _sapType;
+        infoTxtPhone.text += curruntSap.name;
+
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         // 0.수액종류
         string tempSapName = curruntSap.name;
         string[] tempSapNames = tempSapName.Split('_');
         string curruntSapType = tempSapNames[1];
         Debug.Log(curruntSapType);
+
 
         // 수액 종류를 틀릴 경우
         if (string.Compare(_sapType, curruntSapType, true) != 0)
@@ -297,6 +421,7 @@ public class InjectionMgr : MonoBehaviour
             Debug.Log($"{_sapType}, {curruntSapType}");
             Debug.Log("수액 종류가 같음");
         }
+
 
         // 1.수액속도
         int currentSapSpeed = (int)sapScript.curSpeed;
@@ -314,9 +439,10 @@ public class InjectionMgr : MonoBehaviour
         //! TODO : 시간별 점수처리
 
         // UI
-        StartCoroutine(nameof(ShowScore));
-
+        StartCoroutine(ShowScore());
     }
+
+  
 
     IEnumerator ShowScore()
     {
@@ -329,29 +455,38 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
+        
+        infoTxt.text += $"\n{curruntSap.name}";
+        infoTxtPhone.text += $"\n{curruntSap.name}";
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         infoTxt.text = $"수액 종류 : {scoreList[0]}";
+        infoTxtPhone.text = $"수액 종류 : {scoreList[0]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n수액 속도 : {scoreList[1]}";
+        infoTxtPhone.text += $"\n수액 속도 : {scoreList[1]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n주사 위치 : {scoreList[2]}";
+        infoTxtPhone.text += $"\n주사 위치 : {scoreList[2]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n주사 각도 : {scoreList[3]}";
+        infoTxtPhone.text += $"\n주사 각도 : {scoreList[3]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n시간 : {scoreList[4]}";
+        infoTxtPhone.text += $"\n시간 : {scoreList[4]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n\n<b>총합 : {score}</b>";
+        infoTxtPhone.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
         // 50점 초과 && 수액 종류 맞음
@@ -523,15 +658,7 @@ public class InjectionMgr : MonoBehaviour
         scoreList[3] -= 5;
     }
 
-    // 수액 랜덤값으로 설정
-    void SetSap()
-    {
-        _sapTypeidx = Random.Range(0, type.Length);
-        _sapType = type[_sapTypeidx];
-
-        _sapSpeed = speed[Random.Range(0, speed.Length)];
-        // Debug.Log($"sap speed : {_sapSpeed}");
-    }
+    
 
     // 화살표 On
     void ActiveArrow(GameObject obj)
