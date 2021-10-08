@@ -21,6 +21,7 @@ public class DrawingMgr : MonoBehaviour
     public Transform arrow;
     public Transform arrow2;
     public UIManager_blood UImanager;
+    public SoundManager soundManager;
 
     public int[] scoreList = { 20, 20, 20, 20, 20 };
     // public int[] vaccumList = new int[2];
@@ -32,7 +33,6 @@ public class DrawingMgr : MonoBehaviour
     bool finish = false;
 
 
-
     void Awake()
     {
         drawing = this;
@@ -42,8 +42,10 @@ public class DrawingMgr : MonoBehaviour
     void Start()
     {
         StartCoroutine("ArrowActive", torniquet);
-        SetVial();
+        StartCoroutine("BgmPlay");
     }
+
+
 
     void Update()
     {
@@ -76,7 +78,6 @@ public class DrawingMgr : MonoBehaviour
     public void Disinfect()
     {
         //주사기 당기기 로직 활성화
-        alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonReset();
         syringe.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().AirOffStart();
         UImanager.UpdateUI(2);
 
@@ -141,6 +142,7 @@ public class DrawingMgr : MonoBehaviour
     public void TourniquetOff()
     {
         //알콜솜 활성화, 팔
+        alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonReset();
         alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonActiveStart(syringe, patientArm);
         UImanager.UpdateUI(7);
 
@@ -224,6 +226,8 @@ public class DrawingMgr : MonoBehaviour
         }
         else if (finish)
         {
+            soundManager.SoundStop();
+            StopCoroutine("BgmPlay");
             // Timer Off
             timer.timerOn = false;
             //점수 출력
@@ -265,6 +269,21 @@ public class DrawingMgr : MonoBehaviour
                 }
             }
             yield return ws;
+        }
+    }
+
+    IEnumerator BgmPlay()
+    {
+        float length = soundManager.audios[11].length;
+        while (true)
+        {
+            soundManager.Sound(11);
+            soundManager.Sound(11);
+            soundManager.Sound(11);
+            soundManager.Sound(11);
+            soundManager.Sound(11);
+            yield return new WaitForSeconds(length);
+
         }
     }
 
