@@ -491,7 +491,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 back.localPosition = backReset - Vector3.up * 12 * (-0.1f + Mathf.Abs(dis));
 
-                if (!airCheck && dis > 0.3f)
+                if (!airCheck && dis > 0.25f)
                 {
                     airCheck = true;
                     airCount++;
@@ -788,12 +788,12 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (_num < 3.83f)
                 {
                     Debug.Log("MINUSNUM");
-                    minusNum += 2;
-                    pullback.localPosition = pullback.localPosition + Vector3.up * 0.007f;
-                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
-                    front.localScale = front.localScale + Vector3.up * -0.0035f;
-                    back.localPosition = back.localPosition + Vector3.up * 0.0015f;
-                    back.localScale = back.localScale + Vector3.up * 0.0015f;
+                    minusNum += 4;
+                    pullback.localPosition = pullback.localPosition + Vector3.up * 0.014f;
+                    front.localPosition = front.localPosition + Vector3.up * +0.007f;
+                    front.localScale = front.localScale + Vector3.up * -0.007f;
+                    back.localPosition = back.localPosition + Vector3.up * 0.003f;
+                    back.localScale = back.localScale + Vector3.up * 0.003f;
                 }
 
             }
@@ -848,7 +848,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 50;
+                minusNum -= 52;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -866,6 +866,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 pull.localPosition = new Vector3(0, 0.363f, 3.83f);
                 pull.localEulerAngles = Vector3.zero;
                 pull.GetComponent<BoxCollider>().enabled = false;
+                pull.tag = "Untagged";
 
                 DrawingMgr.drawing.VaccumTube(vialSnap.parent);
             }
@@ -876,7 +877,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 50;
+                minusNum -= 52;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -892,6 +893,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 pull.localPosition = new Vector3(0, 0.363f, 3.83f);
                 pull.localEulerAngles = Vector3.zero;
                 pull.GetComponent<BoxCollider>().enabled = false;
+                pull.tag = "Untagged";
 
                 DrawingMgr.drawing.VaccumTube(vialSnap2.parent);
             }
