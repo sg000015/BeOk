@@ -14,6 +14,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public TMP_InputField inputRoomNum;
     public TMP_Text text;
 
+    public TMP_Text deviceCheckText;
+
     void Awake()
     {
         if (instanceNW == null)
@@ -24,7 +26,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            Destroy(this);
+            Destroy(this.gameObject);
             Debug.Log("싱글톤 존재해서 삭제");
         }
         Init();
@@ -37,22 +39,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void Init()
     {
 
+        //! 빌드시 오큘러스이름 = Hendheld
+
         if(0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
-            Debug.Log("오큘러스로 접속");
-            // GameObject.Find("Canvas-Phone").SetActive(false);
-
         }
         else
         {
+                    inputRoomNum = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(1).GetComponent<TMP_InputField>();
+        text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
             isOculus = false;
-            Debug.Log("휴대폰으로 접속");
-            GameObject.Find("Canvas-Oculus").SetActive(false);
-            GameObject.Find("CurvedUILaserPointer").SetActive(false);
-
         }
-
+        Debug.Log("IsOculus???" + isOculus);
     }
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
 
@@ -65,10 +64,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
+
             if (isOculus)
             {
                 roomNum = "1";
                 PhotonNetwork.CreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
+                Debug.Log("방만들기 시도");
 
             }
             else
@@ -77,6 +78,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 text.text = roomNum + "방에 입장을 시도합니다.";
 
                 PhotonNetwork.JoinRoom(roomNum);
+
+                Debug.Log("방에 입장 시도");
 
             }
         }
@@ -103,7 +106,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if(isOculus)
         {
-            GameObject Player = PhotonNetwork.Instantiate("Player", new Vector3(-4f, 0, 1.6f), new Quaternion(0,0.7071068f,0,0.7071068f),0);
+            GameObject Player = PhotonNetwork.Instantiate("Player", new Vector3(-5.6f, 1.5f, 1.6f), new Quaternion(0,0.7071068f,0,0.7071068f),0);
             Player.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
         
         }

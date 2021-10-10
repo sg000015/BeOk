@@ -78,6 +78,12 @@ public class KHG_Snap : MonoBehaviour
         }
     }
 
+    [ContextMenu("Pv Set")]
+    void PVSet()
+    {
+        pv = this.gameObject.GetPhotonView();
+    }
+
     void OnTriggerEnter(Collider coll)
     {
         Debug.Log(coll.name);
@@ -86,18 +92,73 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.gameObject.name == "Arm_Snap")
             {
-
-                transform.parent.GetComponent<KHG_Needle>().NeedleSnap();
-                isDo = true;
-                Debug.Log("Arm to Snap");
-
-                // 다음 단계 시작 : 주사 각도
-                InjectionMgr.injection.InjectAngle();
-
+                pv.RPC("Arm_SnapRPC", RpcTarget.AllViaServer);
             }
             else if (!isDo && coll.gameObject.name == "Fail_Snap")
             {
-                isDo = true;
+                pv.RPC(nameof(Fail_SnapRPC), RpcTarget.AllViaServer);
+            }
+        }
+        if (_objectType == ObjectType.Tourniquet)
+        {
+
+            if (!isDo && coll.gameObject.name == "Tor_Snap")
+            {
+                pv.RPC(nameof(Tor_SnapRPC), RpcTarget.AllViaServer);
+            }
+        }
+
+        if (_objectType == ObjectType.IVPole)
+        {
+            if (!isDo && coll.name == "GrabVolumeBig")
+            {
+                string hand ="";
+
+                try
+                {
+                    hand =coll.transform.parent.parent.name;
+                }
+                catch{}
+                    
+
+                //!NullReference
+                pv.RPC(nameof(GrabVolumeBigRPC), RpcTarget.AllViaServer, hand);
+            }
+        }
+
+        if (_objectType == ObjectType.Sap)
+        {
+            if (!isDo && coll.gameObject.name == "Sap_Snap")
+            {
+                pv.RPC("SetCurrentSapRPC", RpcTarget.AllViaServer);
+            }
+        }
+        if (_objectType == ObjectType.Rubber)
+        {
+            if (!isDo && coll.gameObject.name == "Rubber_Snap")
+            {
+                pv.RPC(nameof(RobberSnapRPC), RpcTarget.AllViaServer);
+            }
+        }
+    }
+
+    [PunRPC]
+    void Arm_SnapRPC()
+    {
+        Debug.Log("aaa");
+        transform.parent.GetComponent<KHG_Needle>().NeedleSnap();
+        isDo = true;
+        Debug.Log("Arm to Snap");
+
+        // 다음 단계 시작 : 주사 각도
+        InjectionMgr.injection.InjectAngle();
+
+    }
+    [PunRPC]
+    void Fail_SnapRPC()
+    {
+        Debug.Log("bbb");
+        isDo = true;
                 InjectionMgr.injection.MinusAreaScore();
                 Debug.Log("Fail to Snap");
                 soundManager.Sound(2);
@@ -130,144 +191,110 @@ public class KHG_Snap : MonoBehaviour
                 Destroy(obj, 2.0f);
                 //! 주사 찌르기 딜레이
                 Invoke("SetIsDo", 2.0f);
+    }
+    [PunRPC]
+    void Tor_SnapRPC()
+    {
+        GameObject coll = GameObject.Find("Tor_Snap");
+        Debug.Log("SNAP");
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+        transform.SetParent(coll.gameObject.transform.parent);
+        transform.localPosition = new Vector3(0.0162f, -0.0081f, 0.0106f);
+        // transform.GetChild(0).localPosition = Vector3.zero;
+        transform.localEulerAngles = new Vector3(-204.02f, -17.67f, -129.84f);
 
 
-            }
-        }
+        mat = GameObject.Find("David_LOD2").GetComponent<SkinnedMeshRenderer>().materials[1];  //!숫자보정
+        StartCoroutine("SetBloodLineAlpha");
 
+        // 다음 단계 시작 : 소독
+        InjectionMgr.injection.Disinfect();
 
-
-
-        if (_objectType == ObjectType.Tourniquet)
-        {
-
-            if (!isDo && coll.gameObject.name == "Tor_Snap")
-            {
-
-                Debug.Log("SNAP");
-                gameObject.GetComponent<BoxCollider>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                gameObject.GetComponent<Rigidbody>().useGravity = false;
-                gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
-
-                transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(0.0162f, -0.0081f, 0.0106f);
-                // transform.GetChild(0).localPosition = Vector3.zero;
-                transform.localEulerAngles = new Vector3(-204.02f, -17.67f, -129.84f);
-
-
-                mat = GameObject.Find("David_LOD2").GetComponent<SkinnedMeshRenderer>().materials[1];  //!숫자보정
-                StartCoroutine("SetBloodLineAlpha");
-
-                // 다음 단계 시작 : 소독
-                InjectionMgr.injection.Disinfect();
-
-                isDo = true;
-
-
-
-            }
-        }
-
-        if (_objectType == ObjectType.IVPole)
-        {
-            if (!isDo && coll.name == "GrabVolumeBig")
-            {
-                string name = coll.transform.parent.parent.name;
-                Debug.Log(name);
-
-                if (name == "CustomHandLeft")
-                {
-                    //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                    isDo = true;
-                    isLeft = true;
-                    StartCoroutine("PoleControl");
-                }
-                else if (name == "CustomHandRight")
-                {
-                    // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                    isDo = true;
-                    isLeft = false;
-                    StartCoroutine("PoleControl");
-                }
-
-            }
-        }
-
-        if (_objectType == ObjectType.Sap)
-        {
-            if (!isDo && coll.gameObject.name == "Sap_Snap")
-            {
-
-                gameObject.GetComponent<BoxCollider>().enabled = false;
-                coll.gameObject.GetComponent<BoxCollider>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                gameObject.GetComponent<Rigidbody>().useGravity = false;
-                gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
-
-                transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = new Vector3(-0.0884362f, -0.0881395f, 1.912366f);
-                transform.localEulerAngles = Vector3.zero;
-
-                transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
-                GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
-                pv.RPC("SetCurrentSapRPC", RpcTarget.AllViaServer);
-
-                isDo = true;
-
-            }
-        }
-
-        if (_objectType == ObjectType.Rubber)
-        {
-            if (!isDo && coll.gameObject.name == "Rubber_Snap")
-            {
-
-                gameObject.GetComponent<BoxCollider>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
-                gameObject.GetComponent<Rigidbody>().useGravity = false;
-                gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
-
-                transform.SetParent(coll.gameObject.transform.parent);
-                transform.localPosition = Vector3.zero;
-                transform.localEulerAngles = Vector3.zero;
-                isDo = true;
-
-
-                float posZ = transform.parent.Find("Needle_2").position.z;
-
-                // float bandZ = band[0].transform.GetChild(2).position.z;
-
-                //0.019
-                if (posZ < 1.75f)
-                {
-                    ChangeRubber(0);
-                }
-                else if (posZ < 1.85f)
-                {
-                    ChangeRubber(1);
-                }
-                else
-                {
-                    ChangeRubber(2);
-                }
-
-                // 다음 단계 시작 : 수액 속도
-                InjectionMgr.injection.SapSpeed();
-
-
-
-
-            }
-        }
+        isDo = true;
     }
 
+    [PunRPC]
+    void GrabVolumeBigRPC(string hand)
+    {
+            if (hand == "CustomHandLeft")
+            {
+                //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                isDo = true;
+                isLeft = true;
+                StartCoroutine("PoleControl");
+            }
+            else if (hand == "CustomHandRight")
+            {
+                // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+                isDo = true;
+                isLeft = false;
+                StartCoroutine("PoleControl");
+            }
+    }
     [PunRPC]
     void SetCurrentSapRPC()
     {
         InjectionMgr.injection.curruntSap = this.gameObject;
+
+        GameObject coll = GameObject.Find("Sap_Snap");
+
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        coll.gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+        transform.SetParent(coll.gameObject.transform.parent);
+        transform.localPosition = new Vector3(-0.0884362f, -0.0881395f, 1.912366f);
+        transform.localEulerAngles = Vector3.zero;
+
+        transform.Find("IVPole_Snap").GetComponent<KHG_Snap>()._objectType = KHG_Snap.ObjectType.IVPole;
+        GameObject.FindGameObjectWithTag("Patient").GetComponent<BGB_Sap>().SetCurSapBag(name);
+
+        isDo = true;
     }
 
+
+    [PunRPC]
+    void RobberSnapRPC()
+    {
+        GameObject coll = GameObject.Find("Rubber_Snap");
+        gameObject.GetComponent<BoxCollider>().enabled = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+        transform.SetParent(coll.gameObject.transform.parent);
+        transform.localPosition = Vector3.zero;
+        transform.localEulerAngles = Vector3.zero;
+        isDo = true;
+
+
+        float posZ = transform.parent.Find("Needle_2").position.z;
+
+        // float bandZ = band[0].transform.GetChild(2).position.z;
+
+        //0.019
+        if (posZ < 1.75f)
+        {
+            ChangeRubber(0);
+        }
+        else if (posZ < 1.85f)
+        {
+            ChangeRubber(1);
+        }
+        else
+        {
+            ChangeRubber(2);
+        }
+
+        // 다음 단계 시작 : 수액 속도
+        InjectionMgr.injection.SapSpeed();
+    }
     void OnTriggerExit()
     {
         if (isDo && _objectType == ObjectType.IVPole)

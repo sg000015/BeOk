@@ -115,6 +115,8 @@ public class ButtonMgr : MonoBehaviour
     
         NetworkManager networkMgr = GameObject.FindObjectOfType<NetworkManager>();
         networkMgr.OnCreateRoom();
+
+        Debug.Log(" 정맥주사 눌림!");
     }
 
     public void SceneLoader()
