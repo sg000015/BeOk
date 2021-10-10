@@ -101,6 +101,8 @@ public class InjectionMgr : MonoBehaviour
         int index = Random.Range(0, type.Length);
         string sapType = type[index];
         int sapSpeed = speed[Random.Range(0, speed.Length)];
+        
+        GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
 
         pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
 
@@ -156,7 +158,8 @@ public class InjectionMgr : MonoBehaviour
 
     public void CreateCatheter()
     {
-        catheter = Instantiate(catheterPref);
+        catheter = PhotonNetwork.Instantiate("Catheter_Res",new Vector3(-5.283f,0.8f,0.727f),Quaternion.Euler(0,180,0) );
+        catheter.transform.localScale = Vector3.one *0.5f;
         catheter.name = "Catheter";
     }
     #region 술기
