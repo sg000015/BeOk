@@ -226,6 +226,7 @@ public class DrawingMgr : MonoBehaviour
         }
         else if (finish)
         {
+            SetErrorScore();
             soundManager.SoundStop();
             StopCoroutine("BgmPlay");
             // Timer Off
@@ -282,6 +283,7 @@ public class DrawingMgr : MonoBehaviour
             soundManager.Sound(11);
             soundManager.Sound(11);
             soundManager.Sound(11);
+            soundManager.Sound(11);
             yield return new WaitForSeconds(length);
 
         }
@@ -295,6 +297,16 @@ public class DrawingMgr : MonoBehaviour
             vaccum1.transform.position = vaccum2.transform.position;
             vaccum2.transform.position = temp;
         }
+    }
+
+    void SetErrorScore()
+    {
+        for (int i = 0; i < scoreList.Length; i++)
+        {
+            if (scoreList[i] < 0) scoreList[i] = 0;
+            else if (scoreList[i] > 20) scoreList[i] = 20;
+        }
+
     }
 
 

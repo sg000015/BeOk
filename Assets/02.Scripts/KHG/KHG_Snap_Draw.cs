@@ -34,6 +34,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     //함수 실행 여부
     bool[] functionState = new bool[10];
 
+    public GameObject bloodEfx;
+
     Transform syringe;
     Transform front;
     Transform back;
@@ -157,6 +159,19 @@ public class KHG_Snap_Draw : MonoBehaviour
                 soundManager.Sound(4);
                 isDo = true;
 
+
+            }
+            else if (!isDo && coll.name == "Fail_Snap")
+            {
+                //TODO 피튀기기
+                // transform.localEulerAngles = Vector3.up * 180f;
+                GameObject obj = Instantiate(bloodEfx, transform.position, transform.rotation);
+                // transform.localEulerAngles = Vector3.zero;
+                Destroy(obj, 2.0f);
+                DrawingMgr.drawing.scoreList[0] -= 5;
+                soundManager.Sound(9);
+                isDo = true;
+                Invoke("SetIsDo", 0.5f);
 
             }
             else if (isDo && coll.name == "Vaccum_Snap")
@@ -284,6 +299,10 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     }
 
+
+
+
+
     [ContextMenu("Degree Check")]
     void DegreeCheck()
     {
@@ -292,7 +311,10 @@ public class KHG_Snap_Draw : MonoBehaviour
         Debug.Log(needleAngle.y);
     }
 
-
+    void SetIsDo()
+    {
+        isDo = false;
+    }
 
     void Start()
     {
@@ -444,8 +466,6 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     #endregion
 
-
-
     #region Actions(LateUpdate)
 
     void AirOff()
@@ -489,7 +509,10 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 dis = Vector3.Distance(back.position, transform.position);
 
-                back.localPosition = backReset - Vector3.up * 12 * (-0.1f + Mathf.Abs(dis));
+                if (dis <= 0.25f)
+                {
+                    back.localPosition = backReset - Vector3.up * 12 * (-0.1f + Mathf.Abs(dis));
+                }
 
                 if (!airCheck && dis > 0.25f)
                 {
@@ -788,12 +811,12 @@ public class KHG_Snap_Draw : MonoBehaviour
                 if (_num < 3.83f)
                 {
                     Debug.Log("MINUSNUM");
-                    minusNum += 4;
-                    pullback.localPosition = pullback.localPosition + Vector3.up * 0.014f;
-                    front.localPosition = front.localPosition + Vector3.up * +0.007f;
-                    front.localScale = front.localScale + Vector3.up * -0.007f;
-                    back.localPosition = back.localPosition + Vector3.up * 0.003f;
-                    back.localScale = back.localScale + Vector3.up * 0.003f;
+                    minusNum += 2;
+                    pullback.localPosition = pullback.localPosition + Vector3.up * 0.007f;
+                    front.localPosition = front.localPosition + Vector3.up * +0.0035f;
+                    front.localScale = front.localScale + Vector3.up * -0.0035f;
+                    back.localPosition = back.localPosition + Vector3.up * 0.0015f;
+                    back.localScale = back.localScale + Vector3.up * 0.0015f;
                 }
 
             }
@@ -848,7 +871,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 52;
+                minusNum -= 50;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -877,7 +900,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 52;
+                minusNum -= 50;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -901,7 +924,6 @@ public class KHG_Snap_Draw : MonoBehaviour
     }
 
     #endregion
-
 
     #region Coroutine
 
