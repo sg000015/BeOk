@@ -85,10 +85,27 @@ public class GameManager : MonoBehaviourPunCallbacks
         StartStatePanel.SetActive(false);
     }
 
+
+    [ContextMenu("로비로 나가기")]
+    public void OnClickOutToLobby()
+    {
+           pv.RPC("DeleteRoom", RpcTarget.AllViaServer);
+
+    }
     [PunRPC]
     void DeleteRoom()
     {
-        PhotonNetwork.LoadLevel("Lobby");
+        PhotonNetwork.LeaveRoom();
+
+        if(0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop") )
+        {
+            PhotonNetwork.LoadLevel("Lobby");
+
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Lobby-Phone");
+        }
     }
 
     // IEnumerator PrintLog()

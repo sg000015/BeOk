@@ -85,7 +85,7 @@ public class AlcoholCottonMgr : MonoBehaviour
         soundManager.Sound(4);
 
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
         Destroy(disinfectFxObj);
 
         // 바이러스그룹 비활성화

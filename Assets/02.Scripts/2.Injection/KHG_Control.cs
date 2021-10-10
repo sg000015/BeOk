@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class KHG_Control : MonoBehaviour
 {
@@ -32,9 +33,10 @@ public class KHG_Control : MonoBehaviour
 
     public GrabState grabState = 0;
 
+    PhotonView pv;
     void Start()
     {
-
+        pv = gameObject.GetPhotonView();
 
         controllerTr = transform;
         grabbedGameObjects = new List<GameObject>();
@@ -96,7 +98,8 @@ public class KHG_Control : MonoBehaviour
                 grabState = (GrabState)1;
                 if (!isGrabbed)
                 {
-                    GrabBegin();
+                    pv.RPC(nameof(GrabBegin), RpcTarget.AllViaServer);
+                    // GrabBegin();
 
                 }
             }
@@ -106,7 +109,9 @@ public class KHG_Control : MonoBehaviour
 
                 if (isGrabbed)
                 {
-                    GrabEnd();
+                    pv.RPC(nameof(GrabEnd), RpcTarget.AllViaServer);
+
+                    // GrabEnd();
                 }
             }
         }
@@ -120,7 +125,8 @@ public class KHG_Control : MonoBehaviour
                 grabState = (GrabState)2;
                 if (!isGrabbed)
                 {
-                    GrabBegin();
+                    pv.RPC(nameof(GrabBegin), RpcTarget.AllViaServer);
+                    // GrabBegin();
                 }
             }
             else if (m_prevFlex_Grab <= 0.3f)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
@@ -128,7 +134,8 @@ public class KHG_Control : MonoBehaviour
                 grabState = (GrabState)0;
                 if (isGrabbed)
                 {
-                    GrabEnd();
+                    pv.RPC(nameof(GrabEnd), RpcTarget.AllViaServer);
+                    // GrabEnd();
                 }
             }
         }
@@ -152,6 +159,7 @@ public class KHG_Control : MonoBehaviour
 
     }
 
+    [PunRPC]
     void GrabBegin()
     {
 
