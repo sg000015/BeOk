@@ -1,23 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class VaccumTubeMgr : MonoBehaviour
+public class VaccumTubeMgr : MonoBehaviourPunCallbacks
 {
 
     public GameObject[] vials;
-    public int a;
+    public int a = -1;
     Material mat;
     // Start is called before the first frame update
     void Start()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            a = Random.Range(a, a + 3);
+            SetBloodType(a);
+        }
         mat = transform.GetChild(0).GetComponent<MeshRenderer>().material;
-        SetBloodType();
+
     }
 
-    void SetBloodType()
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
-        a = Random.Range(a, a + 3);
+        if (PhotonNetwork.IsMasterClient)
+            gameObject.GetPhotonView().RPC(nameof(SetBloodType), RpcTarget.Others, a);
+    }
+
+    [PunRPC]
+    void SetBloodType(int a)
+    {
         switch (a)
         {
             case 0:

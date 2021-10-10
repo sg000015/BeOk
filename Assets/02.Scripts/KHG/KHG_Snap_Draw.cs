@@ -25,7 +25,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
 
     private Material mat;
-    private bool isDo = false;
+    public bool isDo = false;
 
     public ObjectType _objectType;
     private SoundManager soundManager;
@@ -174,7 +174,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 Invoke("SetIsDo", 0.5f);
 
             }
-            else if (isDo && coll.name == "Vaccum_Snap")
+            else if (coll.name == "Vaccum_Snap")
             {
                 if (functionState[6])
                 {
@@ -434,6 +434,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         tempTr = _arm;
         // minusNum = 100;
         functionState[5] = true;
+
     }
 
     public void SyringeOffStart()
@@ -451,6 +452,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         functionState[2] = false;
         functionState[6] = true;
+        isDo = false;
     }
 
     public void ShakingStart()

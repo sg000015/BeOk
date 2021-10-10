@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class DrawingMgr : MonoBehaviour
+public class DrawingMgr : MonoBehaviourPunCallbacks
 {
 
     public static DrawingMgr drawing;
@@ -16,7 +17,7 @@ public class DrawingMgr : MonoBehaviour
     public Transform vaccum1;
     public Transform vaccum2;
     public Transform vaccumRack;
-
+    public GameObject startPanel;
 
     public Transform arrow;
     public Transform arrow2;
@@ -27,8 +28,11 @@ public class DrawingMgr : MonoBehaviour
     // public int[] vaccumList = new int[2];
     public Timer timer;
 
+    PhotonView pv;
+
 
     public bool syringeGrab = false;
+    public bool isOclus = false;
 
     bool finish = false;
 
@@ -41,9 +45,15 @@ public class DrawingMgr : MonoBehaviour
 
     void Start()
     {
+        if (PhotonNetwork.IsMasterClient)
+            SetVial();
+
+        pv = gameObject.GetPhotonView();
         StartCoroutine("ArrowActive", torniquet);
         StartCoroutine("BgmPlay");
     }
+
+
 
 
 
@@ -64,18 +74,28 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
+        pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void HemostasisRPC()
+    {
         virusgroup.SetActive(true);
         UImanager.UpdateUI(1);
 
         arrow.gameObject.SetActive(true);
         arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
         StartCoroutine("ArrowActive", alcoholcotton);
-
     }
 
     //알콜솜 끝날시
     [ContextMenu("2.소독")]
     public void Disinfect()
+    {
+        pv.RPC(nameof(DisinfectRPC), RpcTarget.AllViaServer);
+
+    }
+    [PunRPC]
+    public void DisinfectRPC()
     {
         //주사기 당기기 로직 활성화
         syringe.Find("Syringe_Back").Find("Pull_Snap").GetComponent<KHG_Snap_Draw>().AirOffStart();
@@ -90,6 +110,11 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("3-1.주사 공기 뺴기")]
     public void SyringeAirOff()
     {
+        pv.RPC(nameof(SyringeAirOffRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void SyringeAirOffRPC()
+    {
         //주사 커버 로직 활성화
         syringe.Find("Front").Find("Needle_Cover").GetComponent<KHG_Snap_Draw>().AirCoverStart();
         UImanager.UpdateUI(3);
@@ -98,6 +123,11 @@ public class DrawingMgr : MonoBehaviour
     //주사 안전캡 제거시
     [ContextMenu("3-2.주사기 분리")]
     public void SyringeSafeCap()
+    {
+        pv.RPC(nameof(SyringeSafeCapRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void SyringeSafeCapRPC()
     {
         //혈액 콜라이더 활성화
         Transform needleSnap = patientArm.Find("Needle_Snap");
@@ -109,12 +139,18 @@ public class DrawingMgr : MonoBehaviour
         arrow.gameObject.SetActive(true);
         arrow.position = needleSnap.position + Vector3.up * 0.1f;
         StartCoroutine("ArrowActive", needleSnap);
-
     }
+
 
     //주사 시행 완료시
     [ContextMenu("3-3.주사기 위치,각도설정")]
     public void SyringeArea()
+    {
+        pv.RPC(nameof(SyringeAreaRPC), RpcTarget.AllViaServer);
+
+    }
+    [PunRPC]
+    public void SyringeAreaRPC()
     {
         //주사기 스냅완료
         //주사뒷부분 당기기(주사기 잡은 상태로, 뒷부분 당길것)
@@ -127,6 +163,12 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("4. 피 뽑기")]
     public void BloodDrawing()
     {
+        pv.RPC(nameof(BloodDrawingRPC), RpcTarget.AllViaServer);
+
+    }
+    [PunRPC]
+    public void BloodDrawingRPC()
+    {
         //지혈대  다시 활성화
         torniquet.GetComponent<KHG_Snap_Draw>().TorniquetRestoreStart(syringe);
         UImanager.UpdateUI(6);
@@ -134,12 +176,17 @@ public class DrawingMgr : MonoBehaviour
         //!위치 조정 필요
         arrow2.gameObject.SetActive(true);
         StartCoroutine("Arrow2Active", torniquet);
-
     }
+
 
     //지혈대 제거 시
     [ContextMenu("5. 지혈대 제거")]
     public void TourniquetOff()
+    {
+        pv.RPC(nameof(TourniquetOffRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    public void TourniquetOffRPC()
     {
         //알콜솜 활성화, 팔
         alcoholcotton.GetComponent<KHG_Snap_Draw>().AlcoholCottonReset();
@@ -155,6 +202,12 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("6. 혈액 안정화")]
     public void BloodSafety()
     {
+        pv.RPC(nameof(BloodSafetyRPC), RpcTarget.AllViaServer);
+
+    }
+    [PunRPC]
+    public void BloodSafetyRPC()
+    {
         // 주사기 분리하기 (스냅 해제, 키네마틱으로 일단 고정)
         // 진공튜브에 닿으면 스냅되고, 뒷부분 다시 활성화
         syringe.transform.Find("Front").Find("Needle_Point").GetComponent<KHG_Snap_Draw>().SyringeOffStart();
@@ -166,9 +219,6 @@ public class DrawingMgr : MonoBehaviour
         arrow2.position = vaccum2.position + Vector3.up * 0.1f;
         StartCoroutine("ArrowActive", vaccum1);
         StartCoroutine("Arrow2Active", vaccum2);
-
-
-
     }
 
 
@@ -178,7 +228,12 @@ public class DrawingMgr : MonoBehaviour
     [ContextMenu("7. 진공튜브")]
     public void VaccumTube(Transform _transform)
     {
-        _transform.GetComponent<KHG_Snap_Draw>().ShakingStart();
+        pv.RPC(nameof(VaccumTubeRPC), RpcTarget.AllViaServer, _transform.name);
+    }
+    [PunRPC]
+    public void VaccumTubeRPC(string _transformName)
+    {
+        GameObject.Find(_transformName).GetComponent<KHG_Snap_Draw>().ShakingStart();
         //다 담은 뒤, 주사기 다시잡으면 분리가능
         // 분리후에 흔들 것 
         if (isVaccumTube)
@@ -189,13 +244,17 @@ public class DrawingMgr : MonoBehaviour
         {
             isVaccumTube = true;
         }
-
     }
 
     bool isBloodShake = false;
     //혈액 흔들기
     [ContextMenu("8. 혈액 흔들기")]
     public void BloodShake(Transform _transform)
+    {
+        pv.RPC(nameof(BloodShakeRPC), RpcTarget.AllViaServer, _transform.name);
+    }
+    [PunRPC]
+    public void BloodShakeRPC(Transform _transform)
     {
         //진공튜브 꽂는곳 활성화 하기
         _transform.GetComponent<KHG_Snap_Draw>().VialSnapStart();
@@ -210,14 +269,18 @@ public class DrawingMgr : MonoBehaviour
         {
             isBloodShake = true;
         }
-
     }
+
     //평가
     [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
+        pv.RPC(nameof(FinishRPC), RpcTarget.AllViaServer);
 
-
+    }
+    [PunRPC]
+    public void FinishRPC()
+    {
         //!점수
         if (!finish)
         {
@@ -233,8 +296,13 @@ public class DrawingMgr : MonoBehaviour
             timer.timerOn = false;
             //점수 출력
             UImanager.UpdateUI(11);
+            if (isOclus)
+            {
+                GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
+            }
         }
     }
+
 
 
     //Tramsform 잡으면 SetActive(false)
@@ -289,9 +357,13 @@ public class DrawingMgr : MonoBehaviour
         }
     }
 
+
+    int random = -1;
     void SetVial()
     {
-        if (Random.Range(0, 2) == 0)
+        random = Random.Range(0, 2);
+
+        if (random == 0)
         {
             Vector3 temp = vaccum1.transform.position;
             vaccum1.transform.position = vaccum2.transform.position;
@@ -310,5 +382,49 @@ public class DrawingMgr : MonoBehaviour
     }
 
 
+    public void OnClickStartBtn()
+    {
+        pv.RPC(nameof(StartBtnRPC), RpcTarget.AllViaServer);
+        GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(false);
+    }
 
+    [PunRPC]
+    void StartBtnRPC()
+    {
+        startPanel.SetActive(false);
+        torniquet.GetComponent<BoxCollider>().enabled = true;
+        arrow.gameObject.SetActive(true);
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            pv.RPC(nameof(EnterRoomRPC), RpcTarget.Others, random);
+        }
+
+
+    }
+    [PunRPC]
+    void EnterRoomRPC(int _random)
+    {
+        if (_random == 0)
+        {
+            Vector3 temp = vaccum1.transform.position;
+            vaccum1.transform.position = vaccum2.transform.position;
+            vaccum2.transform.position = temp;
+        }
+    }
+
+    public void OnClickOutToLobby()
+    {
+        pv.RPC(nameof(OutToLobbyRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void OutToLobbyRPC()
+    {
+        PhotonNetwork.LoadLevel("Lobby");
+        PhotonNetwork.LeaveRoom();
+    }
 }

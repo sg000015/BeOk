@@ -9,7 +9,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager instanceNW = null;
     string roomNum = "1";
-    bool isOculus = false;
+    public string roomType = "";
+    public bool isOculus = false;
     public TMP_InputField inputRoomNum;
     public TMP_Text text;
 
@@ -40,14 +41,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Hendheld
 
-        if(0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
+            DrawingMgr.drawing.isOclus = true;
         }
         else
         {
-                    inputRoomNum = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(1).GetComponent<TMP_InputField>();
-        text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            inputRoomNum = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(1).GetComponent<TMP_InputField>();
+            text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            DrawingMgr.drawing.isOclus = false;
             isOculus = false;
         }
         Debug.Log("IsOculus???" + isOculus);
@@ -67,13 +70,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (isOculus)
             {
                 roomNum = "1";
-                PhotonNetwork.CreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2}, null);
+                PhotonNetwork.CreateRoom(roomNum, new Photon.Realtime.RoomOptions { MaxPlayers = 2 }, null);
                 Debug.Log("방만들기 시도");
 
             }
             else
             {
-                roomNum =  GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
+                roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
                 text.text = roomNum + "방에 입장을 시도합니다.";
 
                 PhotonNetwork.JoinRoom(roomNum);
@@ -86,7 +89,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("방생성 실패");
-        
+
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -95,23 +98,32 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log(roomNum + "번 방 입장 완료");
-        PhotonNetwork.LoadLevel("Ward-Injection");
+        if (roomType == "Blood")
+            PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
+        else
+            PhotonNetwork.LoadLevel("Ward-Injection");
+
     }
 
-   
+
 
 
     public void InstantiatePlayer()
     {
-        if(isOculus)
+        if (isOculus)
         {
-            GameObject Player = PhotonNetwork.Instantiate("Player", new Vector3(-5.6f, 1.5f, 1.6f), new Quaternion(0,0.7071068f,0,0.7071068f),0);
+            Vector3 pos = roomType == "Blood" ? new Vector3(-0.141f, 1.5f, -0.916f) : new Vector3(-5.6f, 1.5f, 1.6f);
+            Quaternion rot = roomType == "Blood" ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 90, 0);
+
+            GameObject Player = PhotonNetwork.Instantiate("Player", pos, rot, 0);
             Player.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
-        
+
         }
         else
         {
-            GameObject CCTV = PhotonNetwork.Instantiate("CCTV",Vector3.zero, Quaternion.identity,0);
+
+            GameObject CCTV = roomType == "Blood" ? PhotonNetwork.Instantiate("CCTV2", Vector3.zero, Quaternion.identity, 0)
+                                                  : PhotonNetwork.Instantiate("CCTV", Vector3.zero, Quaternion.identity, 0);
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
 
             photonView.TransferOwnership(PhotonNetwork.MasterClient);

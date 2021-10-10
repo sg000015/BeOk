@@ -91,7 +91,7 @@ public class InjectionMgr : MonoBehaviour
         InitInjection();
 
     }
-    
+
     [ContextMenu("OnclcikStart")]
     public void OnClickStart()
     {
@@ -101,13 +101,13 @@ public class InjectionMgr : MonoBehaviour
         int index = Random.Range(0, type.Length);
         string sapType = type[index];
         int sapSpeed = speed[Random.Range(0, speed.Length)];
-        
+
         GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
 
         pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
 
     }
-    
+
 
     [PunRPC]
     void SetSapRPC(int idx, string sapType, int sapSpeed)
@@ -117,13 +117,14 @@ public class InjectionMgr : MonoBehaviour
         _sapType = sapType;
         _sapSpeed = sapSpeed;
         SapType();
-        
+
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
         patientTxtPhone.text = $"손 위생과 물품준비가 끝난 상황입니다.\n 두드러기 환자에게 {_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사 투약해주세요.";
     }
     void Start()
     {
+        StartCoroutine("BgmPlay");
     }
 
     // 초기화
@@ -158,14 +159,14 @@ public class InjectionMgr : MonoBehaviour
 
     public void CreateCatheter()
     {
-        catheter = PhotonNetwork.Instantiate("Catheter_Res",new Vector3(-5.283f,0.8f,0.727f),Quaternion.Euler(0,180,0) );
-        catheter.transform.localScale = Vector3.one *0.5f;
+        catheter = PhotonNetwork.Instantiate("Catheter_Res", new Vector3(-5.283f, 0.8f, 0.727f), Quaternion.Euler(0, 180, 0));
+        catheter.transform.localScale = Vector3.one * 0.5f;
         catheter.name = "Catheter";
     }
     #region 술기
     // 0.수액 종류
     [ContextMenu("0.수액 종류")]
-    
+
     public void SapType()
     {
         // pv.RPC(nameof(SapTypeRPC), RpcTarget.AllViaServer);
@@ -198,7 +199,7 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
-       pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
+        pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
     }
 
     [PunRPC]
@@ -227,7 +228,7 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("2.소독")]
     public void Disinfect()
     {
-       pv.RPC(nameof(DisinfectRPC), RpcTarget.AllViaServer);
+        pv.RPC(nameof(DisinfectRPC), RpcTarget.AllViaServer);
     }
 
     [PunRPC]
@@ -313,7 +314,7 @@ public class InjectionMgr : MonoBehaviour
     public void ConnectRubber()
     {
         pv.RPC(nameof(ConnectRubberRPC), RpcTarget.AllViaServer);
-        
+
     }
     [PunRPC]
     public void ConnectRubberRPC()
@@ -335,7 +336,7 @@ public class InjectionMgr : MonoBehaviour
     public void SapSpeed()
     {
         pv.RPC(nameof(SapSpeedRPC), RpcTarget.AllViaServer);
-        
+
     }
     [PunRPC]
     public void SapSpeedRPC()
@@ -384,7 +385,7 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("9.평가")]
     public void GradeInjection()
     {
-       pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
+        pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
     }
     [PunRPC]
     public void GradeInjectionRPC()
@@ -445,11 +446,12 @@ public class InjectionMgr : MonoBehaviour
         StartCoroutine(ShowScore());
     }
 
-  
+
 
     IEnumerator ShowScore()
     {
         soundManager.SoundStop();
+        StopCoroutine("BgmPlay");
         float time = 1.0f;
         int score = 0;
 
@@ -458,7 +460,7 @@ public class InjectionMgr : MonoBehaviour
         {
             score += i;
         }
-        
+
         infoTxt.text += $"\n{curruntSap.name}";
         infoTxtPhone.text += $"\n{curruntSap.name}";
 
@@ -661,7 +663,7 @@ public class InjectionMgr : MonoBehaviour
         scoreList[3] -= 5;
     }
 
-    
+
 
     // 화살표 On
     void ActiveArrow(GameObject obj)
@@ -677,5 +679,21 @@ public class InjectionMgr : MonoBehaviour
     public void InactiveArrow()
     {
         arrow.SetActive(false);
+    }
+
+
+    IEnumerator BgmPlay()
+    {
+        float length = soundManager.audios[9].length;
+        while (true)
+        {
+            soundManager.Sound(9);
+            soundManager.Sound(9);
+            soundManager.Sound(9);
+            soundManager.Sound(9);
+            soundManager.Sound(9);
+            yield return new WaitForSeconds(length);
+
+        }
     }
 }

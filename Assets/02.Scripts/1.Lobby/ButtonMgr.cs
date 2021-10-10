@@ -112,11 +112,24 @@ public class ButtonMgr : MonoBehaviour
     [ContextMenu("OnClickInjection")]
     public void OnClickInjection()
     {
-    
+
         NetworkManager networkMgr = GameObject.FindObjectOfType<NetworkManager>();
+        networkMgr.roomType = "Injection";
         networkMgr.OnCreateRoom();
 
         Debug.Log(" 정맥주사 눌림!");
+    }
+
+    [ContextMenu("채혈로 이동")]
+    public void OnClickBlood()
+    {
+
+        NetworkManager networkMgr = GameObject.FindObjectOfType<NetworkManager>();
+        networkMgr.roomType = "Blood";
+
+        networkMgr.OnCreateRoom();
+        Debug.Log(" 채혈 눌림!");
+
     }
 
     public void SceneLoader()
