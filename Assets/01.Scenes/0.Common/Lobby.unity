@@ -8547,7 +8547,7 @@ RectTransform:
   m_Children:
   - {fileID: 750110663}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -17496,9 +17496,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: CurvedUILaserPointer
       objectReference: {fileID: 0}
+    - target: {fileID: 1767736181399190, guid: bcd9d94a56f575340a261fb992072904, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4669569845911490, guid: bcd9d94a56f575340a261fb992072904, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4669569845911490, guid: bcd9d94a56f575340a261fb992072904, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17686,7 +17690,7 @@ RectTransform:
   - {fileID: 747093348}
   - {fileID: 1335701701}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -26282,6 +26286,7 @@ GameObject:
   - component: {fileID: 1335701701}
   - component: {fileID: 1335701704}
   - component: {fileID: 1335701703}
+  - component: {fileID: 1335701702}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: EventSystem
@@ -26303,7 +26308,7 @@ Transform:
   m_Father: {fileID: 888795931}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1335701703
+--- !u!114 &1335701702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26311,6 +26316,41 @@ MonoBehaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1335701700}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e569dc832500047bf4350b4dae9b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 1
+  controlMethod: 0
+  submitButtonName: Fire1
+  mainEventCamera: {fileID: 0}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 32
+  gazeUseTimedClick: 0
+  gazeClickTimer: 2
+  gazeClickTimerDelay: 1
+  gazeTimedClickProgressImage: {fileID: 0}
+  worldSpaceMouseSensitivity: 1
+  usedHand: 1
+  pointerTransformOverride: {fileID: 0}
+  TouchControllerTransform: {fileID: 0}
+  InteractionButton: 8192
+  oculusCameraRig: {fileID: 0}
+--- !u!114 &1335701703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335701700}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
@@ -41189,6 +41229,17 @@ MonoBehaviour:
   isGrabbed: 0
   controller: 2
   grabState: 0
+  canGrabObjects:
+  - Tourniquet
+  - AlcoholCotton
+  - Sap_Normal Saline
+  - Sap_5% Dextrose
+  - Sap_0.45% Saline
+  - IVPole
+  - Rubber
+  - Catheter_Res
+  - Stylet
+  texttt: {fileID: 0}
   grabCount: 0
 --- !u!1001 &6555301353826207247
 PrefabInstance:
@@ -41278,6 +41329,17 @@ MonoBehaviour:
   isGrabbed: 0
   controller: 1
   grabState: 0
+  canGrabObjects:
+  - Tourniquet
+  - AlcoholCotton
+  - Sap_Normal Saline
+  - Sap_5% Dextrose
+  - Sap_0.45% Saline
+  - IVPole
+  - Rubber
+  - Catheter_Res
+  - Stylet
+  texttt: {fileID: 0}
   grabCount: 0
 --- !u!1001 &6555301354318474978
 PrefabInstance:

@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            PhotonNetwork.LoadLevel("Lobby-Phone");
+            PhotonNetwork.LoadLevel("Lobby");
         }
     }
 
