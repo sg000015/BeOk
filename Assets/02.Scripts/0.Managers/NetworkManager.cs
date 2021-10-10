@@ -5,7 +5,6 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public static NetworkManager instanceNW = null;
@@ -114,12 +113,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             GameObject CCTV = PhotonNetwork.Instantiate("CCTV",Vector3.zero, Quaternion.identity,0);
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
+
+            photonView.TransferOwnership(PhotonNetwork.MasterClient);
         }
     }
 
-
-
-
-    
+    // public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    // {
+    //     if(PhotonNetwork.IsMasterClient)
+    //     {
+    //         GameObject.Find("Player").GetComponentsInChildren<KHG_Control>()[0].GrabInit();
+    //         GameObject.Find("Player").GetComponentsInChildren<KHG_Control>()[1].GrabInit();
+    //     }
+    // }
 
 }
