@@ -38,6 +38,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     Transform front;
     Transform back;
     Transform point;
+    Transform pull;
+    Transform pullback;
     Transform tempTr;
     Transform blood;
     public Transform vaccum;
@@ -146,6 +148,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 rot = syringe.eulerAngles;
                 functionState[2] = true;
                 syringe.parent = null;
+                syringe.GetComponent<MeshRenderer>().material.color /= 1.2f;
+
                 coll.GetComponent<VesselColor>().check = true;
                 DrawingMgr.drawing.arrow.gameObject.SetActive(false);
                 coll.gameObject.SetActive(false);
@@ -179,6 +183,20 @@ public class KHG_Snap_Draw : MonoBehaviour
                     }
                     functionState[6] = false;
                     functionState[7] = true;
+                    //! 동작수정
+                    syringe.parent = vaccum;
+                    syringe.localPosition = pos;
+                    syringe.localEulerAngles = rot;
+                    syringe.tag = "Untagged";
+                    syringe.GetComponent<MeshRenderer>().material.color /= 1.2f;
+                    syringe.GetComponent<BoxCollider>().enabled = false;
+                    syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+
+                    pullback = transform.parent.parent.Find("Syringe_Back");
+                    pull = pullback.Find("Pull_Snap");
+                    pull.GetComponent<BoxCollider>().enabled = true;
+                    pull.tag = "GrabObject";
+
 
                 }
             }
@@ -204,7 +222,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (functionState[8] && coll.name == "Vial_Snap1")
             {
                 int number = GetComponent<VaccumTubeMgr>().a;
-                if (number <= 3)
+                if (number < 3)
                 {
                     transform.parent = coll.transform.parent;
                     tag = "Untagged";
@@ -235,7 +253,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             else if (functionState[8] && coll.name == "Vial_Snap2")
             {
                 int number = GetComponent<VaccumTubeMgr>().a;
-                if (number > 3)
+                if (number >= 3)
                 {
                     transform.parent = coll.transform.parent;
                     tag = "Untagged";
@@ -471,9 +489,9 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 dis = Vector3.Distance(back.position, transform.position);
 
-                back.localPosition = backReset - Vector3.up * 8 * (-0.1f + Mathf.Abs(dis));
+                back.localPosition = backReset - Vector3.up * 12 * (-0.1f + Mathf.Abs(dis));
 
-                if (!airCheck && dis > 0.3f)
+                if (!airCheck && dis > 0.25f)
                 {
                     airCheck = true;
                     airCount++;
@@ -633,8 +651,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 {
 
                     transform.parent = back;
+                    transform.localPosition = new Vector3(0, 0.363f, 3.83f);
+                    transform.localEulerAngles = Vector3.zero;
                     transform.GetComponent<Rigidbody>().isKinematic = true;
                     transform.GetComponent<Rigidbody>().useGravity = false;
+                    transform.GetComponent<BoxCollider>().enabled = false;
 
                     soundManager.Sound(4);
                     functionState[3] = false;
@@ -746,47 +767,80 @@ public class KHG_Snap_Draw : MonoBehaviour
     void VaccumInsert()
     {
 
-        tempTr = syringe.parent;
-        syringe.parent = vaccum;
-        syringe.localPosition = pos;
-        syringe.localEulerAngles = rot;
-        syringe.parent = tempTr;
+        // tempTr = syringe.parent;
+        // syringe.parent = vaccum;
+        // syringe.localPosition = pos;
+        // syringe.localEulerAngles = rot;
+        // syringe.parent = tempTr;
 
-
-        if (syringe.parent != null)
+        //! 동작수정
+        float _num;
+        if (pull.parent != null)
         {
-
-            if (tempTr.name == "CustomHandRight")
+            if (pull.parent.name == "CustomHandRight" || pull.parent.name == "CustomHandLeft")
             {
-                bool value2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
-                bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.RTouch);
-                if (value2 || value3)
+                tempTr = pull.parent;
+                pull.SetParent(pullback);
+                _num = pull.transform.localPosition.z;
+                pull.localPosition = new Vector3(0, 0.363f, 3.83f);
+                pull.localEulerAngles = Vector3.zero;
+                pull.parent = tempTr;
+                if (_num < 3.83f)
                 {
-                    minusNum++;
-                    front.localPosition = front.localPosition + Vector3.up * +0.00175f;
-                    front.localScale = front.localScale + Vector3.up * -0.00175f;
-                    back.localPosition = back.localPosition + Vector3.up * 0.00075f;
-                    back.localScale = back.localScale + Vector3.up * 0.00075f;
-
-                }
-            }
-            else if (tempTr.name == "CustomHandLeft")
-            {
-                bool value1 = OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch);
-                bool value2 = OVRInput.Get(OVRInput.Button.Four, OVRInput.Controller.Touch);
-                bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch);
-                if (value1 || value2 || value3)
-                {
-                    minusNum++;
-                    front.localPosition = front.localPosition + Vector3.up * +0.00175f;
-                    front.localScale = front.localScale + Vector3.up * -0.00175f;
-                    back.localPosition = back.localPosition + Vector3.up * 0.00075f;
-                    back.localScale = back.localScale + Vector3.up * 0.00075f;
+                    Debug.Log("MINUSNUM");
+                    minusNum += 4;
+                    pullback.localPosition = pullback.localPosition + Vector3.up * 0.014f;
+                    front.localPosition = front.localPosition + Vector3.up * +0.007f;
+                    front.localScale = front.localScale + Vector3.up * -0.007f;
+                    back.localPosition = back.localPosition + Vector3.up * 0.003f;
+                    back.localScale = back.localScale + Vector3.up * 0.003f;
                 }
 
             }
-
         }
+        else if (pull.parent == null)
+        {
+            pull.SetParent(pullback);
+            pull.localPosition = new Vector3(0, 0.363f, 3.83f);
+            pull.localEulerAngles = Vector3.zero;
+        }
+
+        // if (syringe.parent != null)
+        // {
+
+        //     if (tempTr.name == "CustomHandRight")
+        //     {
+        //         bool value2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
+        //         bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.RTouch);
+        //         if (value2 || value3)
+        //         {
+        //             minusNum++;
+        //             front.localPosition = front.localPosition + Vector3.up * +0.00175f;
+        //             front.localScale = front.localScale + Vector3.up * -0.00175f;
+        //             back.localPosition = back.localPosition + Vector3.up * 0.00075f;
+        //             back.localScale = back.localScale + Vector3.up * 0.00075f;
+
+        //         }
+        //     }
+        //     else if (tempTr.name == "CustomHandLeft")
+        //     {
+        //         bool value1 = OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch);
+        //         bool value2 = OVRInput.Get(OVRInput.Button.Four, OVRInput.Controller.Touch);
+        //         bool value3 = OVRInput.Get(OVRInput.Button.PrimaryThumbstick, OVRInput.Controller.LTouch);
+        //         if (value1 || value2 || value3)
+        //         {
+        //             minusNum++;
+        //             front.localPosition = front.localPosition + Vector3.up * +0.00175f;
+        //             front.localScale = front.localScale + Vector3.up * -0.00175f;
+        //             back.localPosition = back.localPosition + Vector3.up * 0.00075f;
+        //             back.localScale = back.localScale + Vector3.up * 0.00075f;
+        //         }
+
+        //     }
+
+        // }
+
+
 
         if (vialSnap2 == null)
         {
@@ -794,7 +848,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 50;
+                minusNum -= 52;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -803,6 +857,17 @@ public class KHG_Snap_Draw : MonoBehaviour
                 vialSnap.GetComponent<BoxCollider>().enabled = false;
                 functionState[7] = false;
                 functionState[6] = true;
+
+                syringe.tag = "GrabObject";
+                syringe.GetComponent<BoxCollider>().enabled = true;
+                syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+
+                pull.SetParent(pullback);
+                pull.localPosition = new Vector3(0, 0.363f, 3.83f);
+                pull.localEulerAngles = Vector3.zero;
+                pull.GetComponent<BoxCollider>().enabled = false;
+                pull.tag = "Untagged";
+
                 DrawingMgr.drawing.VaccumTube(vialSnap.parent);
             }
         }
@@ -812,7 +877,7 @@ public class KHG_Snap_Draw : MonoBehaviour
             {
                 soundManager.Sound(0);
                 soundManager.Sound(0);
-                minusNum -= 50;
+                minusNum -= 52;
                 minusNum2++;
             }
             else if (minusNum > 50 && minusNum2 == 5)
@@ -820,6 +885,15 @@ public class KHG_Snap_Draw : MonoBehaviour
                 soundManager.Sound(4);
                 vialSnap2.GetComponent<BoxCollider>().enabled = false;
                 functionState[7] = false;
+                syringe.tag = "GrabObject";
+                syringe.GetComponent<BoxCollider>().enabled = true;
+                syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
+
+                pull.SetParent(pullback);
+                pull.localPosition = new Vector3(0, 0.363f, 3.83f);
+                pull.localEulerAngles = Vector3.zero;
+                pull.GetComponent<BoxCollider>().enabled = false;
+                pull.tag = "Untagged";
 
                 DrawingMgr.drawing.VaccumTube(vialSnap2.parent);
             }
