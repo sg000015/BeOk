@@ -12,12 +12,13 @@ public class VaccumTubeMgr : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+
+        mat = transform.GetChild(0).GetComponent<MeshRenderer>().material;
         if (PhotonNetwork.IsMasterClient)
         {
             a = Random.Range(a, a + 3);
             SetBloodType(a);
         }
-        mat = transform.GetChild(0).GetComponent<MeshRenderer>().material;
 
     }
 

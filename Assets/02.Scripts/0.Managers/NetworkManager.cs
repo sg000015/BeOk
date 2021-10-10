@@ -44,16 +44,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
-            DrawingMgr.drawing.isOclus = true;
         }
         else
         {
             inputRoomNum = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(1).GetComponent<TMP_InputField>();
             text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
-            DrawingMgr.drawing.isOclus = false;
             isOculus = false;
         }
-        Debug.Log("IsOculus???" + isOculus);
     }
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
 

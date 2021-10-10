@@ -32,7 +32,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
 
 
     public bool syringeGrab = false;
-    public bool isOclus = false;
+
 
     bool finish = false;
 
@@ -40,6 +40,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     void Awake()
     {
         drawing = this;
+        NetworkManager.instanceNW.InstantiatePlayer();
     }
 
 
@@ -272,7 +273,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     }
 
     //평가
-    [ContextMenu("9. 점수 표기")]
+    // [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
         pv.RPC(nameof(FinishRPC), RpcTarget.AllViaServer);
@@ -296,7 +297,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
             timer.timerOn = false;
             //점수 출력
             UImanager.UpdateUI(11);
-            if (isOclus)
+            if (NetworkManager.instanceNW.isOculus)
             {
                 GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
             }
