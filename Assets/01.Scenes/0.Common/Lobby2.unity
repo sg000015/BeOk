@@ -795,7 +795,7 @@ MonoBehaviour:
   pointerTransformOverride: {fileID: 0}
   TouchControllerTransform: {fileID: 0}
   InteractionButton: 8192
-  oculusCameraRig: {fileID: 6555301354516184846}
+  oculusCameraRig: {fileID: 0}
 --- !u!114 &41029267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17614,7 +17614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &888795928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33982,11 +33982,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homePanel: {fileID: 1944452285}
   selectPanel: {fileID: 1376082121}
-  NickNamePanel: {fileID: 942359224}
-  contentsPanel: {fileID: 556246470}
+  NickNamePanel: {fileID: 0}
+  contentsPanel: {fileID: 0}
   backButton: {fileID: 0}
-  ranksPanelI: {fileID: 759696217}
-  text: {fileID: 291974654}
+  ranksPanelI: {fileID: 0}
+  text: {fileID: 0}
   GM: {fileID: 0}
 --- !u!1001 &1776941763
 PrefabInstance:

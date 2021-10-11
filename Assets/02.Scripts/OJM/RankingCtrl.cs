@@ -101,7 +101,9 @@ public class RankingCtrl : MonoBehaviour
     {
         basicCanvas.SetActive(false);
         rankingCanvas.SetActive(true);
-        GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
+        GameObject.Find("Player(Clone)").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
+        GameObject.Find("LeftHandAnchor").transform.Find("LaserBeam")?.gameObject.SetActive(true);
+        GameObject.Find("RightHandAnchor").transform.Find("LaserBeam")?.gameObject.SetActive(true);
     }
 
     public void ActiveNickname()

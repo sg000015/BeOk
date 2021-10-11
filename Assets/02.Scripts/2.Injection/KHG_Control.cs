@@ -44,10 +44,19 @@ public class KHG_Control : MonoBehaviour
         if(SceneManager.GetActiveScene().name == "Ward-Injection")
         {
             pv = gameObject.GetPhotonView();
-            Debug.Log("KG_Control 에서 포톤뷰 이름 !! = " + pv.name);
-            
-            texttt = GameObject.Find("Panel-Start").transform.GetChild(0).GetChild(1).GetComponent<TMPro.TMP_Text>();
 
+            if (pv.IsMine)
+            {
+                controllerTr = transform;
+                grabbedGameObjects = new List<GameObject>();
+
+                if (controller == OVRInput.Controller.LTouch) { Left = true; }
+                else { Right = true; }
+            }
+        }
+        else if(SceneManager.GetActiveScene().name == "Ward-BloodCollection-BACKUP")
+        {
+            pv = gameObject.GetPhotonView();
             if (pv.IsMine)
             {
                 controllerTr = transform;
@@ -79,6 +88,7 @@ public class KHG_Control : MonoBehaviour
     int i;
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
 
         if (isGrabbed && currentGrabbedObject == null)
         {
@@ -214,7 +224,6 @@ public class KHG_Control : MonoBehaviour
             {
                 currentGrabbedObject = grabbedObject;
                 grabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
-                currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
 
                 isGrabbed = true;
 
@@ -225,11 +234,10 @@ public class KHG_Control : MonoBehaviour
             {
                 currentGrabbedObject = grabbedObject;
                 grabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
-                currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
 
                 isGrabbed = true;
 
-               pv.RPC(nameof(GrabRPC), RpcTarget.AllViaServer, currentGrabbedObject.name);
+                pv.RPC(nameof(GrabRPC), RpcTarget.AllViaServer, currentGrabbedObject.name);
 
                 
 
@@ -241,6 +249,8 @@ public class KHG_Control : MonoBehaviour
     void PinchRPC(string objName)
     {
         currentGrabbedObject = GameObject.Find(objName).transform;
+
+        currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
         currentGrabbedObject.SetParent(transform);
         //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
         // isGrabbed = true;
@@ -251,6 +261,8 @@ public class KHG_Control : MonoBehaviour
     void GrabRPC(string objName)
     {
         currentGrabbedObject = GameObject.Find(objName).transform;
+
+        currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = true;
         currentGrabbedObject.SetParent(transform);
         //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
         // isGrabbed = true;
@@ -272,8 +284,8 @@ public class KHG_Control : MonoBehaviour
 
                 if (currentGrabbedObject.parent == controllerTr)
                 {
+                    Debug.Log("AAAAA:"+currentGrabbedObject.name);
                     pv.RPC(nameof(GrabParentRPC), RpcTarget.AllViaServer, currentGrabbedObject.name);
-                    currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = false;
 
 
                 }
@@ -302,7 +314,11 @@ public class KHG_Control : MonoBehaviour
     void GrabParentRPC(string objName)
     {
         currentGrabbedObject = GameObject.Find(objName).transform;
-        currentGrabbedObject.SetParent(null);
+
+        currentGrabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+        // currentGrabbedObject.SetParent(null);
+
+        currentGrabbedObject.transform.parent = null;
         //currentGrabbedObject.GetComponent<KHG_Grabble>().isGrab = false;
     }
 

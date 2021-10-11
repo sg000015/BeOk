@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class KHG_Snap_Draw : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class KHG_Snap_Draw : MonoBehaviour
     Vector3 backReset;
     Vector3 pos;
 
+    public PhotonView pv;
 
     float dis;
     float lastDis;
@@ -72,16 +74,16 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
-        Debug.Log(coll.name);
+        if (!PhotonNetwork.IsMasterClient) return;
+
 
         if (_objectType == ObjectType.AlcoholCotton)
         {
             if (coll.name == "VirusBody")
             {
+                pv.RPC(nameof(AlcoholCottonEnterRPC), RpcTarget.Others);
                 coll.GetComponentInParent<VirusMgr>().AlcoholCottonEnter();
-
             }
-
             else if (functionState[5])
             {
                 if (coll.name == "Needle_Point")
@@ -90,28 +92,29 @@ public class KHG_Snap_Draw : MonoBehaviour
                     DrawingMgr.drawing.BloodSafety();
                     isDo = true;
                 }
-
             }
         }
-
-
         else if (_objectType == ObjectType.Tourniquet)
         {
             if (!isDo && coll.name == "Tor_Snap")
             {
+                
+                pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
+                pv.RPC(nameof(GravityRPC), RpcTarget.Others, false);
+                pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
+
                 gameObject.GetComponent<BoxCollider>().enabled = false;
-                gameObject.GetComponent<Rigidbody>().isKinematic = true;
                 gameObject.GetComponent<Rigidbody>().useGravity = false;
+                gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
                 gameObject.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", coll.transform.parent.name);
                 transform.SetParent(coll.transform.parent);
 
                 transform.localPosition = new Vector3(0.1123f, -0.339f, -0.1777f);
                 transform.localEulerAngles = new Vector3(43.6f, 234.04f, 40.4f);
                 transform.localScale = new Vector3(0.8174f, -0.8f, -1.09f);
-
-
-
                 // mat = DrawingMgr.drawing.patient.GetComponent<SkinnedMeshRenderer>().materials[1];
                 // StartCoroutine("SetBloodLineAlpha");
 
@@ -128,9 +131,6 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (!isDo && coll.name == "Needle_Snap")
             {
                 Vector3 needleAngle = transform.eulerAngles;
-                Debug.Log("DegreeX: " + needleAngle.x);
-                Debug.Log("DegreeY: " + needleAngle.y);
-                // Debug.Log("DegreeZ: " + needleAngle.z);
 
                 if (needleAngle.x > 355f || needleAngle.x < 305 || needleAngle.y < 155 || needleAngle.y > 205)
                 {
@@ -144,16 +144,26 @@ public class KHG_Snap_Draw : MonoBehaviour
                 }
 
                 syringe = transform.parent.parent;
+
+                pv.RPC(nameof(KinematicNameRPC), RpcTarget.Others, syringe.name, true);
                 syringe.GetComponent<Rigidbody>().isKinematic = true;
                 // syringe.tag = "Untagged";
                 pos = syringe.position;
                 rot = syringe.eulerAngles;
                 functionState[2] = true;
+
+                pv.RPC(nameof(SetParentNullRPC), RpcTarget.Others, syringe.name);
                 syringe.parent = null;
                 syringe.GetComponent<MeshRenderer>().material.color /= 1.2f;
 
                 coll.GetComponent<VesselColor>().check = true;
+
+
+                //! ???
+                pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
                 DrawingMgr.drawing.arrow.gameObject.SetActive(false);
+
+                pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, coll.gameObject.name, false);
                 coll.gameObject.SetActive(false);
                 DrawingMgr.drawing.SyringeArea();
                 soundManager.Sound(4);
@@ -199,16 +209,21 @@ public class KHG_Snap_Draw : MonoBehaviour
                     functionState[6] = false;
                     functionState[7] = true;
                     //! 동작수정
+                    pv.RPC(nameof(SetParentVaccumRPC), RpcTarget.Others, syringe.name, vaccum.parent.name);
                     syringe.parent = vaccum;
                     syringe.localPosition = pos;
                     syringe.localEulerAngles = rot;
                     syringe.tag = "Untagged";
                     syringe.GetComponent<MeshRenderer>().material.color /= 1.2f;
+
+                    pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
                     syringe.GetComponent<BoxCollider>().enabled = false;
                     syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
 
                     pullback = transform.parent.parent.Find("Syringe_Back");
                     pull = pullback.Find("Pull_Snap");
+
+                    pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, pull.name ,true);
                     pull.GetComponent<BoxCollider>().enabled = true;
                     pull.tag = "GrabObject";
 
@@ -228,6 +243,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                 {
                     soundManager.Sound(4);
                     DrawingMgr.drawing.BloodShake(transform.parent);
+                    
+                    pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
                     GetComponent<BoxCollider>().enabled = false;
                 }
             }
@@ -239,8 +256,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 int number = GetComponent<VaccumTubeMgr>().a;
                 if (number < 3)
                 {
+                    pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "VialRack");
                     transform.parent = coll.transform.parent;
                     tag = "Untagged";
+
+                    pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
@@ -256,12 +276,15 @@ public class KHG_Snap_Draw : MonoBehaviour
                         default:
                             break;
                     }
-
+                    
                     transform.localEulerAngles = Vector3.up * 90f;
                     isDo = true;
                     soundManager.Sound(4);
                     functionState[8] = false;
                     DrawingMgr.drawing.Finish();
+
+                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
+                    DrawingMgr.drawing.arrow.gameObject.SetActive(false);
                 }
 
             }
@@ -270,8 +293,11 @@ public class KHG_Snap_Draw : MonoBehaviour
                 int number = GetComponent<VaccumTubeMgr>().a;
                 if (number >= 3)
                 {
+                    pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "VialRack");
                     transform.parent = coll.transform.parent;
                     tag = "Untagged";
+
+                    pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
                     GetComponent<Rigidbody>().isKinematic = true;
                     switch (number)
                     {
@@ -292,6 +318,8 @@ public class KHG_Snap_Draw : MonoBehaviour
                     soundManager.Sound(4);
                     functionState[8] = false;
                     DrawingMgr.drawing.Finish();
+                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
+                    DrawingMgr.drawing.arrow.gameObject.SetActive(false);
                 }
 
             }
@@ -299,17 +327,77 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     }
 
-
-
-
-
-    [ContextMenu("Degree Check")]
-    void DegreeCheck()
+    [PunRPC]
+    void AlcoholCottonEnterRPC()
     {
-        Vector3 needleAngle = transform.eulerAngles;
-        Debug.Log(needleAngle.x);
-        Debug.Log(needleAngle.y);
+        GameObject.Find("VirusGroup").GetComponent<VirusMgr>().AlcoholCottonEnter();
     }
+    [PunRPC]
+    void ColliderRPC(bool isCollider)
+    {
+        GetComponent<BoxCollider>().enabled = isCollider;
+    }
+    [PunRPC]
+    void ColliderPullRPC(string name, bool isCollider)
+    {
+       GameObject.Find(name).GetComponent<BoxCollider>().enabled = isCollider;
+    }
+
+    [PunRPC]
+    void GravityRPC(bool isGravity)
+    {
+        GetComponent<Rigidbody>().useGravity = isGravity;
+    }
+
+    [PunRPC]
+    void KinematicRPC(bool isKinematic)
+    {
+        GetComponent<Rigidbody>().isKinematic = isKinematic;
+    }
+
+    [PunRPC]
+    void KinematicNameRPC(string objName, bool isKinematic)
+    {
+       GameObject.Find(objName).GetComponent<Rigidbody>().isKinematic = isKinematic;
+    }
+
+    [PunRPC]
+    void SetParentRPC(string objName,string parentName)
+    {
+        if (objName == "null")
+            transform.SetParent(GameObject.Find(parentName).transform);
+        else
+            GameObject.Find(objName).transform.SetParent(GameObject.Find(parentName).transform);
+    }
+
+    [PunRPC]
+    void SetParentNullRPC(string objName)
+    {
+        //! 수정
+        if (objName == "null")
+            transform.parent = null;
+        else
+            GameObject.Find(objName).transform.parent = null;
+    }
+    [PunRPC]
+    void SetParentTransform(string objName)
+    {
+         GameObject.Find(objName).transform.parent = transform;
+    }
+
+    [PunRPC]
+    void SetParentVaccumRPC(string objName,string name)
+    {
+            GameObject.Find(objName).transform.SetParent(GameObject
+                                                                .Find(name).transform
+                                                                .Find("Vaccum_Snap").transform);
+    }
+
+    [PunRPC]
+    void SetActiveRPC(string objName, bool isActive)
+    {
+       GameObject.Find(objName).SetActive(isActive); 
+    }   
 
     void SetIsDo()
     {
@@ -318,11 +406,14 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     void Start()
     {
+        pv = gameObject.GetPhotonView();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
 
     void LateUpdate()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         if (functionState[0]) AirOff();
         if (functionState[1]) AirCover();
         if (functionState[2]) SyringeSnap();
@@ -330,8 +421,6 @@ public class KHG_Snap_Draw : MonoBehaviour
         if (functionState[4]) TorniquetRestore();
         if (functionState[5]) AlcoholCottonActive();
         if (functionState[7]) VaccumInsert();
-
-
     }
 
 
@@ -342,9 +431,12 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         if (_objectType == ObjectType.AlcoholCotton)
         {
+            pv.RPC(nameof(SetParentNullRPC), RpcTarget.Others, "null");
             transform.parent = null;
             transform.position = new Vector3(-0.206f, 0.78f, -0.587f);
             transform.eulerAngles = Vector3.right * -84.77f;
+
+            pv.RPC(nameof(KinematicRPC), RpcTarget.Others, false);
             GetComponent<Rigidbody>().isKinematic = false;
 
         }
@@ -408,6 +500,14 @@ public class KHG_Snap_Draw : MonoBehaviour
             isFirst = true;
             blood = syringe.Find("Blood");
             functionState[3] = true;
+
+            syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
+            pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, "Syringe", false);
+            syringe.GetComponent<BoxCollider>().enabled = false;
+
+            syringe.parent = null;
+            syringe.GetComponent<MeshRenderer>().material.color /=1.2f;
+            pv.RPC(nameof(SetParentNullRPC), RpcTarget.Others, syringe.name);
         }
     }
 
@@ -415,6 +515,10 @@ public class KHG_Snap_Draw : MonoBehaviour
     {
         if (_objectType == ObjectType.Tourniquet)
         {
+            pv.RPC(nameof(ColliderRPC), RpcTarget.Others, true);
+            pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
+            pv.RPC(nameof(GravityRPC), RpcTarget.Others, true);
+
             gameObject.GetComponent<BoxCollider>().enabled = true;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
             gameObject.GetComponent<Rigidbody>().useGravity = true;
@@ -440,9 +544,12 @@ public class KHG_Snap_Draw : MonoBehaviour
     public void SyringeOffStart()
     {
         syringe = transform.parent.parent;
+
+        pv.RPC(nameof(ColliderRPC), RpcTarget.Others, true);
         syringe.GetComponent<BoxCollider>().enabled = true;
         syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
 
+        pv.RPC(nameof(KinematicNameRPC), RpcTarget.Others, syringe.name, true);
         syringe.GetComponent<Rigidbody>().isKinematic = true;
         syringe.tag = "GrabObject";
         rot = Vector3.right * 180.0f;
@@ -457,8 +564,8 @@ public class KHG_Snap_Draw : MonoBehaviour
 
     public void ShakingStart()
     {
+        pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, "Shake_Snap", true);
         transform.Find("Shake_Snap").GetComponent<BoxCollider>().enabled = true;
-
     }
 
     public void VialSnapStart()
@@ -478,8 +585,13 @@ public class KHG_Snap_Draw : MonoBehaviour
 
             if (transform.parent == null)
             {
+                pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
                 transform.GetComponent<Rigidbody>().isKinematic = true;
+
+                pv.RPC(nameof(GravityRPC), RpcTarget.Others, false);
                 transform.GetComponent<Rigidbody>().useGravity = false;
+                
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "Syringe_Back");
                 transform.parent = back;
 
 
@@ -529,10 +641,6 @@ public class KHG_Snap_Draw : MonoBehaviour
                     airCheck = false;
                 }
                 transform.parent = tempTr;
-
-
-
-
             }
         }
 
@@ -551,8 +659,6 @@ public class KHG_Snap_Draw : MonoBehaviour
 
         if (_objectType == ObjectType.NeedleCover)
         {
-
-
             point.parent = front;
             if (point.localPosition.z > -4.0f) { point.localPosition = reset; Debug.Log("reset"); }
             else { point.localPosition = new Vector3(0, 0.372f, point.localPosition.z); }
@@ -578,50 +684,53 @@ public class KHG_Snap_Draw : MonoBehaviour
                 tag = "Untagged";
                 functionState[1] = false;
 
+                pv.RPC(nameof(DestroyRPC), RpcTarget.Others);
                 Destroy(this.gameObject);
             }
         }
+    }
+    [PunRPC]
+    void DestroyRPC()
+    {
+        Destroy(this.gameObject);
     }
 
     void SyringeSnap()
     {
         syringe.position = pos;
         syringe.eulerAngles = rot;
+        pv.RPC(nameof(SyringeSnapRPC), RpcTarget.Others, pos, rot);
+    }
+
+    [PunRPC]
+    void SyringeSnapRPC(Vector3 pos, Vector3 rot)
+    {
+        Transform syringee = GameObject.Find("Syringe").transform;
+        syringee.position = pos;
+        syringee.eulerAngles = rot;
+
+        // syringe.position = pos;
+        // syringe.eulerAngles = rot;
     }
 
     void Drawing()
     {
-        syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.None;
-        syringe.GetComponent<BoxCollider>().enabled = false;
+       
 
         if (_objectType == ObjectType.Pull)
         {
             minusNum2--;
-            // if (syringe.parent == null)
-            // {
-            //     minusNum--;
-            //     //!주사기 놓을시 감점(딜레이 주의) : "주사기를 잡아주세요"
-            //     if (minusNum < 1)
-            //     {
-            //         minusNum = 300;
-            //         soundManager.Sound(2);
-            //         soundManager.Sound(2);
-            //         soundManager.Sound(2);
-            //         soundManager.Sound(10);
-            //         Debug.Log("주사기 들기 감점");
-            //     }
-
-            // }
-            // else
-            // {
-            //     minusNum = 100;
-            // }
-
+            
             if (transform.parent == null)
             {
                 isFirst = true;
+
+                pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
+                pv.RPC(nameof(GravityRPC), RpcTarget.Others, false);
+
                 transform.GetComponent<Rigidbody>().isKinematic = true;
                 transform.GetComponent<Rigidbody>().useGravity = false;
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "Syringe_Back");
                 transform.parent = back;
 
                 back.localPosition = backReset;
@@ -674,10 +783,16 @@ public class KHG_Snap_Draw : MonoBehaviour
 
                 if (dis > 0.25f)
                 {
-
+                    pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "Syringe_Back");
                     transform.parent = back;
                     transform.localPosition = new Vector3(0, 0.363f, 3.83f);
                     transform.localEulerAngles = Vector3.zero;
+
+                    
+                    pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
+                    pv.RPC(nameof(GravityRPC), RpcTarget.Others, false);
+                    pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
+
                     transform.GetComponent<Rigidbody>().isKinematic = true;
                     transform.GetComponent<Rigidbody>().useGravity = false;
                     transform.GetComponent<BoxCollider>().enabled = false;
@@ -777,7 +892,10 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (isDo)
             {
                 tag = "Untagged";
+                pv.RPC(nameof(KinematicRPC), RpcTarget.Others, true);
                 GetComponent<Rigidbody>().isKinematic = true;
+
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "Arm");
                 transform.SetParent(tempTr);
                 transform.localPosition = new Vector3(0.028f, -0.13f, 0.026f);
                 transform.localEulerAngles = new Vector3(174.3f, 60f, 0.2f);
@@ -798,6 +916,8 @@ public class KHG_Snap_Draw : MonoBehaviour
         // syringe.localEulerAngles = rot;
         // syringe.parent = tempTr;
 
+                    // pullback = transform.parent.parent.Find("Syringe_Back");
+                    // pull = pullback.Find("Pull_Snap");
         //! 동작수정
         float _num;
         if (pull.parent != null)
@@ -805,10 +925,13 @@ public class KHG_Snap_Draw : MonoBehaviour
             if (pull.parent.name == "CustomHandRight" || pull.parent.name == "CustomHandLeft")
             {
                 tempTr = pull.parent;
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "Pull_Snap", "Syringe_Back");
                 pull.SetParent(pullback);
                 _num = pull.transform.localPosition.z;
                 pull.localPosition = new Vector3(0, 0.363f, 3.83f);
                 pull.localEulerAngles = Vector3.zero;
+
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "Pull_Snap", pull.parent.name);
                 pull.parent = tempTr;
                 if (_num < 3.83f)
                 {
@@ -825,6 +948,7 @@ public class KHG_Snap_Draw : MonoBehaviour
         }
         else if (pull.parent == null)
         {
+            pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "Pull_Snap", "Syringe_Back");
             pull.SetParent(pullback);
             pull.localPosition = new Vector3(0, 0.363f, 3.83f);
             pull.localEulerAngles = Vector3.zero;
@@ -879,17 +1003,24 @@ public class KHG_Snap_Draw : MonoBehaviour
             else if (minusNum > 50 && minusNum2 == 5)
             {
                 soundManager.Sound(4);
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, vialSnap.name , false);
                 vialSnap.GetComponent<BoxCollider>().enabled = false;
                 functionState[7] = false;
                 functionState[6] = true;
 
                 syringe.tag = "GrabObject";
+                
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, syringe.name , true);
+
                 syringe.GetComponent<BoxCollider>().enabled = true;
                 syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
 
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, pull.name, pullback.name);
                 pull.SetParent(pullback);
                 pull.localPosition = new Vector3(0, 0.363f, 3.83f);
                 pull.localEulerAngles = Vector3.zero;
+
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, pull.name , false);
                 pull.GetComponent<BoxCollider>().enabled = false;
                 pull.tag = "Untagged";
 
@@ -908,15 +1039,22 @@ public class KHG_Snap_Draw : MonoBehaviour
             else if (minusNum > 50 && minusNum2 == 5)
             {
                 soundManager.Sound(4);
+
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, vialSnap2.name , false);
                 vialSnap2.GetComponent<BoxCollider>().enabled = false;
                 functionState[7] = false;
                 syringe.tag = "GrabObject";
+
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, syringe.name , true);
                 syringe.GetComponent<BoxCollider>().enabled = true;
                 syringe.GetComponent<KHG_Grabble>().grabByState = KHG_Grabble.GrabByState.All;
 
+                pv.RPC(nameof(SetParentRPC), RpcTarget.Others, pull.name, pullback.name);
                 pull.SetParent(pullback);
                 pull.localPosition = new Vector3(0, 0.363f, 3.83f);
                 pull.localEulerAngles = Vector3.zero;
+
+                pv.RPC(nameof(ColliderPullRPC), RpcTarget.Others, pull.name , false);
                 pull.GetComponent<BoxCollider>().enabled = false;
                 pull.tag = "Untagged";
 
@@ -935,10 +1073,12 @@ public class KHG_Snap_Draw : MonoBehaviour
         {
             if (DrawingMgr.drawing.syringeGrab)
             {
+                pv.RPC(nameof(ColliderRPC), RpcTarget.Others, true);
                 GetComponent<BoxCollider>().enabled = true;
             }
             else
             {
+                pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
                 GetComponent<BoxCollider>().enabled = false;
             }
         }
@@ -947,10 +1087,12 @@ public class KHG_Snap_Draw : MonoBehaviour
         {
             if (DrawingMgr.drawing.syringeGrab)
             {
+                pv.RPC(nameof(ColliderRPC), RpcTarget.Others, true);
                 GetComponent<BoxCollider>().enabled = true;
             }
             else
             {
+                pv.RPC(nameof(ColliderRPC), RpcTarget.Others, false);
                 GetComponent<BoxCollider>().enabled = false;
             }
         }

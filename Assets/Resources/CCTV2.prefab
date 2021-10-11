@@ -1,5 +1,107 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1895244678
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1895244679}
+  - component: {fileID: 1895244681}
+  - component: {fileID: 1895244680}
+  - component: {fileID: 1895244682}
+  m_Layer: 0
+  m_Name: EventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1895244679
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895244678}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8988745684941124278}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1895244681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895244678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!114 &1895244680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895244678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
+--- !u!114 &1895244682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895244678}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e569dc832500047bf4350b4dae9b97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 1
+  controlMethod: 5
+  submitButtonName: Fire1
+  mainEventCamera: {fileID: 0}
+  raycastLayerMask:
+    serializedVersion: 2
+    m_Bits: 32
+  gazeUseTimedClick: 0
+  gazeClickTimer: 2
+  gazeClickTimerDelay: 1
+  gazeTimedClickProgressImage: {fileID: 0}
+  worldSpaceMouseSensitivity: 1
+  usedHand: 0
+  pointerTransformOverride: {fileID: 0}
+  TouchControllerTransform: {fileID: 0}
+  InteractionButton: 8192
+  oculusCameraRig: {fileID: 0}
 --- !u!1 &321924652321519978
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +336,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.2686472, g: 0, b: 1, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -627,11 +729,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8988745684941124279}
         m_TargetAssemblyTypeName: BGB_CCTV_Injection, Assembly-CSharp
-        m_MethodName: CCTVChange
-        m_Mode: 2
+        m_MethodName: CCTVVR
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 8988745684559349716}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1125,13 +1227,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8988745683371160485}
-  m_LocalRotation: {x: -0.4889499, y: 0.17129445, z: -0.09857591, w: -0.8496287}
-  m_LocalPosition: {x: -4.25, y: 2.28, z: 0.83}
+  m_LocalRotation: {x: 0.47946543, y: -0, z: -0, w: 0.87756073}
+  m_LocalPosition: {x: -0.068, y: 1.537, z: -0.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8988745684941124278}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 59.84, y: 337.203, z: 0}
+  m_LocalEulerAnglesHint: {x: 57.301, y: 0, z: 0}
 --- !u!20 &8988745683371160539
 Camera:
   m_ObjectHideFlags: 0
@@ -1208,13 +1310,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8988745683845775599}
-  m_LocalRotation: {x: 0.111806005, y: 0.6026849, z: -0.085791565, w: 0.7854363}
-  m_LocalPosition: {x: -7.298, y: 1.879, z: -0.321}
+  m_LocalRotation: {x: 0.14092469, y: -0.0070715887, z: 0.0010066048, w: 0.9899946}
+  m_LocalPosition: {x: 0.03, y: 1.879, z: -2.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8988745684941124278}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 16.203, y: 75, z: 0}
+  m_LocalEulerAnglesHint: {x: 16.203, y: -0.819, z: 0}
 --- !u!20 &8988745683845775597
 Camera:
   m_ObjectHideFlags: 0
@@ -1439,13 +1541,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8988745684559349716}
-  m_LocalRotation: {x: 0.28649253, y: -0.64660394, z: 0.29738286, w: 0.64139605}
-  m_LocalPosition: {x: -3.889, y: 1.796, z: 1.873}
+  m_LocalRotation: {x: 0.074704595, y: -0.28285697, z: 0.027852915, w: 0.9558428}
+  m_LocalPosition: {x: 0.631, y: 1.138, z: -1.027}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8988745684941124278}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 48.772, y: -90.03, z: 0.955}
+  m_LocalEulerAnglesHint: {x: 9.124, y: -32.919, z: 0.637}
 --- !u!20 &8988745684559349706
 Camera:
   m_ObjectHideFlags: 0
@@ -1534,6 +1636,7 @@ Transform:
   - {fileID: 8988745684416289513}
   - {fileID: 321924653662963088}
   - {fileID: 321924652678426110}
+  - {fileID: 1895244679}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

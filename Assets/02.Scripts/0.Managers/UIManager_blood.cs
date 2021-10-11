@@ -16,12 +16,15 @@ public class UIManager_blood : MonoBehaviour
     [Header("UI")]
     public Image progress;
     public TMP_Text infoText;
+    public TMP_Text infoTextPhone;
+
     public Timer timer;
 
     [Header("Ranking UI")]
     public TMP_Text[] names;
     public TMP_Text[] scores;
     public TMP_Text[] times;
+
 
     private int[] scoreList;
     private int myScore = 0;
@@ -44,36 +47,47 @@ public class UIManager_blood : MonoBehaviour
         {
             case 0:
                 infoText.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
+                infoTextPhone.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
                 break;
             case 1:
                 infoText.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
+                infoTextPhone.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
                 break;
             case 2:
                 infoText.text = "주사기 내에 공기가 남아있지 않도록 플런저를 움직여주세요.\n(주사기 잡은 채로 뒷부분을 앞뒤로 3회 움직여주세요.)";
+                infoTextPhone.text = "주사기 내에 공기가 남아있지 않도록 플런저를 움직여주세요.\n(주사기 잡은 채로 뒷부분을 앞뒤로 3회 움직여주세요.)";
                 break;
             case 3:
                 infoText.text = "주사기 바늘의 커버를 분리해주세요.";
+                infoTextPhone.text = "주사기 바늘의 커버를 분리해주세요.";
                 break;
             case 4:
                 infoText.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
+                infoTextPhone.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
                 break;
             case 5:
                 infoText.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
+                infoTextPhone.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
                 break;
             case 6:
                 infoText.text = "토니켓을 풀어주세요.";
+                infoTextPhone.text = "토니켓을 풀어주세요.";
                 break;
             case 7:
                 infoText.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
+                infoTextPhone.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
                 break;
             case 8:
                 infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                infoTextPhone.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
                 break;
             case 9:
                 infoText.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
+                infoTextPhone.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
                 break;
             case 10:
                 infoText.text = "튜브를 꽂아주세요.";
+                infoTextPhone.text = "튜브를 꽂아주세요.";
                 break;
             case 11:
                 scoreList = DrawingMgr.drawing.scoreList;
@@ -100,26 +114,32 @@ public class UIManager_blood : MonoBehaviour
 
         // 주사 각도, 지혈 시간, 플런저 당기는 속도, 혈액 순서, 시간
         infoText.text = $"주사 각도 : {scoreList[0]}";
+        infoTextPhone.text = $"주사 각도 : {scoreList[0]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoText.text += $"\n지혈 시간 : {scoreList[1]}";
+        infoTextPhone.text += $"\n지혈 시간 : {scoreList[1]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoText.text += $"\n플런저 당기는 속도 : {scoreList[2]}";
+        infoTextPhone.text += $"\n플런저 당기는 속도 : {scoreList[2]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoText.text += $"\n혈액 주입 순서 : {scoreList[3]}";
+        infoTextPhone.text += $"\n혈액 주입 순서 : {scoreList[3]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoText.text += $"\n시간 : {scoreList[4]}";
+        infoTextPhone.text += $"\n시간 : {scoreList[4]}";
         soundManager.Sound(3);
 
         yield return new WaitForSeconds(time);
         infoText.text += $"\n\n<b>총합 : {score}</b>";
+        infoTextPhone.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
         // 50점 초과

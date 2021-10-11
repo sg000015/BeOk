@@ -83,6 +83,19 @@ MonoBehaviour:
   - EnterRoomRPC
   - SetBloodType
   - OutToLobbyRPC
+  - AlcoholCottonEnterRPC
+  - ColliderPullRPC
+  - ColliderRPC
+  - GravityRPC
+  - KinematicRPC
+  - SetActiveRPC
+  - SetParentRPC
+  - SetParentVaccumRPC
+  - SetParentNullRPC
+  - DestroyRPC
+  - SetParentTransform
+  - SyringeSnapRPC
+  - KinematicNameRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

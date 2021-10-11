@@ -9,7 +9,7 @@ public class BGB_CCTV_Injection : MonoBehaviour
     public GameObject CCTV_3;
 
     GameObject prevCCTV;
-
+    GameObject CCTVvr;
     void Start()
     {
         prevCCTV = CCTV_1;
@@ -22,5 +22,15 @@ public class BGB_CCTV_Injection : MonoBehaviour
         curCCTV.SetActive(true);
 
         prevCCTV = curCCTV;
+    }
+
+    public void CCTVVR()
+    {
+        prevCCTV.SetActive(false);
+        CCTVvr = GameObject.Find("Player(Clone)")?.transform.GetChild(0).Find("CenterEyeAnchor").gameObject; 
+                 CCTVvr.SetActive(true);
+
+        prevCCTV = CCTVvr;
+
     }
 }

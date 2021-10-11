@@ -73,12 +73,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
-                text.text = roomNum + "방에 입장을 시도합니다.";
+                // roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
+                // text.text = roomNum + "번 방에 입장을 시도합니다.";
 
-                PhotonNetwork.JoinRoom(roomNum);
-
-                Debug.Log("방에 입장 시도");
+                // PhotonNetwork.JoinRoom(roomNum);
+                PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2 }, null);
 
             }
         }
@@ -94,11 +93,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        Debug.Log(roomNum + "번 방 입장 완료");
+        text.text = roomNum + "성공적으로 입장하였습니다.";
+
         if (roomType == "Blood")
+        {
+            text.text = roomNum + "씬을 전환합니다.";
             PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
+        }
         else
+        {
             PhotonNetwork.LoadLevel("Ward-Injection");
+        }
 
     }
 
@@ -107,6 +112,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void InstantiatePlayer()
     {
+
+
+                       
         if (isOculus)
         {
             Vector3 pos = roomType == "Blood" ? new Vector3(-0.141f, 1.5f, -0.916f) : new Vector3(-5.6f, 1.5f, 1.6f);
@@ -114,16 +122,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
             GameObject Player = PhotonNetwork.Instantiate("Player", pos, rot, 0);
             Player.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
+            Player.transform.Find("EventSystem").gameObject.SetActive(true);
+            Player.transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
+            GameObject.Find("Canvas-Phone").SetActive(false);        
 
         }
         else
         {
-
             GameObject CCTV = roomType == "Blood" ? PhotonNetwork.Instantiate("CCTV2", Vector3.zero, Quaternion.identity, 0)
                                                   : PhotonNetwork.Instantiate("CCTV", Vector3.zero, Quaternion.identity, 0);
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
+            GameObject.Find("Player(Clone)")?.transform.Find("EventSystem").gameObject.SetActive(false);
+            CCTV.transform.Find("EventSystem").gameObject.SetActive(true);
 
-            photonView.TransferOwnership(PhotonNetwork.MasterClient);
+
         }
     }
 

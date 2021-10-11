@@ -186,6 +186,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     {
         pv.RPC(nameof(TourniquetOffRPC), RpcTarget.AllViaServer);
     }
+
     [PunRPC]
     public void TourniquetOffRPC()
     {
@@ -255,8 +256,9 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         pv.RPC(nameof(BloodShakeRPC), RpcTarget.AllViaServer, _transform.name);
     }
     [PunRPC]
-    public void BloodShakeRPC(Transform _transform)
+    public void BloodShakeRPC(string transformName)
     {
+        Transform _transform = GameObject.Find(transformName).transform;
         //진공튜브 꽂는곳 활성화 하기
         _transform.GetComponent<KHG_Snap_Draw>().VialSnapStart();
 
@@ -297,10 +299,12 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
             timer.timerOn = false;
             //점수 출력
             UImanager.UpdateUI(11);
-            if (NetworkManager.instanceNW.isOculus)
-            {
-                GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
-            }
+            // if (NetworkManager.instanceNW.isOculus)
+            // {
+            //     GameObject.Find("Player(Clone)").transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
+            //     GameObject.Find("LeftHandAnchor").transform.Find("LaserBeam")?.gameObject.SetActive(true);
+            //     GameObject.Find("RightHandAnchor").transform.Find("LaserBeam")?.gameObject.SetActive(true);
+            // }
         }
     }
 
@@ -386,7 +390,9 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     public void OnClickStartBtn()
     {
         pv.RPC(nameof(StartBtnRPC), RpcTarget.AllViaServer);
-        GameObject.Find("Player").transform.Find("CurvedUILaserPointer").gameObject.SetActive(false);
+        GameObject.Find("LaserBeam").gameObject.SetActive(false);
+        GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
+
     }
 
     [PunRPC]

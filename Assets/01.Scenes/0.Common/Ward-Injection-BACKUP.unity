@@ -418,11 +418,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca40e566615e0a449b8910b010f9fe6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fb: {fileID: 0}
   state: 0
-  scoreList: 000000000000000000000000000000000000000000000000
   bloodLine: {fileID: 0}
+  rankingCtrl: {fileID: 0}
+  infoTxt: {fileID: 0}
+  infoTxtPhone: {fileID: 0}
+  patientTxt: {fileID: 0}
+  patientTxtPhone: {fileID: 0}
+  timer: {fileID: 0}
+  progress: {fileID: 0}
+  progressPhone: {fileID: 0}
+  names: []
+  scores: []
+  times: []
+  _sapType: 
+  _sapSpeed: 0
+  curruntSap: {fileID: 0}
   arrow: {fileID: 1397265688}
-  hand: {fileID: 0}
+  patient: {fileID: 0}
   tourniquet: {fileID: 954210368}
   alcoholCotton: {fileID: 919132148908001413}
   rubber: {fileID: 630094551}
@@ -430,6 +444,9 @@ MonoBehaviour:
   - {fileID: 1372246909}
   catheter: {fileID: 0}
   catheterPref: {fileID: 1926010018472106978, guid: 1a7f135721a4c954eaa0099ca50be0fd, type: 3}
+  EventOculus: {fileID: 0}
+  PhoneCanvas: {fileID: 0}
+  startPanel: {fileID: 0}
 --- !u!114 &67058236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +459,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11724d40074017045aa0b73dfe6f6f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMenu: 0
+  timer: {fileID: 0}
+  ExitMenu: {fileID: 0}
+  VrCamera: {fileID: 0}
+  logText: {fileID: 0}
+  pv: {fileID: 0}
+  inDirector: {fileID: 0}
+  StartStatePanel: {fileID: 0}
 --- !u!4 &67058237
 Transform:
   m_ObjectHideFlags: 0
@@ -1898,6 +1923,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 370632998, guid: ac5e762fdf75a46bea2e4dd1d92d738f, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2019715026, guid: ac5e762fdf75a46bea2e4dd1d92d738f, type: 3}
+      propertyPath: sceneViewId
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac5e762fdf75a46bea2e4dd1d92d738f, type: 3}
 --- !u!1001 &395570029
@@ -3163,9 +3196,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDo: 0
+  isEnd: 0
   bloodEfx: {fileID: 0}
   needle2: {fileID: 0}
   line: {fileID: 7667643519923438782, guid: 5e6f564933858104692751cb25bd4f07, type: 3}
+  band: []
   _objectType: 5
 --- !u!114 &630094554
 MonoBehaviour:
@@ -3181,6 +3216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 0
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!54 &630094555
 Rigidbody:
@@ -4598,9 +4634,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDo: 0
+  isEnd: 0
   bloodEfx: {fileID: 0}
   needle2: {fileID: 0}
   line: {fileID: 0}
+  band: []
   _objectType: 0
 --- !u!65 &941532562
 BoxCollider:
@@ -4716,6 +4754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 0
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!114 &954210371
 MonoBehaviour:
@@ -4730,9 +4769,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDo: 0
+  isEnd: 0
   bloodEfx: {fileID: 0}
   needle2: {fileID: 0}
   line: {fileID: 0}
+  band: []
   _objectType: 2
 --- !u!54 &954210372
 Rigidbody:
@@ -6044,9 +6085,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDo: 0
+  isEnd: 0
   bloodEfx: {fileID: 0}
   needle2: {fileID: 0}
   line: {fileID: 0}
+  band: []
   _objectType: 4
 --- !u!114 &1372246912
 MonoBehaviour:
@@ -6062,6 +6105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 0
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!54 &1372246913
 Rigidbody:
@@ -9724,6 +9768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grabByState: 0
   isExit: 0
+  isGrab: 0
   destroy: 0
 --- !u!4 &941679780693945144
 Transform:
@@ -10653,8 +10698,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 8791094052554852963}
-  handMesh: {fileID: 0}
   patientMesh: {fileID: 1456449872301760828}
+  sapSnap: {fileID: 0}
+  curSpeed: 0
+  canvasSap: {fileID: 0}
 --- !u!1 &2874060847870964330
 GameObject:
   m_ObjectHideFlags: 0

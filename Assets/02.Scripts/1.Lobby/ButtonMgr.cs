@@ -132,11 +132,6 @@ public class ButtonMgr : MonoBehaviour
 
     }
 
-    public void SceneLoader()
-    {
-        SceneManager.LoadScene("Ward-Injection");
-    }
-
 
     public void ShowAndHideUI(bool direction = true)
     {
