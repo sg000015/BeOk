@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance = null;
 
+    public GameObject Event;
     public bool isMenu = false;
     public Timer timer;
     public GameObject ExitMenu;
@@ -95,18 +96,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void DeleteRoom()
     {
-        PhotonNetwork.DestroyAll();
+        // Event.SetActive(true);
+        // PhotonNetwork.DestroyAll();
         PhotonNetwork.LeaveRoom();
-
-        if(0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop") )
-        {
-            PhotonNetwork.LoadLevel("Lobby");
-
-        }
-        else
-        {
-            PhotonNetwork.LoadLevel("Lobby");
-        }
+        // NetworkManager.instanceNW.Init();
+        PhotonNetwork.LoadLevel("Lobby");
+        Debug.Log("Delete Room을 통해 나감");
     }
 
     // IEnumerator PrintLog()

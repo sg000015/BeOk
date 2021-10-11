@@ -8,6 +8,10 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
 
     public static DrawingMgr drawing;
     public Transform patientArm;
+    public bool isMenu = false;
+
+    public GameObject ExitMenu;
+
 
     public GameObject virusgroup;
     public Transform syringe;
@@ -67,6 +71,39 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         else if (syringe.parent.name == "CustomHandRight" || syringe.parent.name == "CustomHandLeft")
         {
             syringeGrab = true;
+        }
+
+         // A 버튼 누름 && 메뉴 꺼져있음
+        if (OVRInput.GetDown(OVRInput.Button.One) && !isMenu)
+        {
+            isMenu = true;
+
+            // Timer Stop
+            timer.timerOn = false;
+
+            // UI On
+            ExitMenu.SetActive(true);
+        }
+
+        // A 버튼 누름 && 메뉴 켜져있음
+        else if (OVRInput.GetDown(OVRInput.Button.One) && isMenu)
+        {
+            // Go to Lobby
+            // SceneManager.LoadScene("Lobby");
+            pv.RPC("OutToLobbyRPC", RpcTarget.AllViaServer);
+
+        }
+
+        // B 버튼 누름 && 메뉴 켜져있음
+        if (OVRInput.GetDown(OVRInput.Button.Two) && isMenu)
+        {
+            isMenu = false;
+
+            // Timer Start
+            timer.timerOn = true;
+
+            // UI Off
+            ExitMenu.SetActive(false);
         }
     }
 
@@ -433,9 +470,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     [PunRPC]
     void OutToLobbyRPC()
     {
-        PhotonNetwork.LoadLevel("Lobby");
-        PhotonNetwork.DestroyAll();
         PhotonNetwork.LeaveRoom();
-        NetworkManager.instanceNW.Init();
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }

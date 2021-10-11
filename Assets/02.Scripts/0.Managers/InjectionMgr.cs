@@ -49,6 +49,9 @@ public class InjectionMgr : MonoBehaviour
 
     // 화살표
     public GameObject arrow;
+    public GameObject arrow2;
+    public GameObject arrow3;
+
 
     [Header("물품 리스트")]
     public GameObject patient;
@@ -59,7 +62,6 @@ public class InjectionMgr : MonoBehaviour
     public GameObject catheter = null;
 
     public GameObject catheterPref;
-    public GameObject EventOculus;
     public GameObject PhoneCanvas;
 
     public GameObject startPanel;
@@ -105,7 +107,6 @@ public class InjectionMgr : MonoBehaviour
         GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
         pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
         InitInjection();
-
     }
 
 
@@ -117,6 +118,11 @@ public class InjectionMgr : MonoBehaviour
         _sapType = sapType;
         _sapSpeed = sapSpeed;
         SapType();
+        
+        arrow.SetActive(true);
+        arrow2.SetActive(true);
+        arrow3.SetActive(true);
+
 
         // 환자차트 UI
         patientTxt.text = $"손 위생과 물품준비가\n끝난 상황입니다.\n두드러기 환자에게\n{_sapType} 500ml를\n{_sapSpeed}cc/hr로 정맥주사\n투약해주세요.";
@@ -163,8 +169,14 @@ public class InjectionMgr : MonoBehaviour
         {
             catheter = PhotonNetwork.Instantiate("Catheter_Res", new Vector3(-5.283f, 0.8f, 0.727f), Quaternion.Euler(0, 180, 0));
             catheter.transform.localScale = Vector3.one * 0.5f;
-            catheter.name = "Catheter";
+            pv.RPC(nameof(CatheterInit), RpcTarget.AllViaServer);
         }
+    }
+
+    [PunRPC]
+    void CatheterInit()
+    {
+        GameObject.Find("Catheter_Res(Clone)").gameObject.name = "Catheter";
     }
     #region 술기
     // 0.수액 종류
@@ -202,12 +214,15 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("1.지혈")]
     public void Hemostasis()
     {
+
         pv.RPC(nameof(HemostasisRPC), RpcTarget.AllViaServer);
     }
 
     [PunRPC]
     void HemostasisRPC()
     {
+        arrow2.SetActive(false);
+        arrow3.SetActive(false);
         soundManager.Sound(4);
         state = STATE.Hemostasis;
         progress.fillAmount = progressNum * 1;
@@ -388,7 +403,8 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("9.평가")]
     public void GradeInjection()
     {
-        pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
+        if(PhotonNetwork.IsMasterClient)
+            pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
     }
     [PunRPC]
     public void GradeInjectionRPC()
@@ -494,7 +510,7 @@ public class InjectionMgr : MonoBehaviour
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n\n<b>총합 : {score}</b>";
-        infoTxtPhone.text += $"\n\n<b>총합 : {score}</b>";
+        // infoTxtPhone.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
         // 50점 초과 && 수액 종류 맞음
@@ -663,6 +679,24 @@ public class InjectionMgr : MonoBehaviour
     // 화살표 On
     void ActiveArrow(GameObject obj)
     {
+        Vector3 pos = obj.transform.position;
+        arrow.transform.position = pos + Vector3.up * 0.21f;
+
+        arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        arrow.SetActive(true);
+
+        if(PhotonNetwork.IsMasterClient)
+        {
+            pv.RPC(nameof(ActiveArrowRPC), RpcTarget.Others, obj.name);
+        }
+    }
+
+    [PunRPC]
+    void ActiveArrowRPC(string name)
+    {
+        GameObject obj = GameObject.Find(name).gameObject;
+
         Vector3 pos = obj.transform.position;
         arrow.transform.position = pos + Vector3.up * 0.21f;
 

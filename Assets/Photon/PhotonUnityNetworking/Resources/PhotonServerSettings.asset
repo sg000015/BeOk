@@ -96,6 +96,23 @@ MonoBehaviour:
   - SetParentTransform
   - SyringeSnapRPC
   - KinematicNameRPC
+  - CatheterInit
+  - ActiveArrowRPC
+  - LineRPC
+  - SapSpeedUIRPC
+  - ActiveNicknameRPC
+  - ActiveRankingUIRPC
+  - ChangeCanvasRPC
+  - InactiveNicknameRPC
+  - OnClickDeleteRPC
+  - OnClickEnterBtnRPC
+  - OnClickKeyRPC
+  - OnClickShiftRPC
+  - OnClickSpaceRPC
+  - ShowAndHideUIRPC
+  - SpeedOverRPC
+  - UpdateSpeedRPC
+  - TriggerEnterRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

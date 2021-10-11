@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Photon.Pun;
 
 public class AlcoholCottonMgr : MonoBehaviour
 {
@@ -14,9 +15,11 @@ public class AlcoholCottonMgr : MonoBehaviour
     public GameObject virusFx;
     public GameObject disinfectFx;
     private SoundManager soundManager;
+    public PhotonView pv;
 
     private void Start()
     {
+        pv = gameObject.GetPhotonView();
         virusList = virusGroupObj.GetComponentsInChildren<Animator>();
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
     }
@@ -29,6 +32,15 @@ public class AlcoholCottonMgr : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.name == "VirusBody" && PhotonNetwork.IsMasterClient)
+            pv.RPC(nameof(TriggerEnterRPC), RpcTarget.AllViaServer, other.transform.parent.parent.name);
+
+    }
+    [PunRPC]
+    void TriggerEnterRPC(string grandName)
+    {
+        Debug.Log("GRANDNAME!!!!!!!!!!!" + grandName);
+        GameObject other = GameObject.Find(grandName).transform.GetChild(1).GetChild(0).gameObject;
         if (other.name == "VirusBody")
         {
             StartCoroutine(nameof(InactiveVirus), rubCnt);
@@ -43,7 +55,6 @@ public class AlcoholCottonMgr : MonoBehaviour
             }
             StartCoroutine(nameof(ActiveVirus), rubCnt);
         }
-
     }
 
     IEnumerator ActiveVirus(int idx)

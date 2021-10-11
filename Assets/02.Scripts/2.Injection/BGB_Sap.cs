@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using Photon.Pun;
 public class BGB_Sap : MonoBehaviour
 {
     public Animator anim;
@@ -26,8 +26,11 @@ public class BGB_Sap : MonoBehaviour
 
     bool isDo = false;
 
+    public PhotonView pv;
+
     void Start()
     {
+        pv = gameObject.GetPhotonView();
         line = GameObject.Find("Line").GetComponent<KHG_Line>();
     }
 
@@ -42,22 +45,49 @@ public class BGB_Sap : MonoBehaviour
 
         //현재 걸려있는 수액 변수 초기화
         curSapBag = sapBag;
-        Debug.Log("수액이 스냅됨");
 
         sapSnap.SetActive(false);
         InjectionMgr.injection.Hemostasis();
     }
 
+    [PunRPC]
+    void SapSpeedUIRPC()
+    {
+            // 수액 속도 UI On
+            canvasSap.SetActive(true);
+            sapText = canvasSap.GetComponentInChildren<TMP_Text>();
+    }
+
+    [PunRPC]
+    void LineRPC()
+    {
+            line.SetLineState(2);
+            
+            // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
+            anim.SetBool("Trumble", false);
+
+    }
+
+    [PunRPC]
+    void UpdateSpeedRPC(float speed)
+    {
+        sapText.text = speed.ToString();
+    }
+
+    [PunRPC]
+    void SpeedOverRPC()
+    {
+            anim.SetBool("SpeedOver", true);
+
+    }
     //버튼 클릭시 활성화 되는 함수.
     //Up 클릭시 +1, Down 클릭시 -1;
     public void UpdateSpeed(int num)
     {
         if (curSpeed == 0.0f)
         {
-            // 수액 속도 UI On
-            canvasSap.SetActive(true);
-
-            sapText = canvasSap.GetComponentInChildren<TMP_Text>();
+            pv.RPC(nameof(SapSpeedUIRPC), RpcTarget.AllViaServer);
+            
         }
 
         curSpeed += num;
@@ -65,13 +95,14 @@ public class BGB_Sap : MonoBehaviour
         if (curSpeed < 0) curSpeed = 0;
 
         // UI 표시
-        sapText.text = curSpeed.ToString();
+        pv.RPC(nameof(UpdateSpeedRPC), RpcTarget.AllViaServer, curSpeed);
 
 
         // 수액 스피드를 초과
         if (curSpeed > patientSpeed)
         {
-            anim.SetBool("SpeedOver", true);
+            pv.RPC(nameof(SpeedOverRPC), RpcTarget.AllViaServer);
+
             return;
         }
         // 수액 스피드 미만
@@ -84,11 +115,9 @@ public class BGB_Sap : MonoBehaviour
         {
             // 수액 채워짐
 
-            line.SetLineState(2);
+            pv.RPC(nameof(LineRPC), RpcTarget.AllViaServer);
             isDo = true;
 
-            // 정상인상태. 애니메이션이 작동중이라면 디폴트로 전환
-            anim.SetBool("Trumble", false);
 
         }
 

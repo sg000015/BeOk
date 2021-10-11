@@ -47,9 +47,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            inputRoomNum = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(1).GetComponent<TMP_InputField>();
             text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
             isOculus = false;
+
+            text.text = "감독관 모드로 접속";
         }
     }
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
@@ -73,8 +74,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                // roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
-                // text.text = roomNum + "번 방에 입장을 시도합니다.";
+                roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
+                text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+                text.text = roomNum + "번 방에 입장을 시도합니다.";
 
                 // PhotonNetwork.JoinRoom(roomNum);
                 PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2 }, null);
@@ -135,19 +137,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                                                   : PhotonNetwork.Instantiate("CCTV", Vector3.zero, Quaternion.identity, 0);
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
             GameObject.Find("Player(Clone)")?.transform.Find("EventSystem").gameObject.SetActive(false);
+            GameObject.Find("Player(Clone)")?.transform.Find("CurvedUILaserPointer")?.gameObject.SetActive(false);
+            GameObject.Find("LaserBeam")?.gameObject.SetActive(false);
+
+            CCTV.transform.Find("Canvas").gameObject.SetActive(true);
             CCTV.transform.Find("EventSystem").gameObject.SetActive(true);
 
 
         }
     }
-
-    // public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    // {
-    //     if(PhotonNetwork.IsMasterClient)
-    //     {
-    //         GameObject.Find("Player").GetComponentsInChildren<KHG_Control>()[0].GrabInit();
-    //         GameObject.Find("Player").GetComponentsInChildren<KHG_Control>()[1].GrabInit();
-    //     }
-    // }
 
 }

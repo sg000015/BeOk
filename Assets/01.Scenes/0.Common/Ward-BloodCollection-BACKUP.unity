@@ -320,7 +320,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 22485134}
-  sceneViewId: 9
+  sceneViewId: 26
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &26441444
@@ -1526,7 +1526,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 71799176}
-  sceneViewId: 1
+  sceneViewId: 29
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &76779013
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 103293804}
-  sceneViewId: 12
+  sceneViewId: 30
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &115903025
@@ -2156,6 +2156,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 98bc76aa3fd1f6f45b7667031ee15efb, type: 3}
   - {fileID: 8300000, guid: 9834a6936e081d4418fe2ddc8accf5f6, type: 3}
   - {fileID: 8300000, guid: a75961b03f3efd44098db0b1bbaf5f38, type: 3}
+  audio: {fileID: 0}
   patientAudio: {fileID: 1374626260}
 --- !u!4 &144001525
 Transform:
@@ -2458,7 +2459,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 182949479}
-  sceneViewId: 22
+  sceneViewId: 36
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &182949479
@@ -2837,7 +2838,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.065, y: 0.243}
+  m_AnchoredPosition: {x: 0.582, y: 0.243}
   m_SizeDelta: {x: 1.6339, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &202232671
@@ -3368,7 +3369,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -3627,7 +3628,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 321718575}
-  sceneViewId: 3
+  sceneViewId: 37
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &324620521
@@ -4500,7 +4501,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -4883,7 +4884,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -5163,7 +5164,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -5284,7 +5285,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 447867449}
-  sceneViewId: 14
+  sceneViewId: 33
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &459634845
@@ -5596,6 +5597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patientArm: {fileID: 1887480162}
+  isMenu: 0
+  ExitMenu: {fileID: 4874929528980783179}
   virusgroup: {fileID: 690034099}
   syringe: {fileID: 1537448739}
   playObject: {fileID: 42222005}
@@ -5631,7 +5634,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 10
+  sceneViewId: 34
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &486769403
@@ -6311,7 +6314,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -7442,7 +7445,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -7776,7 +7779,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -8791,7 +8794,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -8944,7 +8947,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -9129,7 +9132,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 728930710}
-  sceneViewId: 23
+  sceneViewId: 43
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &733992985
@@ -9733,7 +9736,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -10294,7 +10297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -10615,7 +10618,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -10928,6 +10931,7 @@ MonoBehaviour:
   RankingPanel: {fileID: 202232669}
   text: {fileID: 619550761}
   skillName: 1
+  pv: {fileID: 0}
 --- !u!1 &875086307
 GameObject:
   m_ObjectHideFlags: 0
@@ -11176,7 +11180,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 875195111}
-  sceneViewId: 18
+  sceneViewId: 42
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &875998723
@@ -12430,7 +12434,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -16357,7 +16361,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -16939,7 +16943,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -17260,7 +17264,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -17509,7 +17513,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -17913,7 +17917,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1266494277}
-  sceneViewId: 2
+  sceneViewId: 38
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1270023869
@@ -18499,7 +18503,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -18849,7 +18853,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1326675211
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19367,7 +19371,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1355077633}
-  sceneViewId: 16
+  sceneViewId: 28
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1357551653
@@ -21700,7 +21704,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1440288247}
-  sceneViewId: 13
+  sceneViewId: 27
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1442478994
@@ -21905,7 +21909,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -22978,7 +22982,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -23511,7 +23515,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1509141398}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.268}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 26441445}
@@ -23520,7 +23524,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.06500006, y: -0.299}
+  m_AnchoredPosition: {x: -0.4, y: -0.159}
   m_SizeDelta: {x: 0.84560007, y: 0.2532}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1509141400
@@ -23883,7 +23887,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1537448746}
-  sceneViewId: 4
+  sceneViewId: 32
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1550616932
@@ -23989,7 +23993,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -24963,7 +24967,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -25474,7 +25478,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1688924281}
-  sceneViewId: 8
+  sceneViewId: 35
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1001 &1693213900
@@ -25876,7 +25880,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1724148304}
-  sceneViewId: 11
+  sceneViewId: 31
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!65 &1724148301
@@ -26195,7 +26199,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -26583,7 +26587,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -27918,7 +27922,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -28177,7 +28181,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1876323199}
-  sceneViewId: 5
+  sceneViewId: 39
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1879625298
@@ -28315,7 +28319,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -28484,7 +28488,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1885458888}
-  sceneViewId: 21
+  sceneViewId: 40
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &1885458888
@@ -28574,7 +28578,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 1887480163}
-  sceneViewId: 20
+  sceneViewId: 41
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1928170398
@@ -29455,7 +29459,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2007499992}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonMgr, Assembly-CSharp
         m_MethodName: OnClickKey
         m_Mode: 5
@@ -29836,6 +29840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2007499991}
   - component: {fileID: 2007499992}
+  - component: {fileID: 2007499993}
   m_Layer: 0
   m_Name: ButtonManager
   m_TagString: Untagged
@@ -29866,17 +29871,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 2007499990}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 102c333f8a1e44f40b5e01626baec479, type: 3}
+  m_Script: {fileID: 11500000, guid: 1aeeb7486cdcba74f98b04fa360bb481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  homePanel: {fileID: 0}
-  selectPanel: {fileID: 0}
-  NickNamePanel: {fileID: 0}
-  contentsPanel: {fileID: 0}
-  backButton: {fileID: 0}
-  ranksPanelI: {fileID: 0}
-  text: {fileID: 0}
-  GM: {fileID: 0}
+  basicCanvas: {fileID: 4874929527903189716}
+  rankingCanvas: {fileID: 1596956331}
+  LaserPoint: {fileID: 0}
+  NickNamePanel: {fileID: 42310896}
+  RankingPanel: {fileID: 202232669}
+  text: {fileID: 619550761}
+  skillName: 0
+  pv: {fileID: 0}
+--- !u!114 &2007499993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007499990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 44
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2011325551
 GameObject:
   m_ObjectHideFlags: 0
@@ -30021,7 +30048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370632998, guid: ac5e762fdf75a46bea2e4dd1d92d738f, type: 3}
       propertyPath: sceneViewId
-      value: 6
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 2019715026, guid: ac5e762fdf75a46bea2e4dd1d92d738f, type: 3}
       propertyPath: sceneViewId

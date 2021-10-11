@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+using Photon.Pun;
 public class RankingCtrl : MonoBehaviour
 {
     public GameObject basicCanvas;
@@ -17,20 +17,34 @@ public class RankingCtrl : MonoBehaviour
 
     public enum SKILL { Injection, BloodCollection };
     public SKILL skillName = SKILL.Injection;
+    
+    public PhotonView pv;
 
-
-
+    void Start()
+    {
+        pv = gameObject.GetPhotonView();
+    }
     public void OnClickKey(string str)
+    {
+        pv.RPC(nameof(OnClickKeyRPC), RpcTarget.AllViaServer, str);
+    }
+    [PunRPC]
+    void OnClickKeyRPC(string str)
     {
         if (SW)
             text.text += str.ToUpper();
         else
             text.text += str.ToLower();
-
-    }
+    }    
 
     bool SW = false;
     public void OnClickShift()
+    {
+        pv.RPC(nameof(OnClickShiftRPC), RpcTarget.AllViaServer);
+    }
+
+    [PunRPC]
+    void OnClickShiftRPC()
     {
         Transform keyboard = NickNamePanel.transform.GetChild(0);
         SW = !SW;
@@ -59,10 +73,21 @@ public class RankingCtrl : MonoBehaviour
 
     public void OnClickDelete()
     {
+        pv.RPC(nameof(OnClickDeleteRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void OnClickDeleteRPC()
+    {
         text.text = " ";
+
     }
 
     public void OnClickSpace()
+    {
+        pv.RPC(nameof(OnClickSpaceRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void OnClickSpaceRPC()
     {
         text.text += " ";
     }
@@ -74,11 +99,14 @@ public class RankingCtrl : MonoBehaviour
         // prevPanel = NickNamePanel;
         // curPanel = RankingPanel;
         // ShowAndHideUI();
+        pv.RPC(nameof(OnClickEnterBtnRPC), RpcTarget.AllViaServer);
 
+        
+    }
+    [PunRPC]
+    void OnClickEnterBtnRPC()
+    {
         NickNamePanel.SetActive(false);
-
-        Debug.Log($"닉네임패널 액티브 유무 : {NickNamePanel.activeSelf}");
-        Debug.Log("엔터키를 누름");
         switch (skillName)
         {
             case SKILL.Injection:
@@ -89,15 +117,24 @@ public class RankingCtrl : MonoBehaviour
                 break;
         }
     }
-
     public void ShowAndHideUI(bool direction = true)
     {
-        Debug.Log("//ShowAndHideUI");
-        prevPanel.SetActive(!direction);
-        curPanel.SetActive(direction);
+        pv.RPC(nameof(ShowAndHideUIRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void ShowAndHideUIRPC()
+    {
+        prevPanel.SetActive(false);
+        curPanel.SetActive(true);
     }
 
     public void ChangeCanvas()
+    {
+        pv.RPC(nameof(ChangeCanvasRPC), RpcTarget.AllViaServer);
+
+    }
+    [PunRPC]
+    void ChangeCanvasRPC()
     {
         basicCanvas.SetActive(false);
         rankingCanvas.SetActive(true);
@@ -108,21 +145,35 @@ public class RankingCtrl : MonoBehaviour
 
     public void ActiveNickname()
     {
-        Debug.Log("//ActiveNickname");
+        pv.RPC(nameof(ActiveNicknameRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void ActiveNicknameRPC()
+    {
         NickNamePanel.SetActive(true);
     }
 
     public void InactiveNickname()
     {
-        Debug.Log("//InactiveNickname");
+        pv.RPC(nameof(InactiveNicknameRPC), RpcTarget.AllViaServer);
+    }
+    [PunRPC]
+    void InactiveNicknameRPC()
+    {
         NickNamePanel.SetActive(false);
+
     }
 
     public void ActiveRankingUI()
     {
-        Debug.Log("//ActiveRanking");
-        RankingPanel.SetActive(true);
-    }
+        pv.RPC(nameof(ActiveRankingUIRPC), RpcTarget.AllViaServer);
 
+    }
+    [PunRPC]
+    public void ActiveRankingUIRPC()
+    {
+        RankingPanel.SetActive(true);
+
+    }
 
 }
