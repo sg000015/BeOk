@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01.Scenes/0.Common/Ward-BloodCollection-BACKUP.unity
     guid: 400c591ea10ef0842a30da8f20251759
+  - enabled: 1
+    path: Assets/01.Scenes/0.Common/Ward-Injection.unity
+    guid: 0e428654994c6e545b34d646f31dc93e
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d057bdb80aabda04596314efed5edc69, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: d1ba09c6eb904d447bb5e206ceef3628, type: 2}

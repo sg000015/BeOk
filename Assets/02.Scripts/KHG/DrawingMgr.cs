@@ -270,6 +270,8 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         }
         else
         {
+            arrow.gameObject.SetActive(true);
+            arrow.position = vaccumRack.position + Vector3.up * 0.1f;
             isBloodShake = true;
         }
     }
@@ -432,6 +434,8 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     void OutToLobbyRPC()
     {
         PhotonNetwork.LoadLevel("Lobby");
+        PhotonNetwork.DestroyAll();
         PhotonNetwork.LeaveRoom();
+        NetworkManager.instanceNW.Init();
     }
 }

@@ -64,6 +64,8 @@ public class AlcoholCottonMgr : MonoBehaviour
         soundManager.Sound(0);
 
         Destroy(virusFxObj, 2.0f);
+        
+
         yield return new WaitForSeconds(.7f);
         while (true)
         {

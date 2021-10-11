@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void DeleteRoom()
     {
+        PhotonNetwork.DestroyAll();
         PhotonNetwork.LeaveRoom();
 
         if(0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop") )

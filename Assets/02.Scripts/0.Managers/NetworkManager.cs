@@ -78,7 +78,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
                 // PhotonNetwork.JoinRoom(roomNum);
                 PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2 }, null);
-
             }
         }
     }
@@ -93,11 +92,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        text.text = roomNum + "성공적으로 입장하였습니다.";
-
+        Debug.Log("방에 접속");
         if (roomType == "Blood")
         {
-            text.text = roomNum + "씬을 전환합니다.";
+            if(!isOculus)
+            {
+                text.text = roomNum + "성공적으로 입장하였습니다.";
+                text.text = roomNum + "씬을 전환합니다.";
+            }
             PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
         }
         else

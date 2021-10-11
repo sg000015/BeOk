@@ -75,7 +75,7 @@ public class InjectionMgr : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            EventOculus.SetActive(true);
+            // EventOculus.SetActive(true);
         }
         else
         {
@@ -88,7 +88,6 @@ public class InjectionMgr : MonoBehaviour
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         pv = gameObject.GetComponent<PhotonView>();
-        InitInjection();
 
     }
 
@@ -102,9 +101,10 @@ public class InjectionMgr : MonoBehaviour
         string sapType = type[index];
         int sapSpeed = speed[Random.Range(0, speed.Length)];
 
+        GameObject.Find("LaserBeam").gameObject.SetActive(false);
         GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
-
         pv.RPC("SetSapRPC", RpcTarget.AllViaServer, index, sapType, sapSpeed);
+        InitInjection();
 
     }
 
@@ -159,9 +159,12 @@ public class InjectionMgr : MonoBehaviour
 
     public void CreateCatheter()
     {
-        catheter = PhotonNetwork.Instantiate("Catheter_Res", new Vector3(-5.283f, 0.8f, 0.727f), Quaternion.Euler(0, 180, 0));
-        catheter.transform.localScale = Vector3.one * 0.5f;
-        catheter.name = "Catheter";
+        if(PhotonNetwork.IsMasterClient)
+        {
+            catheter = PhotonNetwork.Instantiate("Catheter_Res", new Vector3(-5.283f, 0.8f, 0.727f), Quaternion.Euler(0, 180, 0));
+            catheter.transform.localScale = Vector3.one * 0.5f;
+            catheter.name = "Catheter";
+        }
     }
     #region 술기
     // 0.수액 종류
@@ -639,14 +642,6 @@ public class InjectionMgr : MonoBehaviour
         // ActiveRanking();
         StartCoroutine(nameof(ActiveRanking));
     }
-
-
-
-
-
-
-
-
 
 
     public void MinusAreaScore()

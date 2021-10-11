@@ -22,12 +22,11 @@ public class SoundManager : MonoBehaviour
     3 : 최고
     */
 
-    AudioSource audio;
+    public AudioSource audio;
     public AudioSource patientAudio;
 
     void Start()
     {
-        audio = GetComponent<AudioSource>();
 
 
     }
