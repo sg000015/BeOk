@@ -42,7 +42,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Handheld, 핸드폰 이름도 동일
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld--")
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld123")
             || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
@@ -152,11 +152,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
 
-
     public void InstantiatePlayer()
     {
 
 
+        string skill = PhotonNetwork.CurrentRoom.CustomProperties["SkillType"].ToString();
 
         if (isOculus)
         {
@@ -172,8 +172,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            GameObject CCTV = roomType == "Blood" ? PhotonNetwork.Instantiate("CCTV2", Vector3.zero, Quaternion.identity, 0)
+            GameObject CCTV = (skill == "Blood") ? PhotonNetwork.Instantiate("CCTV2", Vector3.zero, Quaternion.identity, 0)
                                                   : PhotonNetwork.Instantiate("CCTV", Vector3.zero, Quaternion.identity, 0);
+
             CCTV.transform.GetChild(0).gameObject.SetActive(true);
             GameObject.Find("Player(Clone)")?.transform.Find("EventSystem").gameObject.SetActive(false);
             GameObject.Find("Player(Clone)")?.transform.Find("CurvedUILaserPointer")?.gameObject.SetActive(false);
