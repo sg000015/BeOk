@@ -103,6 +103,9 @@ public class InjectionMgr : MonoBehaviour
         //더 이상 들어오지 못하게 문닫기.
         PhotonNetwork.CurrentRoom.IsOpen = false;
 
+        //!1013
+        OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
+
         int index = Random.Range(0, type.Length);
         string sapType = type[index];
         int sapSpeed = speed[Random.Range(0, speed.Length)];

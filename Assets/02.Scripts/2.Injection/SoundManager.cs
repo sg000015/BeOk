@@ -33,6 +33,11 @@ public class SoundManager : MonoBehaviour
 
     public void Sound(int num)
     {
+        //1013
+        if (num == 1)
+        {
+            OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
+        }
         audio.PlayOneShot(audios[num]);
     }
     public void SoundStop()

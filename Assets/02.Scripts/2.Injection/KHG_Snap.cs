@@ -112,14 +112,14 @@ public class KHG_Snap : MonoBehaviour
         {
             if (!isDo && coll.name == "GrabVolumeBig")
             {
-                string hand ="";
+                string hand = "";
 
                 try
                 {
-                    hand =coll.transform.parent.parent.name;
+                    hand = coll.transform.parent.parent.name;
                 }
-                catch{}
-                    
+                catch { }
+
 
                 //!NullReference
                 pv.RPC(nameof(GrabVolumeBigRPC), RpcTarget.AllViaServer, hand);
@@ -159,38 +159,38 @@ public class KHG_Snap : MonoBehaviour
     {
         Debug.Log("bbb");
         isDo = true;
-                InjectionMgr.injection.MinusAreaScore();
-                Debug.Log("Fail to Snap");
-                soundManager.Sound(2);
-                //잘못되었을때 애니메이션
-                animCount++;
-                if (animCount <= 0)
-                {
-                    anim.SetTrigger("Tremble");
-                    soundManager.PlayPatientSound(0);
-                }
-                else if (animCount == 1)
-                {
-                    anim.SetTrigger("HeadShaking");
-                    soundManager.PlayPatientSound(1);
+        InjectionMgr.injection.MinusAreaScore();
+        Debug.Log("Fail to Snap");
+        soundManager.Sound(2);
+        //잘못되었을때 애니메이션
+        animCount++;
+        if (animCount <= 0)
+        {
+            anim.SetTrigger("Tremble");
+            soundManager.PlayPatientSound(0);
+        }
+        else if (animCount == 1)
+        {
+            anim.SetTrigger("HeadShaking");
+            soundManager.PlayPatientSound(1);
 
-                }
-                else if (animCount >= 2)
-                {
-                    anim.SetTrigger("BedCrush");
-                    soundManager.PlayPatientSound(2);
-                }
+        }
+        else if (animCount >= 2)
+        {
+            anim.SetTrigger("BedCrush");
+            soundManager.PlayPatientSound(2);
+        }
 
-                // 점수 --
-                InjectionMgr.injection.MinusAreaScore();
+        // 점수 --
+        InjectionMgr.injection.MinusAreaScore();
 
 
-                Quaternion rot = needle2.transform.rotation;
+        Quaternion rot = needle2.transform.rotation;
 
-                GameObject obj = Instantiate(bloodEfx, needle2.transform.position, rot);
-                Destroy(obj, 2.0f);
-                //! 주사 찌르기 딜레이
-                Invoke("SetIsDo", 2.0f);
+        GameObject obj = Instantiate(bloodEfx, needle2.transform.position, rot);
+        Destroy(obj, 2.0f);
+        //! 주사 찌르기 딜레이
+        Invoke("SetIsDo", 2.0f);
     }
     [PunRPC]
     void Tor_SnapRPC()
@@ -220,20 +220,20 @@ public class KHG_Snap : MonoBehaviour
     [PunRPC]
     void GrabVolumeBigRPC(string hand)
     {
-            if (hand == "CustomHandLeft")
-            {
-                //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                isDo = true;
-                isLeft = true;
-                StartCoroutine("PoleControl");
-            }
-            else if (hand == "CustomHandRight")
-            {
-                // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
-                isDo = true;
-                isLeft = false;
-                StartCoroutine("PoleControl");
-            }
+        if (hand == "CustomHandLeft")
+        {
+            //GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+            isDo = true;
+            isLeft = true;
+            StartCoroutine("PoleControl");
+        }
+        else if (hand == "CustomHandRight")
+        {
+            // GetComponent<MeshRenderer>().material.color = new Color(0, 0, 0, 0);
+            isDo = true;
+            isLeft = false;
+            StartCoroutine("PoleControl");
+        }
     }
     [PunRPC]
     void SetCurrentSapRPC()
@@ -401,11 +401,12 @@ public class KHG_Snap : MonoBehaviour
                     soundManager.Sound(0);
                     sap.UpdateSpeed(1);
                     Debug.Log("++");
-                    if (value.y >= 0.8f)
-                    {
-                        soundManager.Sound(0);
-                        sap.UpdateSpeed(1);
-                    }
+                    //1013
+                    // if (value.y >= 0.8f)
+                    // {
+                    //     soundManager.Sound(0);
+                    //     sap.UpdateSpeed(1);
+                    // }
                     if (value.y >= 0.99f)
                     {
                         soundManager.Sound(0);
@@ -417,11 +418,12 @@ public class KHG_Snap : MonoBehaviour
                     soundManager.Sound(0);
                     sap.UpdateSpeed(-1);
                     Debug.Log("--");
-                    if (value.y <= -0.8f)
-                    {
-                        soundManager.Sound(0);
-                        sap.UpdateSpeed(-1);
-                    }
+                    //1013
+                    // if (value.y <= -0.8f)
+                    // {
+                    //     soundManager.Sound(0);
+                    //     sap.UpdateSpeed(-1);
+                    // }
                     if (value.y <= -0.99f)
                     {
                         soundManager.Sound(0);
