@@ -17,6 +17,7 @@ public class UIManager_blood : MonoBehaviour
     public Image progress;
     public TMP_Text infoText;
     public TMP_Text infoTextPhone;
+    public Image tubesImg;
 
     public Timer timer;
 
@@ -36,7 +37,7 @@ public class UIManager_blood : MonoBehaviour
 
     void Update()
     {
-        // UpdateUI(NUM);
+        UpdateUI(NUM);
 
     }
 
@@ -66,8 +67,8 @@ public class UIManager_blood : MonoBehaviour
                 infoTextPhone.text = "채혈 바늘을 혈관에 15~20도로 삽입해주세요.";
                 break;
             case 5:
-                infoText.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
-                infoTextPhone.text = "주사기 앞부분을 잡은 채로 플런저를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
+                infoText.text = "플런저(주사기 뒷부분)를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
+                infoTextPhone.text = "플런저(주사기 뒷부분)를 당겨 채혈해주세요.\n<color=#ff0000>주의: 너무 급하게 당기면 혈액이 용혈될 수 있습니다.</color>";
                 break;
             case 6:
                 infoText.text = "토니켓을 풀어주세요.";
@@ -78,12 +79,14 @@ public class UIManager_blood : MonoBehaviour
                 infoTextPhone.text = "소독솜을 천자부위에 가볍게 댄 상태에서 주사기을 빼세요.";
                 break;
             case 8:
-                infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
-                infoTextPhone.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n(주사기를 잡은 채로 조이스틱을 눌러주세요.)\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                infoText.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                infoTextPhone.text = "주사기 내의 혈액을 진공튜브에 옮겨주세요.\n<color=#ff0000>주의: 캡 색상을 확인하시고 순서에 맞게 주입해주세요.</color>";
+                tubesImg.gameObject.SetActive(true);
                 break;
             case 9:
                 infoText.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
                 infoTextPhone.text = "혈액을 주입한 튜브를 8회 이상 Up-down mix해주세요.\n(손목을 회전시켜주세요.)";
+                tubesImg.gameObject.SetActive(false);
                 break;
             case 10:
                 infoText.text = "튜브를 꽂아주세요.";
