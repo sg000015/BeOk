@@ -35,7 +35,7 @@ public class GoogleSheetManager : MonoBehaviour
     void GetSentence(UnityWebRequest www, int idx)
     {
         string data = www.downloadHandler.text;
-        print(data);
+        // print(data);
 
         string[] line = data.Split('\n');
         lineSize = line.Length;
@@ -66,16 +66,16 @@ public class GoogleSheetManager : MonoBehaviour
 
         // Log
 
-        for (int i = 0; i < lineSize; i++)
-        {
-            if (idx == 0)
-            {
-                Debug.Log($"{Sentence_Injection[i]}");
-            }
-            else
-            {
-                Debug.Log($"{Sentence_Blood[i]}");
-            }
-        }
+        // for (int i = 0; i < lineSize; i++)
+        // {
+        //     if (idx == 0)
+        //     {
+        //         Debug.Log($"{Sentence_Injection[i]}");
+        //     }
+        //     else
+        //     {
+        //         Debug.Log($"{Sentence_Blood[i]}");
+        //     }
+        // }
     }
 }
