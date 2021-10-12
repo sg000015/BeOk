@@ -47,7 +47,6 @@ public class UIManager_blood : MonoBehaviour
 
     public void UpdateUI(int num)
     {
-
         if (num == 11)
         {
             scoreList = DrawingMgr.drawing.scoreList;
@@ -59,6 +58,15 @@ public class UIManager_blood : MonoBehaviour
         {
             infoText.text = sheet.Sentence_Blood[num];
             infoTextPhone.text = sheet.Sentence_Blood[num];
+        }
+
+        if (num == 8)
+        {
+            tubesImg.gameObject.SetActive(true);
+        }
+        else
+        {
+            tubesImg.gameObject.SetActive(false);
         }
         progress.fillAmount = num / 11.0f;
         /*
