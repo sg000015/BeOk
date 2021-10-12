@@ -5,6 +5,7 @@ using Photon.Pun;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Threading.Tasks;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -42,7 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Handheld, 핸드폰 이름도 동일
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld123")
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld")
             || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
@@ -101,6 +102,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (isOculus)
         {
             PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { "SkillType", roomType } });
+            // Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["SkillType"]);
+            // Debug.Log("AAAAA");
 
             if (roomType == "Blood")
             {
@@ -144,6 +147,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         // }
 
     }
+
     public override void OnLeftRoom()
     {
         PhotonNetwork.LeaveRoom();
@@ -154,7 +158,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void InstantiatePlayer()
     {
+        StartCoroutine(nameof(CreatePlayer));
+    }
 
+    IEnumerator CreatePlayer()
+    {
+
+        yield return new WaitUntil(() => PhotonNetwork.CurrentRoom.CustomProperties["SkillType"] != null);
+
+        Debug.Log("teCreatePlayermp------");
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["SkillType"]);
 
         string skill = PhotonNetwork.CurrentRoom.CustomProperties["SkillType"].ToString();
 
@@ -172,6 +185,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
+
             GameObject CCTV = (skill == "Blood") ? PhotonNetwork.Instantiate("CCTV2", Vector3.zero, Quaternion.identity, 0)
                                                   : PhotonNetwork.Instantiate("CCTV", Vector3.zero, Quaternion.identity, 0);
 
