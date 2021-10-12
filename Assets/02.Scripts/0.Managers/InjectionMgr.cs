@@ -716,6 +716,7 @@ public class InjectionMgr : MonoBehaviour
         float length = soundManager.audios[9].length;
         while (true)
         {
+            Debug.Log("Sound(9)");
             soundManager.Sound(9);
             soundManager.Sound(9);
             soundManager.Sound(9);

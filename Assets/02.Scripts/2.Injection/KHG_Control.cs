@@ -186,11 +186,13 @@ public class KHG_Control : MonoBehaviour
 
         if (Physics.OverlapSphere(this.transform.position, 0.13f).Length == 2) { grabCount = 0; grabbedObject = null; currentGrabbedObject = null; isGrabbed = false; } //버그방지
 
+        
         if (grabbedObject != null)
         {
             //!
             if (grabbedObject.GetComponent<KHG_Grabble>().isGrab) { return; }
             if (grabbedObject.tag != "GrabObject") { return; }
+            if(OtherController.GetComponent<KHG_Control>().currentGrabbedObject == grabbedObject) {return;}
 
             var _grabByState = grabbedObject.GetComponent<KHG_Grabble>().grabByState;
 
@@ -239,7 +241,7 @@ public class KHG_Control : MonoBehaviour
         //!
     }
 
-    void GrabEnd()
+    public void GrabEnd()
     {
         // Debug.Log("ChildCount" + transform.childCount);
 
@@ -357,7 +359,7 @@ public class KHG_Control : MonoBehaviour
                     coll.GetComponent<KHG_Grabble>().isExit = true;
                     if (grabCount == 0)
                     {
-                        texttt.text = "그랩오브젝트 비활성화!";
+                        // texttt.text = "그랩오브젝트 비활성화!";
 
                         grabbedObject = null;
                     }

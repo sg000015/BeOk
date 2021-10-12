@@ -32,5 +32,9 @@ public class KHG_Grabble : MonoBehaviour
         {
             isGrab = false;
         }
+        else if(!(transform.parent.name =="CustomHandLeft" || transform.parent.name =="CustomHandLeft"))
+        {
+            isGrab = false;
+        }
     }
 }

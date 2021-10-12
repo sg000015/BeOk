@@ -39,9 +39,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void Init()
     {
 
-        //! 빌드시 오큘러스이름 = Hendheld
+        //! 빌드시 오큘러스이름 = Handheld, 핸드폰 이름도 동일
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld222222")
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld")
             || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;

@@ -68,6 +68,8 @@ public class KHG_Snap_Draw : MonoBehaviour
     bool check = false;
     bool airCheck;
     bool isFirst = false;
+    bool isShake1 = false;
+    bool isShake2 = false;
 
     // bool syringeCoverGrabCheck = false;
 
@@ -160,7 +162,7 @@ public class KHG_Snap_Draw : MonoBehaviour
 
 
                 //! ???
-                pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
+                pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "Arrow", false);
                 DrawingMgr.drawing.arrow.gameObject.SetActive(false);
 
                 pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, coll.gameObject.name, false);
@@ -231,6 +233,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 }
             }
         }
+        //!
         else if (_objectType == ObjectType.Shake)
         {
             if (coll.name == "Plane")
@@ -283,7 +286,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                     functionState[8] = false;
                     DrawingMgr.drawing.Finish();
 
-                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
+                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "Arrow", false);
                     DrawingMgr.drawing.arrow.gameObject.SetActive(false);
                 }
 
@@ -318,7 +321,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                     soundManager.Sound(4);
                     functionState[8] = false;
                     DrawingMgr.drawing.Finish();
-                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "arrow", false);
+                    pv.RPC(nameof(SetActiveRPC), RpcTarget.Others, "Arrow", false);
                     DrawingMgr.drawing.arrow.gameObject.SetActive(false);
                 }
 
@@ -916,7 +919,7 @@ public class KHG_Snap_Draw : MonoBehaviour
                 GetComponent<Rigidbody>().isKinematic = true;
 
                 pv.RPC(nameof(SetParentRPC), RpcTarget.Others, "null", "Arm");
-                transform.SetParent(tempTr);
+                transform.SetParent(GameObject.Find("Arm").transform);
                 transform.localPosition = new Vector3(0.028f, -0.13f, 0.026f);
                 transform.localEulerAngles = new Vector3(174.3f, 60f, 0.2f);
                 transform.localScale = Vector3.one * 2.0f;

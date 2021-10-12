@@ -121,7 +121,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         UImanager.UpdateUI(1);
 
         arrow.gameObject.SetActive(true);
-        arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        arrow.position = alcoholcotton.position + Vector3.up * 0.2f;
         StartCoroutine("ArrowActive", alcoholcotton);
     }
 
@@ -140,7 +140,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         UImanager.UpdateUI(2);
 
         arrow.gameObject.SetActive(true);
-        arrow.position = syringe.position + Vector3.up * 0.1f;
+        arrow.position = syringe.position + Vector3.up * 0.2f;
         StartCoroutine("ArrowActive", syringe);
     }
 
@@ -175,7 +175,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
 
 
         arrow.gameObject.SetActive(true);
-        arrow.position = needleSnap.position + Vector3.up * 0.1f;
+        arrow.position = needleSnap.position + Vector3.up * 0.2f;
         StartCoroutine("ArrowActive", needleSnap);
     }
 
@@ -233,7 +233,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         UImanager.UpdateUI(7);
 
         arrow.gameObject.SetActive(true);
-        arrow.position = alcoholcotton.position + Vector3.up * 0.1f;
+        arrow.position = alcoholcotton.position + Vector3.up * 0.2f;
         StartCoroutine("ArrowActive", alcoholcotton);
     }
 
@@ -254,8 +254,8 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
 
         arrow.gameObject.SetActive(true);
         arrow2.gameObject.SetActive(true);
-        arrow.position = vaccum1.position + Vector3.up * 0.1f;
-        arrow2.position = vaccum2.position + Vector3.up * 0.1f;
+        arrow.position = vaccum1.position + Vector3.up * 0.2f;
+        arrow2.position = vaccum2.position + Vector3.up * 0.2f;
         StartCoroutine("ArrowActive", vaccum1);
         StartCoroutine("Arrow2Active", vaccum2);
     }
@@ -303,12 +303,12 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         {
             UImanager.UpdateUI(10);
             arrow.gameObject.SetActive(true);
-            arrow.position = vaccumRack.position + Vector3.up * 0.1f;
+            arrow.position = vaccumRack.position + Vector3.up * 0.2f;
         }
         else
         {
             arrow.gameObject.SetActive(true);
-            arrow.position = vaccumRack.position + Vector3.up * 0.1f;
+            arrow.position = vaccumRack.position + Vector3.up * 0.2f;
             isBloodShake = true;
         }
     }
@@ -431,6 +431,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         pv.RPC(nameof(StartBtnRPC), RpcTarget.AllViaServer);
         GameObject.Find("LaserBeam").gameObject.SetActive(false);
         GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
+        patientArm.transform.Find("Tor_Snap").GetComponent<BoxCollider>().enabled = true;
 
     }
 
