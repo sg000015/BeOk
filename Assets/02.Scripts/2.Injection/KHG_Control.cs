@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class KHG_Control : MonoBehaviour
 {
 
+
     public enum GrabState { None, Pinch, Grab }
 
     public GameObject OtherController;
@@ -41,6 +42,7 @@ public class KHG_Control : MonoBehaviour
     PhotonView pv;
     void Start()
     {
+        texttt = GameObject.Find("Text (TMP)_ef")?.GetComponent<TMPro.TMP_Text>();
         if(SceneManager.GetActiveScene().name == "Ward-Injection")
         {
             pv = gameObject.GetPhotonView();
@@ -88,7 +90,7 @@ public class KHG_Control : MonoBehaviour
     int i;
     void Update()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
+        // if (!PhotonNetwork.IsMasterClient) return;
 
         if (isGrabbed && currentGrabbedObject == null)
         {
@@ -96,6 +98,7 @@ public class KHG_Control : MonoBehaviour
             grabCount = 0;
         }
 
+        bool ThumbTouch = false;
         prevFlex = m_prevFlex;
         prevFlex_Grab = m_prevFlex_Grab;
         // Update values from inputs
@@ -103,85 +106,58 @@ public class KHG_Control : MonoBehaviour
         {
             m_prevFlex = OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.Touch);
             m_prevFlex_Grab = OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.Touch);
+            ThumbTouch = OVRInput.Get(OVRInput.Touch.PrimaryThumbstick, OVRInput.Controller.Touch);
+
         }
         else if (Right)
         {
             m_prevFlex = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch);
             m_prevFlex_Grab = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger, OVRInput.Controller.Touch);
-        }
-
-
-
-
-        bool ThumbTouch = false;
-        if (Left)
-        {
-            ThumbTouch = OVRInput.Get(OVRInput.Touch.PrimaryThumbstick, OVRInput.Controller.Touch);
-        }
-        else if (Right)
-        {
             ThumbTouch = OVRInput.Get(OVRInput.Touch.SecondaryThumbstick, OVRInput.Controller.Touch);
+
         }
-
-
-
-
 
 
         //그랩시작
         if (grabState != GrabState.Grab)
         {
-            
-
             //엄지,검지버튼
             // if ((m_prevFlex >= grabBegin) && (prevFlex < grabBegin) && ThumbTouch)    //그랩시작 순간
-            if ((m_prevFlex >= 0.35f && m_prevFlex < 0.99f))    //그랩시작 순간
+            if ((m_prevFlex > 0f))    //그랩시작 순간
             {
                 grabState = (GrabState)1;
                 if (!isGrabbed)
                 {
-                    // pv?.RPC(nameof(GrabBegin), RpcTarget.AllViaServer);
                     GrabBegin();
-                    // GrabBegin();
-
                 }
             }
-            else if (m_prevFlex <= 0.3f)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
+            else if (m_prevFlex == 0f)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
             {
                 grabState = (GrabState)0;
 
                 if (isGrabbed)
                 {
-                    // pv?.RPC(nameof(GrabEnd), RpcTarget.AllViaServer);
                     GrabEnd();
-
-                    // GrabEnd();
                 }
             }
         }
-
-
         if (grabState != GrabState.Pinch)
         {
-            //그랩버튼
-            if (m_prevFlex_Grab >= 0.35f && m_prevFlex_Grab < 0.99f)     //그랩시작 순간
+            //그랩버튼 m_prevFlex_Grab>= 0.35f && m_prevFlex_Grab < 0.99f
+            if (m_prevFlex_Grab > 0)     //그랩시작 순간
             {
                 grabState = (GrabState)2;
                 if (!isGrabbed)
                 {
-                    // pv?.RPC(nameof(GrabBegin), RpcTarget.AllViaServer);
                     GrabBegin();
-                    // GrabBegin();
                 }
             }
-            else if (m_prevFlex_Grab <= 0.3f)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩
+            else if (m_prevFlex_Grab== 0)   //그랩 떼는 순간, 그랩 시점이랑 차이를 둬서 안정적으로 그랩  <= 0.3f
             {
                 grabState = (GrabState)0;
                 if (isGrabbed)
                 {
-                    // pv?.RPC(nameof(GrabEnd), RpcTarget.AllViaServer);
                     GrabEnd();
-                    // GrabEnd();
                 }
             }
         }
@@ -206,8 +182,6 @@ public class KHG_Control : MonoBehaviour
     }
     void GrabBegin()
     {
-       
-
         // Debug.Log("Grab Check : " + Physics.OverlapSphere(this.transform.position, 0.13f).Length);
 
         if (Physics.OverlapSphere(this.transform.position, 0.13f).Length == 2) { grabCount = 0; grabbedObject = null; currentGrabbedObject = null; isGrabbed = false; } //버그방지
@@ -234,13 +208,9 @@ public class KHG_Control : MonoBehaviour
             {
                 currentGrabbedObject = grabbedObject;
                 grabbedObject.GetComponent<KHG_Grabble>().isGrab = true;
-
                 isGrabbed = true;
 
                 pv.RPC(nameof(GrabRPC), RpcTarget.AllViaServer, currentGrabbedObject.name);
-
-                
-
             }
         }
     }
@@ -271,8 +241,6 @@ public class KHG_Control : MonoBehaviour
 
     void GrabEnd()
     {
-       
-
         // Debug.Log("ChildCount" + transform.childCount);
 
         // if (transform.childCount == 1) { grabCount = 0; }
@@ -281,13 +249,9 @@ public class KHG_Control : MonoBehaviour
         {
             if (OtherController.GetComponent<KHG_Control>().currentGrabbedObject != currentGrabbedObject)
             {
-
                 if (currentGrabbedObject.parent == controllerTr)
                 {
-                    Debug.Log("AAAAA:"+currentGrabbedObject.name);
                     pv.RPC(nameof(GrabParentRPC), RpcTarget.AllViaServer, currentGrabbedObject.name);
-
-
                 }
             }
 
@@ -305,7 +269,6 @@ public class KHG_Control : MonoBehaviour
     void CurrentNullRPC()
     {
         currentGrabbedObject = null;
-
     }
 
 
@@ -332,11 +295,6 @@ public class KHG_Control : MonoBehaviour
     void OnTriggerEnter(Collider coll)
     {
         // pv?.RPC(nameof(OnTriggerEnterRPC), RpcTarget.AllViaServer, coll.name);
-        OnTriggerEnterRPC(coll);
-    }
-
-    void OnTriggerEnterRPC(Collider coll)
-    {
 
         if (coll.tag == "GrabObject")
         {
@@ -360,6 +318,7 @@ public class KHG_Control : MonoBehaviour
             {
                 // if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
                 {
+                    // texttt.text = "트리거엔터!! 그리고 그랩오브젝트 활성화!";
                     grabbedObject = coll.transform;
                     grabCount++;
                     coll.GetComponent<KHG_Grabble>().isExit = false;
@@ -368,16 +327,10 @@ public class KHG_Control : MonoBehaviour
             }
         }
     }
-
     void OnTriggerExit(Collider coll)
     {
     //    pv?.RPC(nameof(OnTriggerExitRPC), RpcTarget.AllViaServer, coll.name);
-          OnTriggerExitRPC(coll);
-    }
-
-    void OnTriggerExitRPC(Collider coll)
-    {
-        if (coll.tag == "GrabObject")
+            if (coll.tag == "GrabObject")
         {
             if (coll.GetComponent<KHG_Grabble>().grabByState != KHG_Grabble.GrabByState.None)
             {
@@ -404,12 +357,19 @@ public class KHG_Control : MonoBehaviour
                     coll.GetComponent<KHG_Grabble>().isExit = true;
                     if (grabCount == 0)
                     {
+                        texttt.text = "그랩오브젝트 비활성화!";
+
                         grabbedObject = null;
                     }
                 }
 
             }
         }
+    }
+
+    void OnTriggerExitRPC(Collider coll)
+    {
+
     }
 
 

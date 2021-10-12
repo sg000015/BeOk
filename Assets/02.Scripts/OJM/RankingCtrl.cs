@@ -20,7 +20,7 @@ public class RankingCtrl : MonoBehaviour
     
     public PhotonView pv;
 
-    void Start()
+    void Awake()
     {
         pv = gameObject.GetPhotonView();
     }
@@ -130,6 +130,7 @@ public class RankingCtrl : MonoBehaviour
 
     public void ChangeCanvas()
     {
+
         pv.RPC(nameof(ChangeCanvasRPC), RpcTarget.AllViaServer);
 
     }

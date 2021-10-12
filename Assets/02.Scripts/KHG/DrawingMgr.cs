@@ -448,7 +448,10 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         {
             pv.RPC(nameof(EnterRoomRPC), RpcTarget.Others, random);
         }
-
+       if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
+       {
+           pv.RPC("StartUI", RpcTarget.AllViaServer);
+       }
 
     }
     [PunRPC]
@@ -472,5 +475,15 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("Lobby");
+    }
+
+    public GameObject inDirector;
+    public GameObject StartStatePanel;
+
+    [PunRPC]
+    void StartUI()
+    {
+        inDirector.SetActive(true);
+        StartStatePanel.SetActive(false);
     }
 }

@@ -41,7 +41,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Hendheld
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld222222")
+            || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
         }
@@ -109,6 +110,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel("Ward-Injection");
         }
 
+    }
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("Lobby");
     }
 
 

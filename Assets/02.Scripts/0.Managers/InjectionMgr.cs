@@ -510,7 +510,7 @@ public class InjectionMgr : MonoBehaviour
 
         yield return new WaitForSeconds(time);
         infoTxt.text += $"\n\n<b>총합 : {score}</b>";
-        // infoTxtPhone.text += $"\n\n<b>총합 : {score}</b>";
+        infoTxtPhone.text += $"\n\n<b>총합 : {score}</b>";
 
         // Background Sound
         // 50점 초과 && 수액 종류 맞음

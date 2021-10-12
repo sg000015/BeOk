@@ -330,73 +330,93 @@ public class KHG_Snap_Draw : MonoBehaviour
     [PunRPC]
     void AlcoholCottonEnterRPC()
     {
+        if(PhotonNetwork.IsMasterClient)
         GameObject.Find("VirusGroup").GetComponent<VirusMgr>().AlcoholCottonEnter();
     }
     [PunRPC]
     void ColliderRPC(bool isCollider)
     {
+        if(PhotonNetwork.IsMasterClient)
         GetComponent<BoxCollider>().enabled = isCollider;
     }
     [PunRPC]
     void ColliderPullRPC(string name, bool isCollider)
     {
-       GameObject.Find(name).GetComponent<BoxCollider>().enabled = isCollider;
+        if(PhotonNetwork.IsMasterClient)
+        GameObject.Find(name).GetComponent<BoxCollider>().enabled = isCollider;
     }
 
     [PunRPC]
     void GravityRPC(bool isGravity)
     {
+        if(PhotonNetwork.IsMasterClient)
         GetComponent<Rigidbody>().useGravity = isGravity;
     }
 
     [PunRPC]
     void KinematicRPC(bool isKinematic)
     {
+        if(PhotonNetwork.IsMasterClient)
         GetComponent<Rigidbody>().isKinematic = isKinematic;
     }
 
     [PunRPC]
     void KinematicNameRPC(string objName, bool isKinematic)
     {
+        if(PhotonNetwork.IsMasterClient)
        GameObject.Find(objName).GetComponent<Rigidbody>().isKinematic = isKinematic;
     }
 
     [PunRPC]
     void SetParentRPC(string objName,string parentName)
     {
-        if (objName == "null")
-            transform.SetParent(GameObject.Find(parentName).transform);
-        else
-            GameObject.Find(objName).transform.SetParent(GameObject.Find(parentName).transform);
+        // if(PhotonNetwork.IsMasterClient)
+        // {
+            if (objName == "null")
+                transform.SetParent(GameObject.Find(parentName).transform);
+            else
+                GameObject.Find(objName).transform.SetParent(GameObject.Find(parentName).transform);
+        // }
     }
 
     [PunRPC]
     void SetParentNullRPC(string objName)
     {
-        //! 수정
-        if (objName == "null")
-            transform.parent = null;
-        else
-            GameObject.Find(objName).transform.parent = null;
+        // if(PhotonNetwork.IsMasterClient)
+        // {
+            if (objName == "null")
+                transform.parent = null;
+            else
+                GameObject.Find(objName).transform.parent = null;
+        // }
+
     }
     [PunRPC]
     void SetParentTransform(string objName)
     {
+        // if(PhotonNetwork.IsMasterClient)
+        // {
          GameObject.Find(objName).transform.parent = transform;
+
+        // }
     }
 
     [PunRPC]
     void SetParentVaccumRPC(string objName,string name)
     {
+        // if(PhotonNetwork.IsMasterClient)
+        // {
             GameObject.Find(objName).transform.SetParent(GameObject
                                                                 .Find(name).transform
                                                                 .Find("Vaccum_Snap").transform);
+        // }
     }
 
     [PunRPC]
     void SetActiveRPC(string objName, bool isActive)
     {
-       GameObject.Find(objName).SetActive(isActive); 
+        if(PhotonNetwork.IsMasterClient)
+        GameObject.Find(objName).SetActive(isActive); 
     }   
 
     void SetIsDo()
