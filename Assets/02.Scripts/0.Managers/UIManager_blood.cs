@@ -47,8 +47,6 @@ public class UIManager_blood : MonoBehaviour
 
     public void UpdateUI(int num)
     {
-        infoText.text = sheet.Sentence_Blood[num];
-        infoTextPhone.text = sheet.Sentence_Blood[num];
 
         if (num == 11)
         {
@@ -56,6 +54,11 @@ public class UIManager_blood : MonoBehaviour
 
             // 점수 UI on
             StartCoroutine(nameof(ShowScore));
+        }
+        else
+        {
+            infoText.text = sheet.Sentence_Blood[num];
+            infoTextPhone.text = sheet.Sentence_Blood[num];
         }
         progress.fillAmount = num / 11.0f;
         /*
