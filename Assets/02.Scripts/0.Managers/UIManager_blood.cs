@@ -37,7 +37,7 @@ public class UIManager_blood : MonoBehaviour
 
     void Update()
     {
-        UpdateUI(NUM);
+        // UpdateUI(NUM);
 
     }
 

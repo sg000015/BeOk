@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -41,14 +42,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Handheld, 핸드폰 이름도 동일
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld123")
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld--")
             || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
         {
             isOculus = true;
         }
         else
         {
-            text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+            text = GameObject.Find("NetworkInfoText").GetComponent<TMP_Text>();
             isOculus = false;
 
             text.text = "감독관 모드로 접속";
@@ -76,11 +77,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             else
             {
                 roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
-                text = GameObject.Find("Canvas-Phone").transform.GetChild(0).GetChild(2).GetComponent<TMP_Text>();
+                text = GameObject.Find("NetworkInfoText").GetComponent<TMP_Text>();
                 text.text = roomNum + "번 방에 입장을 시도합니다.";
 
-                // PhotonNetwork.JoinRoom(roomNum);
-                PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions{ MaxPlayers = 2 }, null);
+                PhotonNetwork.JoinRoom(roomNum);
+                // PhotonNetwork.JoinOrCreateRoom(roomNum, new Photon.Realtime.RoomOptions { MaxPlayers = 2 }, null);
             }
         }
     }
@@ -91,24 +92,56 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        text.text = roomNum + "존재하지 않거나, 입장할 수 없는 방입니다.";
+        text.text = "존재하지 않거나, 입장할 수 없는 방입니다.";
     }
     public override void OnJoinedRoom()
     {
         Debug.Log("방에 접속");
-        if (roomType == "Blood")
+
+        if (isOculus)
         {
-            if(!isOculus)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { "SkillType", roomType } });
+
+            if (roomType == "Blood")
             {
-                text.text = roomNum + "성공적으로 입장하였습니다.";
-                text.text = roomNum + "씬을 전환합니다.";
+                PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
             }
-            PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
+            else
+            {
+                PhotonNetwork.LoadLevel("Ward-Injection");
+            }
         }
         else
         {
-            PhotonNetwork.LoadLevel("Ward-Injection");
+            text.text = "방에 입장 중입니다.";
+            string skill = PhotonNetwork.CurrentRoom.CustomProperties["SkillType"].ToString();
+            if (skill == "Blood")
+            {
+                PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
+            }
+            else
+            {
+                PhotonNetwork.LoadLevel("Ward-Injection");
+            }
         }
+
+        // if (roomType == "Blood")
+        // {
+        //     if (isOculus)
+        //     {
+
+        //     }
+        //     if (!isOculus)
+        //     {
+        //         text.text = roomNum + "성공적으로 입장하였습니다.";
+        //         text.text = roomNum + "씬을 전환합니다.";
+        //     }
+        //     PhotonNetwork.LoadLevel("Ward-BloodCollection-BACKUP");
+        // }
+        // else
+        // {
+        //     PhotonNetwork.LoadLevel("Ward-Injection");
+        // }
 
     }
     public override void OnLeftRoom()
@@ -124,7 +157,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
 
 
-                       
+
         if (isOculus)
         {
             Vector3 pos = roomType == "Blood" ? new Vector3(-0.141f, 1.5f, -0.916f) : new Vector3(-5.6f, 1.5f, 1.6f);
@@ -134,7 +167,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Player.transform.GetChild(0).GetChild(1).gameObject.SetActive(true);
             Player.transform.Find("EventSystem").gameObject.SetActive(true);
             Player.transform.Find("CurvedUILaserPointer").gameObject.SetActive(true);
-            GameObject.Find("Canvas-Phone").SetActive(false);        
+            GameObject.Find("Canvas-Phone").SetActive(false);
 
         }
         else
