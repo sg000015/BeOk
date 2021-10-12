@@ -30,6 +30,8 @@ public class UIManager_blood : MonoBehaviour
     private int[] scoreList;
     public int myScore;
 
+    public GoogleSheetManager sheet;
+
     void Start()
     {
         UpdateUI(0);
@@ -47,10 +49,14 @@ public class UIManager_blood : MonoBehaviour
         switch (num)
         {
             case 0:
+                // Debug.Log("sheet.UISentence[0]");
+                // Debug.Log(sheet.UISentence[0]);
+                // infoText.text = sheet.UISentence[0];
                 infoText.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
                 infoTextPhone.text = "손 위생과 물품 준비가 끝난 상황입니다.\n토니켓을 묶어 혈관을 확인해주세요.\n<color=#ff0000>주의: 1분 이상 묶어둘 경우 혈액이 농축되어\n검사에 영향을 줄 수 있습니다.</color>";
                 break;
             case 1:
+                // infoText.text = sheet.UISentence[1];
                 infoText.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
                 infoTextPhone.text = "소독솜으로 천자부위를 안에서 밖으로 둥글게 닦아주세요.";
                 break;
