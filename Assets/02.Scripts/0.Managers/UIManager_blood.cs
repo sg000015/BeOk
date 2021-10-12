@@ -27,7 +27,7 @@ public class UIManager_blood : MonoBehaviour
 
 
     private int[] scoreList;
-    private int myScore = 0;
+    public int myScore;
 
     void Start()
     {
@@ -91,6 +91,7 @@ public class UIManager_blood : MonoBehaviour
                 break;
             case 11:
                 scoreList = DrawingMgr.drawing.scoreList;
+
                 // 점수 UI on
                 StartCoroutine(nameof(ShowScore));
                 break;
@@ -109,6 +110,7 @@ public class UIManager_blood : MonoBehaviour
         // 점수 총합
         foreach (int i in scoreList)
         {
+            // score += i;
             score += i;
         }
 
@@ -177,6 +179,8 @@ public class UIManager_blood : MonoBehaviour
 
         yield return new WaitForSeconds(4);
 
+
+
         // 랭킹 UI
         Ranking(score);
     }
@@ -211,16 +215,20 @@ public class UIManager_blood : MonoBehaviour
         fb.isLoad = false;
 
         // 랭킹 안에 들었는지 확인
+        //!1
+        // scoreMgr.myScore = ConvertScore(score);
         myScore = ConvertScore(score);
         Debug.Log($"lastRankerScore : {fb.lastRankerScore}");
         Debug.Log($"myScore : {myScore}");
         if (fb.lastRankerScore <= myScore)
         {
+            Debug.Log("7-1. Ranking in");
             // 랭킹 안에 들었으면 키보드 UI on
             rankingCtrl.ActiveNickname();
         }
         else
         {
+            Debug.Log("7-2. Ranking out");
             // 랭킹 안에 들지 못했으면
             StartCoroutine(nameof(ActiveRanking));
             // ActiveRanking();
@@ -238,6 +246,7 @@ public class UIManager_blood : MonoBehaviour
 
         // UI 변경
         int _rankNum = fb.rankNum;
+
         for (int i = 0; i < _rankNum; i++)
         {
             names[i].text = fb.rankersName[i];

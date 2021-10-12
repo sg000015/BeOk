@@ -17,7 +17,7 @@ public class RankingCtrl : MonoBehaviour
 
     public enum SKILL { Injection, BloodCollection };
     public SKILL skillName = SKILL.Injection;
-    
+
     public PhotonView pv;
 
     void Awake()
@@ -35,7 +35,7 @@ public class RankingCtrl : MonoBehaviour
             text.text += str.ToUpper();
         else
             text.text += str.ToLower();
-    }    
+    }
 
     bool SW = false;
     public void OnClickShift()
@@ -101,7 +101,7 @@ public class RankingCtrl : MonoBehaviour
         // ShowAndHideUI();
         pv.RPC(nameof(OnClickEnterBtnRPC), RpcTarget.AllViaServer);
 
-        
+
     }
     [PunRPC]
     void OnClickEnterBtnRPC()

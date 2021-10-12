@@ -39,7 +39,7 @@ public class FirebaseManager : MonoBehaviour
     [HideInInspector]
     public int[] rankersSec;
     [HideInInspector]
-    public int lastRankerScore;
+    public int lastRankerScore = 0;
 
     // public UnityEvent rankingEvent = new UnityEvent();
 
@@ -91,7 +91,17 @@ public class FirebaseManager : MonoBehaviour
 
                 Debug.Log($"데이터 레코드 갯수 : {snapshot.ChildrenCount}");
                 int cnt = (int)snapshot.ChildrenCount;
-                // bool isLast = true;
+                bool isLast = true;
+                if (rankNum != cnt)
+                {
+                    Debug.Log("다름~~~~~~");
+                    isLast = false;
+                    lastRankerScore = 0;
+                }
+                else
+                {
+                    Debug.Log("같음~~~~~~");
+                }
                 foreach (DataSnapshot data in snapshot.Children)
                 {
                     IDictionary _data = (IDictionary)data.Value;
@@ -107,16 +117,17 @@ public class FirebaseManager : MonoBehaviour
                     rankersSec[cnt - 1] = datas[2];
 
                     // Debug.Log($"{rankersName[cnt - 1]} - {rankersScore[cnt - 1]} / {rankersMin[cnt - 1]}:{rankersSec[cnt - 1]}");
-                    // if (isLast)
-                    // {
-                    //     isLast = false;
-                    //     lastRankerScore = _score;
-                    // }
+                    if (isLast)
+                    {
+                        isLast = false;
+                        lastRankerScore = _score;
+                    }
 
 
                     cnt--;
                 }
-                lastRankerScore = rankersScore[rankNum - 1];
+                // if(lastRankerScore >rankersScore[rankNum - 1])
+                // lastRankerScore = rankersScore[rankNum - 1];
                 isLoad = true;
                 // Debug.Log("-------------------------isLoad - true 1");
             }

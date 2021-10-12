@@ -73,7 +73,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
             syringeGrab = true;
         }
 
-         // A 버튼 누름 && 메뉴 꺼져있음
+        // A 버튼 누름 && 메뉴 꺼져있음
         if (OVRInput.GetDown(OVRInput.Button.One) && !isMenu)
         {
             isMenu = true;
@@ -264,7 +264,8 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     bool isVaccumTube = false;
 
     //혈액 보관완료 한 뒤
-    [ContextMenu("7. 진공튜브")]
+
+    [ContextMenu("7.진공튜브")]
     public void VaccumTube(Transform _transform)
     {
         pv.RPC(nameof(VaccumTubeRPC), RpcTarget.AllViaServer, _transform.name);
@@ -314,7 +315,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     }
 
     //평가
-    // [ContextMenu("9. 점수 표기")]
+    [ContextMenu("9. 점수 표기")]
     public void Finish()
     {
         pv.RPC(nameof(FinishRPC), RpcTarget.AllViaServer);
@@ -426,6 +427,7 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
     }
 
 
+    [ContextMenu("OnClickStart")]
     public void OnClickStartBtn()
     {
         pv.RPC(nameof(StartBtnRPC), RpcTarget.AllViaServer);
@@ -449,10 +451,10 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         {
             pv.RPC(nameof(EnterRoomRPC), RpcTarget.Others, random);
         }
-       if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
-       {
-           pv.RPC("StartUI", RpcTarget.AllViaServer);
-       }
+        if (PhotonNetwork.CurrentRoom.PlayerCount > 0)
+        {
+            pv.RPC("StartUI", RpcTarget.AllViaServer);
+        }
 
     }
     [PunRPC]
