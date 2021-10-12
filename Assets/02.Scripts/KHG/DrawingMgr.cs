@@ -435,6 +435,8 @@ public class DrawingMgr : MonoBehaviourPunCallbacks
         GameObject.Find("CurvedUILaserPointer").gameObject.SetActive(false);
         patientArm.transform.Find("Tor_Snap").GetComponent<BoxCollider>().enabled = true;
 
+        UImanager.UpdateUI(0);
+
     }
 
     [PunRPC]

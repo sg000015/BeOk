@@ -71,6 +71,8 @@ public class InjectionMgr : MonoBehaviour
 
     Animator animator;
 
+    public GoogleSheetManager sheet;
+
 
 
     void Awake()
@@ -90,6 +92,8 @@ public class InjectionMgr : MonoBehaviour
         soundManager = GameObject.FindGameObjectWithTag("SoundManager").GetComponent<SoundManager>();
 
         pv = gameObject.GetComponent<PhotonView>();
+
+        sheet = GameObject.Find("NetworkManager").GetComponent<GoogleSheetManager>();
 
     }
 
@@ -118,7 +122,7 @@ public class InjectionMgr : MonoBehaviour
         _sapType = sapType;
         _sapSpeed = sapSpeed;
         SapType();
-        
+
         arrow.SetActive(true);
         arrow2.SetActive(true);
         arrow3.SetActive(true);
@@ -165,7 +169,7 @@ public class InjectionMgr : MonoBehaviour
 
     public void CreateCatheter()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             catheter = PhotonNetwork.Instantiate("Catheter_Res", new Vector3(-5.283f, 0.8f, 0.727f), Quaternion.Euler(0, 180, 0));
             catheter.transform.localScale = Vector3.one * 0.5f;
@@ -189,8 +193,10 @@ public class InjectionMgr : MonoBehaviour
         progress.fillAmount = progressNum * 0;
         progressPhone.fillAmount = progressNum * 0;
 
-        infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
-        infoTxtPhone.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+        infoTxt.text = sheet.Sentence_Injection[0];
+        infoTxtPhone.text = sheet.Sentence_Injection[0];
+        // infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+        // infoTxtPhone.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
 
         // 타이머 시작
         timer.timerOn = true;
@@ -203,8 +209,8 @@ public class InjectionMgr : MonoBehaviour
         progress.fillAmount = progressNum * 0;
         progressPhone.fillAmount = progressNum * 0;
 
-        infoTxt.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
-        infoTxtPhone.text = "트롤리 안에 있는 수액 중 알맞은 수액을\n골라 수액걸대에 걸어주세요.";
+        infoTxt.text = sheet.Sentence_Injection[0];
+        infoTxtPhone.text = sheet.Sentence_Injection[0];
 
         // 타이머 시작
         timer.timerOn = true;
@@ -228,8 +234,11 @@ public class InjectionMgr : MonoBehaviour
         progress.fillAmount = progressNum * 1;
         progressPhone.fillAmount = progressNum * 1;
 
-        infoTxt.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.\n(토니켓을 집어 팔에 가져다대세요.)";
-        infoTxtPhone.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.(토니켓을 집어 팔에 가져다대세요.)";
+        infoTxt.text = sheet.Sentence_Injection[1];
+        infoTxtPhone.text = sheet.Sentence_Injection[1];
+
+        // infoTxt.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.\n(토니켓을 집어 팔에 가져다대세요.)";
+        // infoTxtPhone.text = "정맥 상태가 양호한 부위보다 위쪽을 \n토니켓으로 묶어주세요.(토니켓을 집어 팔에 가져다대세요.)";
 
 
         // 토니켓 스냅 On
@@ -256,8 +265,11 @@ public class InjectionMgr : MonoBehaviour
         state = STATE.Disinfect;
         progress.fillAmount = progressNum * 2;
         progressPhone.fillAmount = progressNum * 2;
-        infoTxt.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
-        infoTxtPhone.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
+
+        infoTxt.text = sheet.Sentence_Injection[2];
+        infoTxtPhone.text = sheet.Sentence_Injection[2];
+        // infoTxt.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
+        // infoTxtPhone.text = "소독솜으로 주사부위를 안에서 밖으로 둥글게 닦아주세요.\n(소독솜을 집어 세균을 없애주세요.)";
 
         // 바이러스 활성화
         GameObject.Find("AlcoholCotton").GetComponent<AlcoholCottonMgr>().StartDisinfect();
@@ -278,8 +290,11 @@ public class InjectionMgr : MonoBehaviour
         state = STATE.InjectArea;
         progress.fillAmount = progressNum * 3;
         progressPhone.fillAmount = progressNum * 3;
-        infoTxt.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
-        infoTxtPhone.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
+
+        infoTxt.text = sheet.Sentence_Injection[3];
+        infoTxtPhone.text = sheet.Sentence_Injection[3];
+        // infoTxt.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
+        // infoTxtPhone.text = "카테터를 집어 혈관에 주사해주세요.\n(주사한 이후에도 버튼을\n놓지 말아주세요.)";
 
         // BloodLine 활성화
         bloodLine.SetActive(true);
@@ -302,8 +317,11 @@ public class InjectionMgr : MonoBehaviour
         state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 4;
         progressPhone.fillAmount = progressNum * 4;
-        infoTxt.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
-        infoTxtPhone.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
+
+        infoTxt.text = sheet.Sentence_Injection[4];
+        infoTxtPhone.text = sheet.Sentence_Injection[4];
+        // infoTxt.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
+        // infoTxtPhone.text = "15~30º로 혈류방향을 따라 카테터를 정맥 내로 삽입해주세요.\n(각도를 정하신 뒤 카테터를 놓으면 주사됩니다.)";
 
     }
 
@@ -319,8 +337,11 @@ public class InjectionMgr : MonoBehaviour
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 5;
         progressPhone.fillAmount = progressNum * 5;
-        infoTxt.text = "카테터 뒷부분을 분리해주세요.";
-        infoTxtPhone.text = "카테터 뒷부분을 분리해주세요.";
+
+        infoTxt.text = sheet.Sentence_Injection[5];
+        infoTxtPhone.text = sheet.Sentence_Injection[5];
+        // infoTxt.text = "카테터 뒷부분을 분리해주세요.";
+        // infoTxtPhone.text = "카테터 뒷부분을 분리해주세요.";
 
         // 화살표
         GameObject needlePivot = catheter.transform.Find("NeedleArrowPivot").gameObject;
@@ -341,8 +362,11 @@ public class InjectionMgr : MonoBehaviour
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 6;
         progressPhone.fillAmount = progressNum * 6;
-        infoTxt.text = "고무관을 카테터 본체에 연결해주세요.";
-        infoTxtPhone.text = "고무관을 카테터 본체에 연결해주세요.";
+
+        infoTxt.text = sheet.Sentence_Injection[6];
+        infoTxtPhone.text = sheet.Sentence_Injection[6];
+        // infoTxt.text = "고무관을 카테터 본체에 연결해주세요.";
+        // infoTxtPhone.text = "고무관을 카테터 본체에 연결해주세요.";
 
         // 화살표
         GameObject rubberPivot = rubber.transform.Find("RubberArrowPivot").gameObject;
@@ -364,6 +388,9 @@ public class InjectionMgr : MonoBehaviour
         progress.fillAmount = progressNum * 7;
         progressPhone.fillAmount = progressNum * 7;
 
+        infoTxt.text = sheet.Sentence_Injection[7];
+        infoTxtPhone.text = sheet.Sentence_Injection[7];
+
         // 화살표
         Vector3 pos = GameObject.Find("SapSpeedArrowPivot").transform.position;
         Quaternion rot = Quaternion.Euler(0, 0, -35.31f);
@@ -371,8 +398,8 @@ public class InjectionMgr : MonoBehaviour
         arrow.transform.rotation = rot;
         arrow.SetActive(true);
 
-        infoTxt.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
-        infoTxtPhone.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
+        // infoTxt.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
+        // infoTxtPhone.text = "수액속도를 조절해주세요.\n(화살표 부분을 잡고\n조이스틱으로 속도를 조절해주세요.)";
 
         // 수액 속도 조절하는 콜라이더 On
         curruntSap.transform.Find("IVPole_Snap").gameObject.SetActive(true);
@@ -390,8 +417,11 @@ public class InjectionMgr : MonoBehaviour
         // state = STATE.InjectAngle;
         progress.fillAmount = progressNum * 8;
         progressPhone.fillAmount = progressNum * 8;
-        infoTxt.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
-        infoTxtPhone.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
+
+        infoTxt.text = sheet.Sentence_Injection[8];
+        infoTxtPhone.text = sheet.Sentence_Injection[8];
+        // infoTxt.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
+        // infoTxtPhone.text = "조이스틱으로 수액 속도를 조절한 후\n팔을 묶고있는 토니켓을 풀어주세요.";
 
         // 화살표
         ActiveArrow(tourniquet);
@@ -403,7 +433,7 @@ public class InjectionMgr : MonoBehaviour
     [ContextMenu("9.평가")]
     public void GradeInjection()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
             pv.RPC(nameof(GradeInjectionRPC), RpcTarget.AllViaServer);
     }
     [PunRPC]
@@ -421,8 +451,9 @@ public class InjectionMgr : MonoBehaviour
         timer.timerOn = false;
         int[] times = timer.GetTime();
 
-        infoTxtPhone.text = _sapType;
-        infoTxtPhone.text += curruntSap.name;
+        //!1013
+        // infoTxtPhone.text = _sapType;
+        // infoTxtPhone.text += curruntSap.name;
 
         // 수액종류, 수액속도, 주사위치, 주사각도, 시간
         // 0.수액종류
@@ -686,7 +717,7 @@ public class InjectionMgr : MonoBehaviour
 
         arrow.SetActive(true);
 
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             pv.RPC(nameof(ActiveArrowRPC), RpcTarget.Others, obj.name);
         }

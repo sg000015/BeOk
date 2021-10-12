@@ -8680,51 +8680,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703245446}
   m_CullTransparentMesh: 1
---- !u!1 &711947373
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 711947374}
-  - component: {fileID: 711947375}
-  m_Layer: 0
-  m_Name: GoogleSheetManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &711947374
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711947373}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1734137402}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &711947375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 711947373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c3e21ce9a1352499e1673c1e01e034, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isBlood: 1
-  UISentence: []
 --- !u!1 &717506369
 GameObject:
   m_ObjectHideFlags: 0
@@ -10963,7 +10918,7 @@ MonoBehaviour:
   - {fileID: 1418422940}
   - {fileID: 586444900}
   myScore: 0
-  sheet: {fileID: 711947375}
+  sheet: {fileID: 0}
 --- !u!1 &875086307
 GameObject:
   m_ObjectHideFlags: 0
@@ -26642,7 +26597,6 @@ Transform:
   - {fileID: 144001525}
   - {fileID: 101479012}
   - {fileID: 2007499991}
-  - {fileID: 711947374}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
