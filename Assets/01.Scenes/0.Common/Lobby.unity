@@ -33761,10 +33761,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CurvedUILaserPointer
       objectReference: {fileID: 0}
-    - target: {fileID: 1767736181399190, guid: bcd9d94a56f575340a261fb992072904, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4669569845911490, guid: bcd9d94a56f575340a261fb992072904, type: 3}
       propertyPath: m_RootOrder
       value: 3
