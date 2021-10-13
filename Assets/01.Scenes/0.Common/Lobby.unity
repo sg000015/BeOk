@@ -24995,19 +24995,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 494212228}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1355048428}
-        m_TargetAssemblyTypeName: NetworkManager, Assembly-CSharp
-        m_MethodName: OnCreateRoom
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &494212228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33894,7 +33882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &888795928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36987,7 +36975,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1055284417
 GameObject:
   m_ObjectHideFlags: 0
@@ -43385,6 +43373,7 @@ MonoBehaviour:
   inputRoomNum: {fileID: 273872031}
   text: {fileID: 1152889277}
   deviceCheckText: {fileID: 0}
+  phoneBtn: {fileID: 0}
 --- !u!4 &1355048429
 Transform:
   m_ObjectHideFlags: 0

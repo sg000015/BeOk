@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System.Threading.Tasks;
+using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -17,6 +18,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public TMP_Text text;
 
     public TMP_Text deviceCheckText;
+    public Button phoneBtn;
 
     void Awake()
     {
@@ -43,14 +45,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //! 빌드시 오큘러스이름 = Handheld, 핸드폰 이름도 동일
 
-        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld")
-            || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop"))
+        if (0 == string.Compare(SystemInfo.deviceType.ToString(), "Handheld123")
+            || 0 == string.Compare(SystemInfo.deviceType.ToString(), "Desktop11"))
         {
             isOculus = true;
         }
         else
         {
             text = GameObject.Find("NetworkInfoText").GetComponent<TMP_Text>();
+            // Button btn = GameObject.Find("Button-OK").GetComponent<Button>();
+            // Debug.Log(btn);
+            // btn.onClick.AddListener(() => OnCreateRoom());
             isOculus = false;
 
             text.text = "감독관 모드로 접속";
@@ -67,7 +72,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
-
             if (isOculus)
             {
                 roomNum = "1";
@@ -77,6 +81,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
             else
             {
+                Debug.Log("oncreateroon - phpone");
                 roomNum = GameObject.FindWithTag("LobbyInput").GetComponent<TMP_InputField>().text;
                 text = GameObject.Find("NetworkInfoText").GetComponent<TMP_Text>();
                 text.text = roomNum + "번 방에 입장을 시도합니다.";
@@ -199,6 +204,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
 
         }
+    }
+
+    public void ConnectBtn(Button btn)
+    {
+
+        Debug.Log("------------3.");
+        // btn.onClick.AddListener(() => OnCreateRoom());
+        btn.onClick.AddListener(() => OnCreateRoom());
     }
 
 }

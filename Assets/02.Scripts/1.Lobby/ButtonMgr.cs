@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class ButtonMgr : MonoBehaviour
 {
@@ -18,10 +19,25 @@ public class ButtonMgr : MonoBehaviour
 
     public GameManager_Lobby GM;
 
+    public Button phoneBtn;
+
 
 
     GameObject prevPanel;
     GameObject curPanel;
+
+    private void Start()
+    {
+        Debug.Log("------------1.");
+        phoneBtn = GameObject.Find("Button-OK").GetComponent<Button>();
+        Debug.Log(phoneBtn);
+        if (phoneBtn != null)
+        {
+            Debug.Log("------------2.");
+            // phoneBtn.onClick.AddListener(NetworkManager.instanceNW.OnCreatedRoom);
+            NetworkManager.instanceNW.ConnectBtn(phoneBtn);
+        }
+    }
 
     public void OnClickStartBtn()
     {
