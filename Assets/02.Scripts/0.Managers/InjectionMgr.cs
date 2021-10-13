@@ -104,7 +104,8 @@ public class InjectionMgr : MonoBehaviour
         PhotonNetwork.CurrentRoom.IsOpen = false;
 
         //!1013
-        OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
+        StartCoroutine(nameof(Haptic), 0.5f);
+        // OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
 
         int index = Random.Range(0, type.Length);
         string sapType = type[index];
@@ -759,5 +760,16 @@ public class InjectionMgr : MonoBehaviour
             yield return new WaitForSeconds(length);
 
         }
+    }
+
+    IEnumerator Haptic(float duration)
+    {
+        // 주파수, 진폭, 위치
+        OVRInput.SetControllerVibration(0.8f, 0.8f, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0.8f, 0.8f, OVRInput.Controller.LTouch);
+        yield return new WaitForSeconds(duration);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.LTouch);
+
     }
 }

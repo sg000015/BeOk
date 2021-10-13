@@ -17603,7 +17603,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBlood: 0
-  UISentence: []
+  Sentence_Injection: []
+  Sentence_Blood: []
 --- !u!1 &1121523489
 GameObject:
   m_ObjectHideFlags: 0
@@ -24557,6 +24558,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3f2d18abc90a94e40a4305ab897437aa, type: 3}
   audio: {fileID: 1583156906}
   patientAudio: {fileID: 1275246055}
+  isInjection: 1
 --- !u!4 &1583156908
 Transform:
   m_ObjectHideFlags: 0

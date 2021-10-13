@@ -24,11 +24,10 @@ public class SoundManager : MonoBehaviour
 
     public AudioSource audio;
     public AudioSource patientAudio;
+    public bool isInjection = true;
 
     void Start()
     {
-
-
     }
 
     public void Sound(int num)
@@ -36,7 +35,7 @@ public class SoundManager : MonoBehaviour
         //1013
         if (num == 1)
         {
-            OVRInput.SetControllerVibration(1, 1, OVRInput.Controller.RTouch);
+            StartCoroutine(nameof(Haptic), 0.5f);
         }
         audio.PlayOneShot(audios[num]);
     }
@@ -47,6 +46,14 @@ public class SoundManager : MonoBehaviour
 
     public void PlayPatientSound(int idx)
     {
+        if (isInjection && (idx <= 2 || idx <= 6))
+        {
+            StartCoroutine(nameof(Haptic), 0.5f);
+        }
+        else if (!isInjection && idx == 0)
+        {
+
+        }
         patientAudio.PlayOneShot(patientAudioClips[idx]);
     }
 
@@ -56,6 +63,17 @@ public class SoundManager : MonoBehaviour
     {
         audio.PlayOneShot(audios[2]);
         Debug.Log("a");
+    }
+
+    IEnumerator Haptic(float duration)
+    {
+        // 주파수, 진폭, 위치
+        OVRInput.SetControllerVibration(0.8f, 0.8f, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0.8f, 0.8f, OVRInput.Controller.LTouch);
+        yield return new WaitForSeconds(duration);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.LTouch);
+
     }
 
 
